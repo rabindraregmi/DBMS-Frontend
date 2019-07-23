@@ -59,14 +59,6 @@ class PackageHome extends React.Component {
             },
           ]
     }
-
-    quickPackageLinks = ()=> {
-        return (
-            <div>
-
-            </div>
-        )
-    }
     render() {
         return(
             <div>
@@ -102,6 +94,7 @@ class PackageHome extends React.Component {
                            </MDBRow> */}
                         </MDBCardHeader>
                         <MDBCardBody>
+                          {/* COde For Bar chart */}
                           <Chart data ={this.state.data}/>
                         </MDBCardBody>
                         </MDBCard>

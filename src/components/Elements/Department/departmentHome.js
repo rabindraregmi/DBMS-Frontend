@@ -6,7 +6,8 @@ import Table from '../../Widgets/Tables/tables.js'
 
 class DepartmentHome extends React.Component {
 
-    headings = [
+    headings = 
+    [
         {
             text: 'Department Name',
             colspan: '1',
@@ -18,7 +19,6 @@ class DepartmentHome extends React.Component {
           type:'id',
         },
         
-       
     ]
 
     state= {
