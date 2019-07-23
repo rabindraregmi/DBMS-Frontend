@@ -161,6 +161,8 @@ submitForm = (event) =>{
         console.log(res);
         console.log(res.data)
     })
+
+    
 //     let response = fetch('http://127.0.0.1:8000/packages/', {
 //     method: 'POST',
 //     headers: {
