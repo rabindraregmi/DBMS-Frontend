@@ -1,15 +1,16 @@
 .home-button 
-{
-    color:white;
-    display: inline-block;
-    margin-right:10px;
-    margin-top:100px;
-    margin-left:100px;
-    width:220px;
-    height:90px;
+{ color:white;
+    margin:10px;
+    width:400px;
+    height:50px;
+    display: block;
     text-align: center;
-}
 
+}
+.buttonText 
+{
+    padding:10px;
+}
 .home-button a,.package-button a{
     color:white;
 }
@@ -17,18 +18,10 @@
     color:black;
     text-decoration: none;
 }
-.buttons-group 
-{
-    margin-left:10%;
-    clear:both;
-}
-.buttonText
-{
-    padding:30px;
-}
+
 .pendingTitle
 {
-    margin-top:90px;
+    margin-top:30px;
     width:100%;
     height:45px;
     background:#1cafec;

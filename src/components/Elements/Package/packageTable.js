@@ -75,7 +75,6 @@ class PackageTable extends React.Component {
         //     tableData:json,
         //   })
         // });
-        console.log("DID")
         try
         {
 

@@ -33,6 +33,7 @@ const TableBody = (props)=> {
                 <tr key= {index}>
                     <td>{index+1}</td>
                     {renderElement (elements)}
+                    <td>Action</td>
                     
                 </tr>
             )

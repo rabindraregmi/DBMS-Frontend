@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 import PackageTable from "./packageTable.js";
 import { Redirect } from "react-router-dom";
+import API from "../../../utils/API.js";
 class AddNewPackage extends Component {
   state = {
     formData: {
-      packageID: {
+      packageCode: {
         element: "input",
         value: "",
         label: true,
@@ -22,24 +23,25 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      arrivedDate: {
-        element: "input",
-        value: "",
-        label: true,
-        labelText: "Arrived Date",
-        config: {
-          name: "arrivedDate_input",
-          type: "date",
-          placeholder: "Enter Arrived Date of Package"
-        },
-        validation: {
-          required: false
-        },
-        valid: true,
-        touched: false,
-        validationText: ""
-      },
-      numberOfCopies: {
+      // arrivedDate:{
+      //     element:'input',
+      //     value:'',
+      //     label:true,
+      //     labelText:'Arrived Date',
+      //     config: {
+      //         name:'arrivedDate_input',
+      //         type:'date',
+      //         placeholder:'Enter Arrived Date of Package'
+      //     },
+      //     validation: {
+      //         required:false,
+      //     }
+      //     ,
+      //     valid:true,
+      //     touched:false,
+      //     validationText:'',
+      // },
+      noOfCopies: {
         element: "input",
         value: "",
         label: true,
@@ -56,7 +58,7 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      startingCode: {
+      codeStart: {
         element: "input",
         value: "",
         label: true,
@@ -73,7 +75,7 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      endingCode: {
+      codeEnd: {
         element: "input",
         value: "",
         label: true,
@@ -90,15 +92,18 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      subjectCode: {
-        element: "input",
+      examID: {
+        element: "select",
         value: "",
         label: true,
-        labelText: "Subject Code",
+        labelText: "Exam",
         config: {
-          name: "subjectCode_input",
-          type: "text",
-          placeholder: "Enter Subject Code"
+          name: "Exam",
+          options: [
+            { val: 1, text: "First Exam" },
+            { val: 2, text: "Second Exam" },
+            { val: 3, text: "Third Exam" }
+          ]
         },
         validation: {
           required: false
@@ -107,18 +112,14 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      exam: {
+      status: {
         element: "select",
         value: "",
         label: true,
-        labelText: "Exam",
+        labelText: "Status",
         config: {
-          name: "Exam",
-          options: [
-            { val: "1", text: "First Exam" },
-            { val: "2", text: "Second Exam" },
-            { val: "3", text: "Third Exam" }
-          ]
+          name: "Status",
+          options: [{ val: 1, text: "Received" }, { val: 2, text: "Pending" }]
         },
         validation: {
           required: false
@@ -139,11 +140,14 @@ class AddNewPackage extends Component {
   submitForm = event => {
     let dataToSubmit = {};
     event.preventDefault();
+    dataToSubmit["id"] = null;
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
     }
-    //console.log(dataToSubmit);
-    let response = fetch("http://127.0.0.1:8000/packages/", {
+    dataToSubmit["status"] = "Pending";
+    dataToSubmit["examID"] = null;
+    console.log(dataToSubmit);
+    fetch("/API/query/addPackage", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -151,9 +155,19 @@ class AddNewPackage extends Component {
       },
       body: JSON.stringify(dataToSubmit)
     })
-      .then(res => res.json())
-      .then(response => console.log("Success:", JSON.stringify(response)))
-      .catch(error => console.error("Error:", error));
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    // let response = API.post("/addPackage", { dataToSubmit })
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   };
 
   render() {
