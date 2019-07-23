@@ -118,16 +118,14 @@ class AddNewPackage extends Component {
                 validationText:'',
             },
             status:{
-                element:'select',
+                element:'input',
                 value:'',
                 label:true,
                 labelText:'Status', 
                 config: {
                     name:'Status',
-                    options: [
-                        {val:1, text:'Received'},
-                        {val:2, text: 'Pending'},
-                    ]
+                    type:'text',
+                    placeholder:'Enter Status',
                 },
                 validation: {
                     required:false,
@@ -151,18 +149,17 @@ updateForm = (newState) => {
 submitForm = (event) =>{
     let dataToSubmit = {};
     event.preventDefault();
-    dataToSubmit["id"]= null
     for (let key in this.state.formData) {
         dataToSubmit[key] = this.state.formData[key].value
 
     }
     console.log(dataToSubmit);
-    let response = API.post('/newPackages', {dataToSubmit}).then(res=>{
+    let response = API.post('/addPackage', {dataToSubmit}).then(res=>{
         console.log(res);
         console.log(res.data)
     })
 
-    
+
 //     let response = fetch('http://127.0.0.1:8000/packages/', {
 //     method: 'POST',
 //     headers: {
