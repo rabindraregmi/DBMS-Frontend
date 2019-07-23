@@ -1,0 +1,30 @@
+.chart-buttons
+{
+    display: inline-flex;
+}
+.chart-buttons span
+{
+    margin-left: 10px;
+}
+.buttonText 
+{
+    padding:10px;
+}
+.package-button 
+{
+    color:white;
+    margin:10px;
+    width:400px;
+    height:50px;
+    display: block;
+    text-align: center;
+
+}
+.package-chart-select {
+    display :inline;
+    width:100%;
+}
+.breadcrumb 
+{
+    background: white;
+}

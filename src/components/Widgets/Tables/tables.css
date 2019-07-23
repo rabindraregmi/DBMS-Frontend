@@ -1,0 +1,29 @@
+.table2{
+    margin-top:10px;
+    margin-left:5px;
+    border-collapse:  separate;
+    margin-right:5px;
+    
+}
+.table2 th
+{
+    
+    margin-right:5px;
+    color:white;
+    background: #1cafec;
+}
+
+tbody {
+    background: white;
+}
+tbody tr {
+    margin-right:5px;
+}
+thead th,tbody tr td {
+    text-align: center;
+}
+
+tbody tr:hover {
+    background: rgb(69,199,194);
+    color:white;
+}

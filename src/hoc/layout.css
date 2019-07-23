@@ -1,0 +1,13 @@
+.layout 
+{
+    position:relative;
+}
+.header {
+    position: absolute;
+    top:0px;
+}
+.main-content {
+    position: absolute;
+    top: 130px;
+    width:100%;
+}

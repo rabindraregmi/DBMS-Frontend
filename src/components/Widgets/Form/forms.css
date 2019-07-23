@@ -1,0 +1,19 @@
+.main-form 
+{
+    margin-left:20%;
+    padding:20px;
+    background:white;
+    width:60%;
+    color:black;
+}
+
+.form-fieldset 
+{
+    background: #ededed;
+    color:black;
+    height:30px;
+    text-align: left;
+    margin-bottom: 10px;
+    width:88%
+
+}

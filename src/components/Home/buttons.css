@@ -1,0 +1,64 @@
+.home-button 
+{
+    color:white;
+    display: inline-block;
+    margin-right:10px;
+    margin-top:100px;
+    margin-left:100px;
+    width:220px;
+    height:90px;
+    text-align: center;
+}
+
+.home-button a,.package-button a{
+    color:white;
+}
+.home-button a:hover,.package-button a:hover{
+    color:black;
+    text-decoration: none;
+}
+.buttons-group 
+{
+    margin-left:10%;
+    clear:both;
+}
+.buttonText
+{
+    padding:30px;
+}
+.pendingTitle
+{
+    margin-top:90px;
+    width:100%;
+    height:45px;
+    background:#1cafec;
+    color:white;
+    margin-left:5px;
+    font-size:20px;
+}
+.xxx
+{
+    margin-top: 10px;
+}
+.col-form-label
+{
+    float:left
+}
+.selectbar 
+{  
+    width:20%;
+
+}
+.searchbar 
+{
+    clear: left;
+    margin-top:-35px;
+    width:15%;
+    float:right;
+    margin-bottom:10px;
+    margin-right: 10px;
+}
+g.recharts-cartesian-axis-ticks
+{
+    font-size: 10px;
+}

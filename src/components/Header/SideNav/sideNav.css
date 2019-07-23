@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+.option {
+    padding:10px;
+    border-top: 1px solid #ffffff;
+    color: rgba(255,255,255, 1);
+    font-family: 'Raleway', sans-serif;
+    font-style: normal;
+    font-size: 20px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    text-align: justify;
+}
+
+.option a {
+    color:inherit;
+    text-decoration: none;
+}
+.option:hover 
+{
+    color:orange;
+}
+
+.option span {
+    color:white;
+    margin-right:10px;
+}
