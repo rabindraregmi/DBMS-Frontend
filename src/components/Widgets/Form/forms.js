@@ -45,7 +45,7 @@ const formFields = (props)=> {
 
     }
     const blurHandler = (event,id) => {
-        if (id ==='noOfPackage'){
+        if (id ==='noOfPacket'){
             props.createNewForm(event.target.value)
         }
     }
@@ -132,7 +132,7 @@ const formFields = (props)=> {
             case('dynamic'):
             formTemplate = (
                 <div>
-                <fieldset className= "form-fieldset">Packages:{props.formData.noOfPackage.value}</fieldset>
+                <fieldset className= "form-fieldset">Packages:{props.formData.noOfPacket.value}</fieldset>
                     {renderChild(data.settings.childs)}               
                 </div>
             )

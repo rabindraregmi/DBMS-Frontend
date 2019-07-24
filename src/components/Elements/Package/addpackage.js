@@ -99,11 +99,7 @@ class AddNewPackage extends Component {
         labelText: "Exam",
         config: {
           name: "Exam",
-          options: [
-            { val: 1, text: "First Exam" },
-            { val: 2, text: "Second Exam" },
-            { val: 3, text: "Third Exam" }
-          ]
+          options: []
         },
         validation: {
           required: false
@@ -130,6 +126,26 @@ class AddNewPackage extends Component {
       }
     }
   };
+
+  componentWillMount = () =>
+  {
+    let {options}  = this.state.formData.examID.config;
+    fetch ("API/query/getExams")
+    .then (res=>res.json())
+    .then (json=>{          
+      for(let exams of json)
+      {
+        let temp = {}
+        temp ['val'] = exams.id 
+        temp ['text'] = exams.programName+" "+exams.date
+        options.push(temp)
+      }
+      this.setState ({
+        options:options
+      })
+    });
+    console.log(options)
+}
 
   updateForm = newState => {
     this.setState({

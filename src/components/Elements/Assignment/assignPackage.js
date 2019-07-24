@@ -86,7 +86,7 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            dateofAssignment:{
+            dateOfAssignment:{
                 element:'input', 
                 value:'',
                 label:true,
@@ -104,7 +104,7 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            dateofSubmission:{
+            dateOfSubmission:{
                 element:'input', 
                 value:'',
                 label:true,
@@ -122,13 +122,13 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            noOfPackage:{
+            noOfPacket:{
                 element:'input', 
                 value:'',
                 label:true,
                 labelText:'Number of Packages',
                 config: {
-                    name:'noOfPackages_input',
+                    name:'noOfPackets_input',
                     type:'text',
                     placeholder:'Enter No Of Packages'
                 },
@@ -158,7 +158,7 @@ updateForm = (newState) => {
     )
 }
 
-dynamicForm = (noOfPackage) => {
+dynamicForm = (noOfPacket) => {
 
     let newChild = this.state.formData.packages.childs;
     let packageID = this.packageID;
@@ -168,13 +168,13 @@ dynamicForm = (noOfPackage) => {
          j++
      }
     console.log(j)
-    if (j>noOfPackage) {
-        for (let k = j-1; k>=noOfPackage; k--){
+    if (j>noOfPacket) {
+        for (let k = j-1; k>=noOfPacket; k--){
             let key = 'Package-'+k
             delete newChild[key]
         }
     }
-    for (let i= j;i<noOfPackage;i++){
+    for (let i= j;i<noOfPacket;i++){
        let  key = 'Package-'+i
      //  newChild
         newChild[key] = {
@@ -248,7 +248,7 @@ submitForm = (event) =>{
     let dataToSubmit = {};
     dataToSubmit['personID'] = this.state.personID;
     for (let key in this.state.formData) {
-        if (key==='name'||key==='contact'||key==='address')
+        if (key==='name'||key==='contact'||key==='address'||key==='noOfPacket')
         {
             continue
         }
@@ -267,8 +267,21 @@ submitForm = (event) =>{
         }
 
     }
-    
-    console.log(dataToSubmit);
+    console.log(dataToSubmit)
+    fetch("/API/query/addAssignment", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSubmit)
+      })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
 
 
 }
@@ -280,7 +293,7 @@ render(){
                 <FormFields 
                     formData= {this.state.formData}
                     change = {(newState)=>this.updateForm(newState)}
-                    createNewForm = {(noOfPackage)=>this.dynamicForm(noOfPackage)}
+                    createNewForm = {(noOfPacket)=>this.dynamicForm(noOfPacket)}
 
                 />
                 <button className = "btn btn-primary" type= 'submit'>Submit</button>
