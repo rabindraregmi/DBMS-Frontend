@@ -21,7 +21,7 @@ const buttons = [
         className: 'home-button',
         color:'#1cafec',
         icon:faEdit,
-        link:'/assign-package'
+        link:'/intermediate'
     },
     {
         text: 'Add New Exam',

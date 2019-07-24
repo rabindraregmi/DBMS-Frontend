@@ -140,7 +140,6 @@ class AddNewPackage extends Component {
   submitForm = event => {
     let dataToSubmit = {};
     event.preventDefault();
-    dataToSubmit["id"] = null;
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
     }

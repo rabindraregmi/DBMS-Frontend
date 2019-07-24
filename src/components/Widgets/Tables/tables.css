@@ -23,7 +23,12 @@ thead th,tbody tr td {
     text-align: center;
 }
 
-tbody tr:hover {
-    background: rgb(69,199,194);
-    color:white;
+
+.action 
+{
+    display: inline-flex;
+}
+.action-element
+{
+    margin-left: 15px;
 }

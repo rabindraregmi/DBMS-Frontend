@@ -1,5 +1,6 @@
 import React from 'react'
 import Table from '../Widgets/Tables/tables.js'
+import {faTrash, faEdit} from '@fortawesome/free-solid-svg-icons'
 class PendingPackageTable extends React.Component {
     
         headings = [
@@ -34,6 +35,18 @@ class PendingPackageTable extends React.Component {
             type: 'toBeSubmitted',
         },
     ]
+    actions = [{
+      text: 'Edit', 
+      icon: faEdit, 
+      link: '/',
+      },
+      {
+      text: 'Delete', 
+      icon: faTrash, 
+      link: '/',
+      },
+      ]
+
     state = {
     tableData: [
       {
@@ -156,6 +169,7 @@ render () {
                         tableData = {this.state.noResult?this.state.filtered:this.state.tableData}
                         state = {this.state}
                         setState = {(states)=>this.statehandler(states)}
+                        actions  = {this.actions}
                     />
                     </div> 
                 )

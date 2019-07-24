@@ -1,6 +1,7 @@
 import React from 'react';
-import { objectTypeSpreadProperty } from '@babel/types';
-
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faTrash,faEdit} from '@fortawesome/free-solid-svg-icons'
+import {Link } from 'react-router-dom';
 const TableBody = (props)=> {
 
 
@@ -8,7 +9,6 @@ const TableBody = (props)=> {
     const renderElement = (elements) =>{
         
         return Object.entries(elements).map((element,index)=>{
-            //console.log(elements,index)
             if (element[0]==='id'){
                 return (
                 <td key = {index} hidden>
@@ -24,6 +24,18 @@ const TableBody = (props)=> {
         })
 
     }
+    const renderActions = ()=>{
+        return props.actions.map((action,index)=>{
+            return (
+                <div className = "action-element">
+                    <Link to = {action.link}>
+                    <FontAwesomeIcon icon = {action.icon}/>
+                    </Link>
+               
+                </div>
+            )
+        })
+    }
     const tableBody =() => {
        let tableData = props.tableData;
        let template=null;
@@ -33,7 +45,10 @@ const TableBody = (props)=> {
                 <tr key= {index}>
                     <td>{index+1}</td>
                     {renderElement (elements)}
-                    <td>Action</td>
+                    <td className = 'action'>
+                    {renderActions()}
+
+                    </td>
                     
                 </tr>
             )
