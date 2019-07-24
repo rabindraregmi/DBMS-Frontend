@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import FormFields from '../../Widgets/Form/forms.js'
 
 class AssignPackage extends Component {
+    
+    
     packageID =[{
         element:'select', 
         value:'1',
@@ -27,6 +29,8 @@ class AssignPackage extends Component {
     
     
     state = {
+        personID:'',
+        personData:{},
         formData:{
             name:{
                 element:'input', 
@@ -46,15 +50,15 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            email:{
+            address:{
                 element:'input', 
                 value:'',
                 label:true,
-                labelText:'Email',
+                labelText:'Address',
                 config: {
-                    name:'email_input',
-                    type:'email',
-                    placeholder:'Enter email of receiver'
+                    name:'address_input',
+                    type:'text',
+                    placeholder:'Enter Address of receiver'
                 },
                 validation: {
                     required:false,
@@ -136,7 +140,7 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            packages: {
+            packages:{
                 element:'dynamic',
                 childs: {
                     
@@ -158,7 +162,6 @@ dynamicForm = (noOfPackage) => {
 
     let newChild = this.state.formData.packages.childs;
     let packageID = this.packageID;
-    console.log("Dynamic Form is Called")
     let j = 0 ;
      for (let element in this.state.formData.packages.childs){
          console.log(element)
@@ -166,14 +169,13 @@ dynamicForm = (noOfPackage) => {
      }
     console.log(j)
     if (j>noOfPackage) {
-        console.log("This is j",j,noOfPackage)
         for (let k = j-1; k>=noOfPackage; k--){
-            let key = 'package'+k
+            let key = 'Package-'+k
             delete newChild[key]
         }
     }
     for (let i= j;i<noOfPackage;i++){
-       let  key = 'package'+i
+       let  key = 'Package-'+i
      //  newChild
         newChild[key] = {
             element:'select', 
@@ -196,8 +198,8 @@ dynamicForm = (noOfPackage) => {
             touched:false,
             validationText:'',
         }
-        console.log(i)
-        console.log("New Child", newChild)
+        // console.log(i)
+        // console.log("New Child", newChild)
     }
     
     this.setState(prevState => ({
@@ -212,17 +214,48 @@ dynamicForm = (noOfPackage) => {
     }))
 }
 
+componentDidMount = ()=>{
+    let {params} = this.props.match;
+    console.log(params.personID)
+    this.setState({
+        personID:params.personID
+    })
+    fetch (`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
+        .then (res=>res.json())
+        .then (json=>{          
+        console.log(json)
+          this.setState({
+            isLoaded:true,
+            personData:json,
+          })
+          let {formData,personData} = this.state;
+          console.log(personData)
+
+        formData.name.value  = personData[0].name
+        formData.contact.value = personData[0].contact
+        formData.address.value = personData[0].address
+        this.setState ({
+            formData:formData
+        })
+        });
+    
+
+}
+
+
 submitForm = (event) =>{
     event.preventDefault();
     let dataToSubmit = {};
-
+    dataToSubmit['personID'] = this.state.personID;
     for (let key in this.state.formData) {
-        if (key ==='packages'){
+        if (key==='name'||key==='contact'||key==='address')
+        {
+            continue
+        }
+        else if (key ==='packages'){
             const childs= this.state.formData[key].childs;
             const packages = []
-            console.log("Haha",childs)
             for (let child in childs){
-               console.log(childs[child].value)
                packages.push(childs[child].value)
             } 
            dataToSubmit[key] = packages
@@ -234,11 +267,13 @@ submitForm = (event) =>{
         }
 
     }
+    
     console.log(dataToSubmit);
 
 
 }
 render(){
+   
     return(
         <div className= 'container'>
             <form className = "main-form" onSubmit= {this.submitForm}>

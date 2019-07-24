@@ -27,7 +27,8 @@ const formFields = (props)=> {
     }
     const changeHandler =(event,id)=>{
         const newState = props.formData;
-        if (id.includes("packages")){
+        console.log(id)
+        if (id.includes("Package-")){
             console.log(id)
             newState.packages.childs[id].value = event.target.value;
         

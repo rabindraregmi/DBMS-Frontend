@@ -10,22 +10,31 @@ import Layout from './hoc/layout.js';
 import Department from './components/Elements/Department/departmentHome.js'
 import Subject from './components/Elements/Subjects/subjects.js'
 import Intermediate from './components/Elements/Assignment/intermediate.js'
+import ExamTable from './components/Elements/Exam/examTable.js';
 
 class Routes extends Component {
     render(){
         return(
+            <div>
+                   
+            
             <Layout>
+
                 <Switch>
                     <Route path="/" exact component={Home}/>
                     <Route path= '/add-new-package' exact component = {AddPackage}/>
-                    <Route path= '/assign-package' exact component = {AssignPackage}/>
+                    <Route path= '/assign-package/:personID' exact component = {AssignPackage}/>
                     <Route path= '/add-new-exam' exact component = {AddNewExam}/>
                     <Route path= '/packages' exact component = {PackageHome}/>
                     <Route path= '/departments' exact component = {Department}/>
                     <Route path= '/subjects' exact component = {Subject}/>
                     <Route path= '/intermediate' exact component= {Intermediate}/>
+                    <Route path= '/exams'  exact component = {ExamTable}/>
                 </Switch>
             </Layout>
+           
+            
+            </div>
            
         )
     }

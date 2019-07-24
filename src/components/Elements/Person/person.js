@@ -78,7 +78,7 @@ class Person extends React.Component {
       dataToSubmit[key] = this.state.formData[key].value
     }
     console.log(dataToSubmit)
-    fetch("/API/query/addPerson", {
+    fetch("http://localhost:4000/API/query/addPerson", {
       method: "POST",
       headers: {
         Accept: "application/json",
