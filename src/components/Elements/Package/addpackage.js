@@ -156,6 +156,7 @@ class AddNewPackage extends Component {
       body: JSON.stringify(dataToSubmit)
     })
       .then(res => {
+        res.json().then(body => console.log(body));
         console.log(res);
       })
       .catch(err => {
