@@ -15,7 +15,7 @@ const PendingPackageTable = (props) => {
           
           let keyword = event.target.value;
           let searchByKeyword = props.state.searchBy;
-          let filteredData = props.state.tableData.filter ((item)=>{
+          let filteredData = props.state.tableData.filter((item)=>{
             
           return item[String(searchByKeyword)].indexOf(keyword) >-1
           })
@@ -63,7 +63,7 @@ const PendingPackageTable = (props) => {
         </div>
     )
     }
-    
+    console.log(props.actions)
     
     return (
         <div>
@@ -71,7 +71,7 @@ const PendingPackageTable = (props) => {
         <div className = "table">
              <table class="table table2 table table-advance">
                   <TableHeader headings = {props.headings}/>
-                  <TableBody tableData = {props.tableData}/>
+                  <TableBody tableData = {props.tableData} actions = {props.actions}/>
                               
             </table>
         

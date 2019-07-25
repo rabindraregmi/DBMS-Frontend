@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
 import FormFields from '../../Widgets/Form/forms.js'
-import Button from '../../Widgets/Buttons/buttons.js'
 
 class AssignPackage extends Component {
+    
+    
     packageID =[{
         element:'select', 
         value:'1',
@@ -28,6 +29,8 @@ class AssignPackage extends Component {
     
     
     state = {
+        personID:'',
+        personData:{},
         formData:{
             name:{
                 element:'input', 
@@ -47,15 +50,15 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            email:{
+            address:{
                 element:'input', 
                 value:'',
                 label:true,
-                labelText:'Email',
+                labelText:'Address',
                 config: {
-                    name:'email_input',
-                    type:'email',
-                    placeholder:'Enter email of receiver'
+                    name:'address_input',
+                    type:'text',
+                    placeholder:'Enter Address of receiver'
                 },
                 validation: {
                     required:false,
@@ -83,7 +86,7 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            dateofAssignment:{
+            dateOfAssignment:{
                 element:'input', 
                 value:'',
                 label:true,
@@ -101,7 +104,7 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            dateofSubmission:{
+            dateOfSubmission:{
                 element:'input', 
                 value:'',
                 label:true,
@@ -119,13 +122,13 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            noOfPackage:{
+            noOfPacket:{
                 element:'input', 
                 value:'',
                 label:true,
                 labelText:'Number of Packages',
                 config: {
-                    name:'noOfPackages_input',
+                    name:'noOfPackets_input',
                     type:'text',
                     placeholder:'Enter No Of Packages'
                 },
@@ -137,7 +140,7 @@ class AssignPackage extends Component {
                 touched:false,
                 validationText:'',
             },
-            packages: {
+            packages:{
                 element:'dynamic',
                 childs: {
                     
@@ -155,26 +158,24 @@ updateForm = (newState) => {
     )
 }
 
-dynamicForm = (noOfPackage) => {
+dynamicForm = (noOfPacket) => {
 
     let newChild = this.state.formData.packages.childs;
     let packageID = this.packageID;
-    console.log("Dynamic Form is Called")
     let j = 0 ;
      for (let element in this.state.formData.packages.childs){
          console.log(element)
          j++
      }
     console.log(j)
-    if (j>noOfPackage) {
-        console.log("This is j",j,noOfPackage)
-        for (let k = j-1; k>=noOfPackage; k--){
-            let key = 'package'+k
+    if (j>noOfPacket) {
+        for (let k = j-1; k>=noOfPacket; k--){
+            let key = 'Package-'+k
             delete newChild[key]
         }
     }
-    for (let i= j;i<noOfPackage;i++){
-       let  key = 'package'+i
+    for (let i= j;i<noOfPacket;i++){
+       let  key = 'Package-'+i
      //  newChild
         newChild[key] = {
             element:'select', 
@@ -197,8 +198,8 @@ dynamicForm = (noOfPackage) => {
             touched:false,
             validationText:'',
         }
-        console.log(i)
-        console.log("New Child", newChild)
+        // console.log(i)
+        // console.log("New Child", newChild)
     }
     
     this.setState(prevState => ({
@@ -213,17 +214,47 @@ dynamicForm = (noOfPackage) => {
     }))
 }
 
+componentDidMount = ()=>{
+    let {params} = this.props.match;
+    console.log(params.personID)
+    this.setState({
+        personID:params.personID
+    })
+    fetch (`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
+        .then (res=>res.json())
+        .then (json=>{         
+          this.setState({
+            isLoaded:true,
+            personData:json,
+          })
+          let {formData,personData} = this.state;
+          console.log(personData)
+
+        formData.name.value  = personData[0].name
+        formData.contact.value = personData[0].contact
+        formData.address.value = personData[0].address
+        this.setState ({
+            formData:formData
+        })
+        });
+    
+
+}
+
+
 submitForm = (event) =>{
     event.preventDefault();
     let dataToSubmit = {};
-
+    dataToSubmit['personID'] = this.state.personID;
     for (let key in this.state.formData) {
-        if (key ==='packages'){
+        if (key==='name'||key==='contact'||key==='address'||key==='noOfPacket')
+        {
+            continue
+        }
+        else if (key ==='packages'){
             const childs= this.state.formData[key].childs;
             const packages = []
-            console.log("Haha",childs)
             for (let child in childs){
-               console.log(childs[child].value)
                packages.push(childs[child].value)
             } 
            dataToSubmit[key] = packages
@@ -235,18 +266,33 @@ submitForm = (event) =>{
         }
 
     }
-    console.log(dataToSubmit);
+    console.log(dataToSubmit)
+    fetch("http://localhost:4000/API/query/addAssignment", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSubmit)
+      })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
 
 
 }
 render(){
+   
     return(
         <div className= 'container'>
             <form className = "main-form" onSubmit= {this.submitForm}>
                 <FormFields 
                     formData= {this.state.formData}
                     change = {(newState)=>this.updateForm(newState)}
-                    createNewForm = {(noOfPackage)=>this.dynamicForm(noOfPackage)}
+                    createNewForm = {(noOfPacket)=>this.dynamicForm(noOfPacket)}
 
                 />
                 <button className = "btn btn-primary" type= 'submit'>Submit</button>

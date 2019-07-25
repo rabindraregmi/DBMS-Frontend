@@ -4,16 +4,13 @@ import Layout from './hoc/layout.js';
 import Routes from './routes.js'
 import { BrowserRouter } from 'react-router-dom';
 
-
 class App extends React.Component {
     render (){
         return (
             <div>
-              
                <BrowserRouter>
                  <Routes/>
                 </BrowserRouter>
-               
             </div>
         )
     }

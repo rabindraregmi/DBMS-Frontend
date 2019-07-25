@@ -27,7 +27,8 @@ const formFields = (props)=> {
     }
     const changeHandler =(event,id)=>{
         const newState = props.formData;
-        if (id.includes("packages")){
+        console.log(id)
+        if (id.includes("Package-")){
             console.log(id)
             newState.packages.childs[id].value = event.target.value;
         
@@ -44,7 +45,7 @@ const formFields = (props)=> {
 
     }
     const blurHandler = (event,id) => {
-        if (id ==='noOfPackage'){
+        if (id ==='noOfPacket'){
             props.createNewForm(event.target.value)
         }
     }
@@ -131,9 +132,31 @@ const formFields = (props)=> {
             case('dynamic'):
             formTemplate = (
                 <div>
-                <fieldset className= "form-fieldset">Packages:{props.formData.noOfPackage.value}</fieldset>
+                <fieldset className= "form-fieldset">Packages:{props.formData.noOfPacket.value}</fieldset>
                     {renderChild(data.settings.childs)}               
                 </div>
+            )
+            break;
+            case('radio'):
+            formTemplate = (
+                <div className="form-group">
+                    <div className="radio-label">
+                {showLabel(values.label, values.labelText)}
+
+                    </div>
+                    
+                    {values.config.options.map ((item, i)=>(
+                    <div className = "form-check form-check-inline">
+                        <input key = {i} class="form-check-input" type="radio" name = "status" id = {`for-${i}`} value={item.val}
+                        onChange= {
+                            (event)=>changeHandler(event,data.id)
+                        }
+                        />
+                        <label class="form-check-label">{item.text}</label>
+                    </div>
+                        ) )}
+                
+              </div>
             )
             break;
             default:

@@ -99,11 +99,7 @@ class AddNewPackage extends Component {
         labelText: "Exam",
         config: {
           name: "Exam",
-          options: [
-            { val: 1, text: "First Exam" },
-            { val: 2, text: "Second Exam" },
-            { val: 3, text: "Third Exam" }
-          ]
+          options: []
         },
         validation: {
           required: false
@@ -113,13 +109,13 @@ class AddNewPackage extends Component {
         validationText: ""
       },
       status: {
-        element: "select",
+        element: "radio",
         value: "",
         label: true,
         labelText: "Status",
         config: {
           name: "Status",
-          options: [{ val: 1, text: "Received" }, { val: 2, text: "Pending" }]
+          options: [{ val: "Submitted", text: "Submitted" }, { val: "Pending", text: "Pending" },,{val:"Not Assigned",text:"Not Assigned"}]
         },
         validation: {
           required: false
@@ -129,7 +125,28 @@ class AddNewPackage extends Component {
         validationText: ""
       }
     }
+
   };
+
+  componentWillMount = () =>
+  {
+    let {options}  = this.state.formData.examID.config;
+    fetch ("http://localhost:4000/API/query/getExams")
+    .then (res=>res.json())
+    .then (json=>{          
+      for(let exams of json)
+      {
+        let temp = {}
+        temp ['val'] = exams.id 
+        temp ['text'] = exams.programName+" "+exams.date
+        options.push(temp)
+      }
+      this.setState ({
+        options:options
+      })
+    });
+    console.log(options)
+}
 
   updateForm = newState => {
     this.setState({
@@ -140,14 +157,12 @@ class AddNewPackage extends Component {
   submitForm = event => {
     let dataToSubmit = {};
     event.preventDefault();
-    dataToSubmit["id"] = null;
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
     }
-    dataToSubmit["status"] = "Pending";
-    dataToSubmit["examID"] = null;
+    
     console.log(dataToSubmit);
-    fetch("/API/query/addPackage", {
+    fetch("http://localhost:4000/API/query/addPackage", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -162,13 +177,6 @@ class AddNewPackage extends Component {
       .catch(err => {
         console.log(err);
       });
-    // let response = API.post("/addPackage", { dataToSubmit })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
   };
 
   render() {
