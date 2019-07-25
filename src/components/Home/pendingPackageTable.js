@@ -48,104 +48,24 @@ class PendingPackageTable extends React.Component {
       ]
 
     state = {
-    tableData: [
-      {
-        "packageID": "355-53-0879",
-        "assignedDate": "2019/05/19",
-        "assignedTo": "Ced",
-        "contact": "492-683-7747",
-        "To Be Submitted": "2019/02/10",
-      }, 
-      {
-        "packageID": "731-41-4835",
-        "assignedDate": "2018/11/16",
-        "assignedTo": "Pet",
-        "contact": "408-470-0079",
-        "toBeSubmitted": "2018/08/12",
-      }, 
-      {
-        
-        "packageID": "397-59-0621",
-        "assignedDate": "2019/04/22",
-        "assignedTo": "Konstance",
-        "contact": "821-839-3941",
-        "toBeSubmitted": "2019/06/13",
-      },
-      {
-  
-        "packageID": "146-32-8733",
-        "assignedDate": "2018/12/31",
-        "assignedTo": "Garrott",
-        "contact": "688-866-6190",
-        "toBeSubmitted": "2018/07/19",
-      }, 
-      {
-   
-        "packageID": "845-85-4386",
-        "assignedDate": "2018/12/14",
-        "assignedTo": "Kissie",
-        "contact": "787-343-1199",
-        "toBeSubmitted": "2019/07/03",
-      }, 
-      {
-    
-        "packageID": "672-55-0523",
-        "assignedDate": "2018/12/18",
-        "assignedTo": "Kayne",
-        "contact": "333-411-4316",
-        "toBeSubmitted": "2019/04/04",
-      },
-      {
-    
-        "packageID": "645-46-6208",
-        "assignedDate": "2019/05/28",
-        "assignedTo": "Tedd",
-        "contact": "403-269-6772",
-        "toBeSubmitted": "2018/10/18",
-      },
-      {
-    
-        "packageID": "590-56-4187",
-        "assignedDate": "2018/07/27",
-        "assignedTo": "Cindelyn",
-        "contact": "837-639-6374",
-        "toBeSubmitted": "2019/05/27",
-    
-      },
-      {
-    
-        "packageID": "668-29-7429",
-        "assignedDate": "2018/08/11",
-        "assignedTo": "Alberta",
-        "contact": "360-807-9465",
-        "toBeSubmitted": "2019/04/13",
-    
-      }, 
-      {
-    
-        "packageID": "200-16-6121",
-        "assignedDate": "2019/01/25",
-        "assignedTo": "Krispin",
-        "contact": "561-260-8052",
-        "toBeSubmitted": "2019/05/24",
-      }],
+    tableData: [],
   filtered:[],
   noResult:false,
-  searchBy:'packageID',
+  searchBy:'packageCode',
   items:[],
   isLoaded:true,
 }
 
 componentDidMount =()=> {
-  // fetch ("http://127.0.0.1:8000/packages/")
-  // .then (res=>res.json())
-  // .then (json=>{
-  //   this.setState({
-  //     isLoaded:true,
-  //     items:json,
-  //   })
-  // });
-
+    fetch ('http://localhost:4000/API/query/getPendingPackages')
+    .then (res=>res.json())
+    .then (json=>{
+      this.setState({
+        isLoaded:true,
+        tableData:json,
+      })
+      
+    })
 }
 statehandler=(states)=>{
   this.setState(states)

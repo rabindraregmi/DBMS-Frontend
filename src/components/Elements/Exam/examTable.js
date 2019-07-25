@@ -62,7 +62,7 @@ class ExamTable extends React.Component{
     }
 
     componentWillMount = () =>{
-        fetch ("API/query/getExams")
+        fetch ("http://localhost:4000/API/query/getExams")
         .then (res=>res.json())
         .then (json=>{          
 

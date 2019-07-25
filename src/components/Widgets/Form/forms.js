@@ -137,6 +137,28 @@ const formFields = (props)=> {
                 </div>
             )
             break;
+            case('radio'):
+            formTemplate = (
+                <div className="form-group">
+                    <div className="radio-label">
+                {showLabel(values.label, values.labelText)}
+
+                    </div>
+                    
+                    {values.config.options.map ((item, i)=>(
+                    <div className = "form-check form-check-inline">
+                        <input key = {i} class="form-check-input" type="radio" name = "status" id = {`for-${i}`} value={item.val}
+                        onChange= {
+                            (event)=>changeHandler(event,data.id)
+                        }
+                        />
+                        <label class="form-check-label">{item.text}</label>
+                    </div>
+                        ) )}
+                
+              </div>
+            )
+            break;
             default:
             formTemplate = null
         }

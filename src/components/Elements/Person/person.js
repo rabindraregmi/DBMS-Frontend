@@ -87,7 +87,8 @@ class Person extends React.Component {
       body: JSON.stringify(dataToSubmit)
     })
     .then(res=>{
-                if(res.status===200) {
+      console.log(res)          
+      if(res.status===200) {
                   this.setState({error:false})
                   
                   

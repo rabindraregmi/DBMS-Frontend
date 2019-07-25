@@ -222,8 +222,7 @@ componentDidMount = ()=>{
     })
     fetch (`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
         .then (res=>res.json())
-        .then (json=>{          
-        console.log(json)
+        .then (json=>{         
           this.setState({
             isLoaded:true,
             personData:json,
@@ -268,7 +267,7 @@ submitForm = (event) =>{
 
     }
     console.log(dataToSubmit)
-    fetch("/API/query/addAssignment", {
+    fetch("http://localhost:4000/API/query/addAssignment", {
         method: "POST",
         headers: {
           Accept: "application/json",

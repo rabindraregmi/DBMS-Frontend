@@ -53,7 +53,7 @@ class PersonTable extends React.Component {
     }
 
     componentWillMount = ()=>{
-        fetch ("API/query/getPerson")
+        fetch ("http://localhost:4000/API/query/getPerson")
         .then (res=>res.json())
         .then (json=>{          
 

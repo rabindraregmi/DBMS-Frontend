@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PersonTable from '../Person/personTable.js'
 import PersonForm from '../Person/person.js'
+import './assignment.css'
 class Intermediate extends Component {
     state = {
         isRegistered: true,
@@ -28,7 +29,13 @@ class Intermediate extends Component {
         if(isRegistered){
             return (
                 <div>
-                    <button className = "btn"onClick = {this.onChangeHandler}>Not Registerd Yet?</button>
+                    <button className = "btn btn-danger notRegisteredButton"onClick = {this.onChangeHandler}>Not Registerd Yet?</button>
+                    <div className = "col-sm-2 pointer">
+                        <span className = "pointer-text">
+
+                        Choose person to Assign
+                        </span>
+                    </div>
                     <PersonTable/>
                 </div>
         )

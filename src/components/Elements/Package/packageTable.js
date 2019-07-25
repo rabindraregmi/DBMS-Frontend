@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from '../../Widgets/Tables/tables.js'
+
 import API from '../../../utils/API.js'
+import { faEdit,faTrash } from '@fortawesome/free-solid-svg-icons';
 class PackageTable extends React.Component {
 
     headings = [
@@ -10,19 +12,9 @@ class PackageTable extends React.Component {
             type: 'sn',
         },
         {
-          text:"ID",
+          text:"Package Code",
           colspan:'1',
-          type:'id',
-        },
-        {
-            text: 'Package ID',
-            colspan: '2',
-            type: 'packageID',
-        },
-        {
-            text: 'Arrived Data',
-            colspan: '2',
-            type: 'arrivedDate',
+          type:'packageCode',
         },
         {
             text: 'No Of Copies',
@@ -32,20 +24,36 @@ class PackageTable extends React.Component {
         {
             text: 'Start Code',
             colspan: '2',
-            type: 'startingCode',
+            type: 'codeStart',
         },
         {
             text: 'End Code',
             colspan: '2',
-            type: 'endingCode',
+            type: 'codeEnd',
         },
         {
             text:'Exam',
             colspan:'2',
-            type: 'exam'
+            type: 'examID'
+        },
+        {
+          text:'Status',
+          colspan:'2',
+          type:'status'
         }
        
     ]
+    actions = [{
+      text: 'Edit', 
+      icon: faEdit, 
+      link: '/',
+      },
+      {
+      text: 'Delete', 
+      icon: faTrash, 
+      link: '/',
+      },
+      ]
    
     state= {
         tableData:[],
@@ -54,46 +62,36 @@ class PackageTable extends React.Component {
         noResult:false,
         searchBy:'sn'
     }
-    // print=(json)=>
-    // { let dataToDisplay = []
-    //   json.map((item,index)=>{
-    //     dataToDisplay.push(item)
+    componentWillMount = () =>{
+      fetch ("http://localhost:4000/API/query/getPackages")
+      .then (res=>res.json())
+      .then (json=>{          
 
-    //   })
-    //   console.log(dataToDisplay)
-    //   return json;
-    // }
-    async componentDidMount () {
-        // fetch ("http://127.0.0.1:8000/packages/")
-        // .then (res=>res.json())
-        // .then (json=>{
-        //   // let dataToDisplay =this.print(json)          
-          
+        this.setState({
+          isLoaded:true,
+          tableData:json,
+        })
+      });
+  }
+        // try
+        // {
 
-        //   this.setState({
+        //   let tableData = await API.get("/packages",{
+        //     params:{
+        //       id:1
+        //     }
+        //   });
+        //   console.log(tableData.data)
+        //   this.setState ({
         //     isLoaded:true,
-        //     tableData:json,
+        //     tableData:tableData.data
         //   })
-        // });
-        try
-        {
-
-          let tableData = await API.get("/packages",{
-            params:{
-              id:1
-            }
-          });
-          console.log(tableData.data)
-          this.setState ({
-            isLoaded:true,
-            tableData:tableData.data
-          })
-        }
-        catch(e){
-          console.log(`Failed:${e}`);
-        }
+        // }
+        // catch(e){
+        //   console.log(`Failed:${e}`);
+        // }
       
-      }
+      
 
       statehandler=(states)=>{
         this.setState(states)
@@ -101,7 +99,7 @@ class PackageTable extends React.Component {
       }
 
 render () {
-    var {isLoaded, item} = this.state;
+    var {isLoaded} = this.state;
     if(!isLoaded){
       return(
         <div>
@@ -119,6 +117,7 @@ render () {
             tableData = {this.state.noResult?this.state.filtered:this.state.tableData}
             state = {this.state}
             setState = {(states)=>this.statehandler(states)}
+            actions = {this.actions}
         />
         </div> 
         
