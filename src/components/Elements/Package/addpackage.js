@@ -23,24 +23,6 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      // arrivedDate:{
-      //     element:'input',
-      //     value:'',
-      //     label:true,
-      //     labelText:'Arrived Date',
-      //     config: {
-      //         name:'arrivedDate_input',
-      //         type:'date',
-      //         placeholder:'Enter Arrived Date of Package'
-      //     },
-      //     validation: {
-      //         required:false,
-      //     }
-      //     ,
-      //     valid:true,
-      //     touched:false,
-      //     validationText:'',
-      // },
       noOfCopies: {
         element: "input",
         value: "",
@@ -92,13 +74,13 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      examID: {
+      subject: {
         element: "select",
         value: "",
         label: true,
-        labelText: "Exam",
+        labelText: "Subject",
         config: {
-          name: "Exam",
+          name: "subject",
           options: []
         },
         validation: {
@@ -108,14 +90,14 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      status: {
-        element: "radio",
+      examID: {
+        element: "select",
         value: "",
         label: true,
-        labelText: "Status",
+        labelText: "Exam",
         config: {
-          name: "Status",
-          options: [{ val: "Submitted", text: "Submitted" }, { val: "Pending", text: "Pending" },,{val:"Not Assigned",text:"Not Assigned"}]
+          name: "exam",
+          options: []
         },
         validation: {
           required: false
@@ -123,14 +105,32 @@ class AddNewPackage extends Component {
         valid: true,
         touched: false,
         validationText: ""
-      }
+      },
+      // status: {
+      //   element: "radio",
+      //   value: "",
+      //   label: true,
+      //   labelText: "Status",
+      //   config: {
+      //     name: "Status",
+      //     options: [{ val: "Submitted", text: "Submitted" }, { val: "Pending", text: "Pending" },,{val:"Not Assigned",text:"Not Assigned"}]
+      //   },
+      //   validation: {
+      //     required: false
+      //   },
+      //   valid: true,
+      //   touched: false,
+      //   validationText: ""
+      // }
     }
 
   };
 
   componentWillMount = () =>
   {
-    let {options}  = this.state.formData.examID.config;
+    let {examID, subject}  = this.state.formData;
+    let examOptions = examID.config.options;
+    let subjectOptions = subject.config.options;
     fetch ("http://localhost:4000/API/query/getExams")
     .then (res=>res.json())
     .then (json=>{          
@@ -139,13 +139,13 @@ class AddNewPackage extends Component {
         let temp = {}
         temp ['val'] = exams.id 
         temp ['text'] = exams.programName+" "+exams.date
-        options.push(temp)
+        examOptions.push(temp)
       }
       this.setState ({
-        options:options
+        examID :examID
       })
     });
-    console.log(options)
+    console.log(examOptions)
 }
 
   updateForm = newState => {
