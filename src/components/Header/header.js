@@ -21,7 +21,7 @@ const Header = props => {
         {NavBar()}
         <div className="logo">
           <Link to="/home">
-            <img alt="TU logo" src="images/logo2.png" height="64" width="55" />
+            <img alt="TU logo" src="http://localhost:3000/images/logo2.png" height="64" width="55" />
           </Link>
         </div>
         <div className="text-area">

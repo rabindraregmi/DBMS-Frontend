@@ -28,3 +28,18 @@
 {
     background: white;
 }
+.p {
+    display: inline-flex;
+    width:100%;
+  
+}
+.left-floated-form
+{
+    margin-left:0% !important;
+    width:50%;
+    margin:0% !important;
+}
+.main-form{
+    margin-left:0% !important;
+    width:90%;
+}
