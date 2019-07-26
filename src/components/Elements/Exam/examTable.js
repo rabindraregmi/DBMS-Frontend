@@ -5,39 +5,34 @@ class ExamTable extends React.Component{
 
     headings = [
         {
-            text: 'S.N',
-            colspan: '1',
-            type: 'sn',
+            label: 'Date',
+            sort:'asc',
+            field: 'date',
         },
         {
-            text: 'Date',
-            colspan: '2',
-            type: 'date',
+            label: 'Exam Type',
+            sort:'asc',
+            field: 'examType',
         },
         {
-            text: 'Exam Type',
-            colspan: '2',
-            type: 'examType',
+            label: 'Course Code',
+            sort:'asc',
+            field: 'courseCode',
         },
         {
-            text: 'Course Code',
-            colspan: '2',
-            type: 'courseCode',
+            label: 'Year',
+            sort:'asc',
+            field: 'year',
         },
         {
-            text: 'Year',
-            colspan: '2',
-            type: 'year',
+            label: 'Part',
+            sort:'asc',
+            field: 'part',
         },
         {
-            text: 'Part',
-            colspan: '2',
-            type: 'part',
-        },
-        {
-            text: 'Program Name',
-            colspan: '2',
-            type: 'programName',
+            label: 'Program Name',
+            sort:'asc',
+            field: 'programName',
         },
     ]
 

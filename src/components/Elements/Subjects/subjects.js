@@ -7,35 +7,29 @@ class SubjectsHome extends React.Component {
 
     headings = [
         {
-            text:'S.N',
-            colspan:'1',
-            type:'sn'
-            
+            label: 'Subject Name',
+            sort: 'asc',
+            field: 'subjectName',
         },
         {
-            text: 'Subject Name',
-            colspan: '1',
-            type: 'subjectName',
+          label:"Course Code",
+          sort:'asc',
+          field:'courseCode',
         },
         {
-          text:"Subject Code",
-          colspan:'1',
-          type:'courseCode',
-        },
-        {
-            text:"Year",
-            colspan:2,
+            label:"Year",
+            sort:'asc',
             type:'year',
         },
         {
-            text:"Part", 
-            colspan:2, 
-            type:'part'
+            label:"Part", 
+            sort:'asc', 
+            field:'part'
         },
         {
-            text:'Program',
-            colspan:2,
-            type:'program'
+            label:'Program',
+            sort:'asc',
+            field:'program'
         }
         
        
