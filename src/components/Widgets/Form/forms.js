@@ -28,8 +28,8 @@ const formFields = (props)=> {
     const changeHandler =(event,id)=>{
         const newState = props.formData;
         console.log(id)
-        if (id.includes("Package-")){
-            console.log(id)
+        if (id.includes("Package-"))
+        {
             newState.packages.childs[id].value = event.target.value;
         
         }
@@ -41,7 +41,7 @@ const formFields = (props)=> {
             newState[id].valid = validateData[0]
             newState[id].validationMessage = validateData[1]
         }
-       props.change(newState) 
+       props.change(newState,id) 
 
     }
     const blurHandler = (event,id) => {
@@ -119,6 +119,7 @@ const formFields = (props)=> {
                             (event)=>changeHandler(event, data.id)
                         }
                         className = "form-control">
+                            <option value  = "0">Select {values.config.name}</option>
                         {values.config.options.map ((item, i)=>(
                             <option key = {i} value= {item.val}>{item.text}</option>
                          ) )}

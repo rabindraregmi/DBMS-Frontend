@@ -20,9 +20,9 @@ class ExamTable extends React.Component{
             type: 'examType',
         },
         {
-            text: 'Subject Code',
+            text: 'Course Code',
             colspan: '2',
-            type: 'subjectCode',
+            type: 'courseCode',
         },
         {
             text: 'Year',

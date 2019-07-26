@@ -20,7 +20,7 @@ const Header = props => {
       <div className="main-header">
         {NavBar()}
         <div className="logo">
-          <Link to="/">
+          <Link to="/home">
             <img alt="TU logo" src="images/logo2.png" height="64" width="55" />
           </Link>
         </div>
