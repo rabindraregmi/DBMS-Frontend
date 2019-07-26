@@ -1,45 +1,38 @@
 import React from 'react';
 import Table from '../../Widgets/Tables/tables.js'
-
-import API from '../../../utils/API.js'
 import { faEdit,faTrash } from '@fortawesome/free-solid-svg-icons';
 class PackageTable extends React.Component {
 
     headings = [
         {
-            text: 'S.N',
-            colspan: '1',
-            type: 'sn',
+          label:"Package Code",
+          sort:'asc',
+          field:'packageCode',
         },
         {
-          text:"Package Code",
-          colspan:'1',
-          type:'packageCode',
+            label: 'No Of Copies',
+            sort:'asc',
+            field: 'numberOfCopies',
         },
         {
-            text: 'No Of Copies',
-            colspan: '2',
-            type: 'numberOfCopies',
+            label: 'Start Code',
+            sort:'asc',
+            field: 'codeStart',
         },
         {
-            text: 'Start Code',
-            colspan: '2',
-            type: 'codeStart',
+            label: 'End Code',
+            sort:'asc',
+            field: 'codeEnd',
         },
         {
-            text: 'End Code',
-            colspan: '2',
-            type: 'codeEnd',
+            label:'Exam',
+            sort:'asc',
+            field: 'examID'
         },
         {
-            text:'Exam',
-            colspan:'2',
-            type: 'examID'
-        },
-        {
-          text:'Status',
-          colspan:'2',
-          type:'status'
+          label:'Status',
+          sort:'asc',
+          field:'status'
         }
        
     ]
@@ -63,7 +56,7 @@ class PackageTable extends React.Component {
         searchBy:'sn'
     }
     componentWillMount = () =>{
-      fetch ("http://localhost:4000/API/query/getPackages")
+      fetch ("http://localhost:4000/API/query/getPackageList")
       .then (res=>res.json())
       .then (json=>{          
 

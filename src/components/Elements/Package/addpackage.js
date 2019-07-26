@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 import PackageTable from "./packageTable.js";
 import { Redirect } from "react-router-dom";
-import API from "../../../utils/API.js";
 class AddNewPackage extends Component {
   state = {
     formData: {
@@ -106,22 +105,6 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      // status: {
-      //   element: "radio",
-      //   value: "",
-      //   label: true,
-      //   labelText: "Status",
-      //   config: {
-      //     name: "Status",
-      //     options: [{ val: "Submitted", text: "Submitted" }, { val: "Pending", text: "Pending" },,{val:"Not Assigned",text:"Not Assigned"}]
-      //   },
-      //   validation: {
-      //     required: false
-      //   },
-      //   valid: true,
-      //   touched: false,
-      //   validationText: ""
-      // }
     }
 
   };
@@ -182,14 +165,15 @@ class AddNewPackage extends Component {
   render() {
     return (
       <div className="container">
-        <form className="main-form" onSubmit={this.submitForm}>
+        <form className="main-form">
           <FormFields
             formData={this.state.formData}
             change={newState => this.updateForm(newState)}
           />
           <button className="btn btn-primary" type="submit">
-            Submit
+            Save
           </button>
+          <button className ="btn btn-secondary" type="reset">Save and Continue</button>
         </form>
       </div>
     );

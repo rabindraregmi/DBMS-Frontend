@@ -9,15 +9,9 @@ class DepartmentHome extends React.Component {
     headings = 
     [
         {
-            text:'S.N',
-            colspan:'1',
-            type:'sn'
-
-        },
-        {
-            text: 'Department Name',
-            colspan: '1',
-            type: 'departmentName',
+            label: 'Department Name',
+            sort: 'asc',
+            field: 'departmentName',
         },
         
         
