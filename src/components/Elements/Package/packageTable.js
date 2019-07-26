@@ -2,7 +2,7 @@ import React from 'react';
 import Table from '../../Widgets/Tables/tables.js'
 import { faEdit,faTrash } from '@fortawesome/free-solid-svg-icons';
 class PackageTable extends React.Component {
-
+    
     headings = [
         {
           label:"Package Code",
@@ -56,7 +56,20 @@ class PackageTable extends React.Component {
         searchBy:'sn'
     }
     componentWillMount = () =>{
-      fetch ("http://localhost:4000/API/query/getPackageList")
+      let receivedProps = this.props;
+    if (receivedProps.hasOwnProperty('postedData'))
+    {
+     this.setState({
+       isLoaded:true,
+       tableData:this.props.postedData
+     })
+    }
+    else
+    {
+     
+
+
+      fetch ("http://localhost:4000/API/query/getPackages")
       .then (res=>res.json())
       .then (json=>{          
 
@@ -65,24 +78,8 @@ class PackageTable extends React.Component {
           tableData:json,
         })
       });
-  }
-        // try
-        // {
-
-        //   let tableData = await API.get("/packages",{
-        //     params:{
-        //       id:1
-        //     }
-        //   });
-        //   console.log(tableData.data)
-        //   this.setState ({
-        //     isLoaded:true,
-        //     tableData:tableData.data
-        //   })
-        // }
-        // catch(e){
-        //   console.log(`Failed:${e}`);
-        // }
+    }
+  }  
       
       
 
@@ -92,16 +89,8 @@ class PackageTable extends React.Component {
       }
 
 render () {
-    var {isLoaded} = this.state;
-    if(!isLoaded){
-      return(
-        <div>
-          <h1>Loading......</h1>
-        </div>
-      )
-    }
-    else{
-
+    
+  
     
     return (
         <div>
@@ -116,7 +105,7 @@ render () {
         
         
     )
-          }
+          
 }
 
 }

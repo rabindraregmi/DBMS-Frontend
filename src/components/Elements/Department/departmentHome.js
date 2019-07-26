@@ -11,7 +11,7 @@ class DepartmentHome extends React.Component {
         {
             label: 'Department Name',
             sort: 'asc',
-            field: 'departmentName',
+            field:'departmentName',
         },
         
         
@@ -22,7 +22,7 @@ class DepartmentHome extends React.Component {
         isLoaded:false,
         filtered:[],
         noResult:false,
-        searchBy:''
+        searchBy:'departmentName'
     }
     componentDidMount =()=> {
         fetch ('http://localhost:4000/API/query/getDepartmentList')

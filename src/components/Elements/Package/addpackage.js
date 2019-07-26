@@ -73,22 +73,6 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      // subject: {
-      //   element: "select",
-      //   value: "",
-      //   label: true,
-      //   labelText: "Subject",
-      //   config: {
-      //     name: "subject",
-      //     options: []
-      //   },
-      //   validation: {
-      //     required: false
-      //   },
-      //   valid: true,
-      //   touched: false,
-      //   validationText: ""
-      // },
       examID: {
         element: "select",
         value: "",
@@ -105,7 +89,11 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-    }
+    }, 
+    posted:false, 
+    errorOnSubmission:false,
+    errorText: '',
+    postedData: []
 
   };
 
@@ -113,7 +101,6 @@ class AddNewPackage extends Component {
   {
     let {examID, subject}  = this.state.formData;
     let examOptions = examID.config.options;
-    //let subjectOptions = subject.config.options;
     fetch ("http://localhost:4000/API/query/getExams")
     .then (res=>res.json())
     .then (json=>{          
@@ -138,13 +125,15 @@ class AddNewPackage extends Component {
   };
 
   submitForm = event => {
+    // let buttonID = event.target.id;
+    // let redirectLink = ''
+
     let dataToSubmit = {};
-    event.preventDefault();
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
     }
     
-    console.log(dataToSubmit);
+
     fetch("http://localhost:4000/API/query/addPackage", {
       method: "POST",
       headers: {
@@ -154,27 +143,100 @@ class AddNewPackage extends Component {
       body: JSON.stringify(dataToSubmit)
     })
       .then(res => {
-        res.json().then(body => console.log(body));
-        console.log(res);
+        res.json().then(body => {
+          let {postedData} = this.state
+          console.log(body)
+          if (res.status ===200)
+          { 
+            body['status'] = "Not Assigned"
+            postedData.push (body)
+            this.setState({
+              posted:true,
+              errorOnSubmission:false,
+              postedData:postedData
+            
+            })
+          }
+          else
+          {
+            this.setState ({
+              errorOnSubmission:true,
+              errorText:'Error in submission',
+              posted:true
+            })
+          }
+        });
+       
       })
       .catch(err => {
         console.log(err);
       });
   };
+  
+  errorCheck = ()=>{
+    const {errorOnSubmission,errorText} = this.state;
+    if (errorOnSubmission) {
+        return(
+            <p>{errorText}</p>
+        )
+    }
+    
+}
+
+loadForm = ()=>{
+  return (
+    <form className="main-form" onSubmit = {(event)=>{event.preventDefault()}}>
+    {this.errorCheck()}
+    <FormFields
+      formData={this.state.formData}
+      change={newState => this.updateForm(newState)}
+    />
+    <button className="btn btn-primary" id = "save" onClick = {(event)=>this.submitForm(event)} type="submit">
+      Save
+    </button>
+    <button className ="btn btn-secondary" type="reset" id = "snc" onClick = {(event)=>this.submitForm(event)}>Save and Continue</button>
+  </form>
+  )
+}
+
+mainContent = () =>{
+  let {postedData,posted} = this.state;
+
+
+  if (posted){
+    return (
+      <div className = "p">
+        <div className= "left-floated-form">
+        {this.loadForm()}
+
+        </div>
+        <div>
+        <PackageTable postedData = {postedData}/>
+
+        </div>
+      </div>
+    )
+  }
+  else
+  {
+    return (
+      <div>
+
+        {this.loadForm()}
+      </div>
+    )
+  }
+}
+
 
   render() {
+    
+
+
     return (
-      <div className="container">
-        <form className="main-form">
-          <FormFields
-            formData={this.state.formData}
-            change={newState => this.updateForm(newState)}
-          />
-          <button className="btn btn-primary" type="submit">
-            Save
-          </button>
-          <button className ="btn btn-secondary" type="reset">Save and Continue</button>
-        </form>
+      <div className="container-fluid">
+       
+      {this.mainContent()}
       </div>
     );
   }
