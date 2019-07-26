@@ -2,15 +2,23 @@ import React from 'react'
 import TableHeader from './tableHeader.js';
 import TableBody from './tablesBody.js';
 import './tables.css'
+import {MDBDataTable} from 'mdbreact';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrash} from '@fortawesome/free-solid-svg-icons'
+import {Link} from 'react-router-dom'
+
+
 const PendingPackageTable = (props) => {
     
     const  changeSelectHandler= (event) => {
-        let searchByKeyword = props.headings[event.target.value].type;
+        let searchByKeyword = props.headings[event.target.value].field;
         let states = {
             searchBy:searchByKeyword
           }
         props.setState(states)
     }
+    
+    
     const   changeHandler = (event) => {
           
           let keyword = event.target.value;
@@ -32,7 +40,7 @@ const PendingPackageTable = (props) => {
     const selections =()=>{
         return props.headings.map((header,i)=>{
          return(
-          <option key ={i} value= {i}>{header.text}</option>
+          <option key ={i} value= {i}>{header.label}</option>
          )
         })}
   
@@ -63,17 +71,71 @@ const PendingPackageTable = (props) => {
         </div>
     )
     }
-    console.log(props.actions)
     
+    const data = () =>{
+       let headings = props.headings;
+       let tableData = props.tableData;
+       let actions = props.actions;
+       let data = {}
+        let remainingColumns = [
+            {
+                label:'S.N',
+                sort:'asc',
+                field:'sn',
+            },
+            {
+                label:'Action',
+                sort:''
+            }
+        ]
+        let columns = [remainingColumns[0], ...headings, remainingColumns[1]]
+        let rows = tableData.map ((datas, index)=>{
+            let tempData = {};
+            tempData['sn'] = index+1
+            for (let key in datas){
+                if (key!='id'){
+                    tempData[key] = datas[key]
+                }
+            }
+            
+         let actionTemplate = actions.map((action,index)=>{
+             let templates =(
+                 <Link to = {`${action.link}${datas['id']}`}>
+                    <FontAwesomeIcon icon = {action.icon}/>
+                 </Link>
+             )
+
+             return templates
+         })
+         tempData['action'] = actionTemplate
+            return tempData
+        })
+        data ['columns'] = columns
+        data ['rows'] = rows
+        //console.log(data)
+        return data
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
     return (
         <div>
             {SearchBar()}
         <div className = "table">
-             <table class="table table2 table table-advance">
-                  <TableHeader headings = {props.headings}/>
-                  <TableBody tableData = {props.tableData} actions = {props.actions}/>
-                              
-            </table>
+             <MDBDataTable  searching = {false}
+             data = {data()}
+             tBodyColor = "white"
+             bordered
+             />
         
         </div>
     </div>

@@ -1,25 +1,101 @@
 import React,{Component} from 'react';
 import FormFields from '../../Widgets/Form/forms.js'
-import Button from '../../Widgets/Buttons/buttons.js'
 import { Redirect } from 'react-router-dom'
 class AddNewExam extends Component {
-    state = {
+    
+    constructor(props) {
+        super(props);
+    
+        this.state = {
         formData:{
+            level:{
+                element:'select', 
+                value:'',
+                label:true,
+                labelText:'Level',
+                config: {
+                    name:'Level',
+                    options: [
+                        {val :"Bachelors", text:'Bachelors'},
+                        {val:"Masters", text:'Masters'}
+                    ]
+                },
+                validation: {
+                    required:false,
+                }
+                ,
+                valid:true,
+                touched:false,
+                validationText:'',
+            },
+            programID:{
+                element:'select', 
+                value:'',
+                label:true,
+                labelText:'Program',
+                config: {
+                    name:'program',
+                    options:[]
+                },
+                validation: {
+                    required:false,
+                }
+                ,
+                valid:true,
+                touched:false,
+                validationText:'',
+            },
+            year:{
+                element:'select', 
+                value:'I',
+                label:true,
+                labelText:'Year',
+                config: {
+                    name:'year',
+                    options: [
+                        {val: 'I', text: 'I'},
+                        {val:'II', text: 'II'},
+                        {val:'III', text:'III'},
+                        {val:'IV', text:'IV'}
+                        ]
+                },
+                validation: {
+                    required:false,
+                }
+                ,
+                valid:true,
+                touched:false,
+                validationText:'',
+            },
+            part:{
+                element:'select', 
+                value:'I',
+                label:true,
+                labelText:'Part',
+                config: {
+                    name:'part',
+                    options: [
+                        {val: 'I', text: 'I'},
+                        {val:'II', text: 'II'},
+                        ]
+                },
+                validation: {
+                    required:false,
+                }
+                ,
+                valid:true,
+                touched:false,
+                validationText:'',
+            },
             
-            
-            
-            syllabusID:{
+            subjectID:{
                 element:'select', 
                 value:'',
                 label:true,
                 labelText:'Subject',
                 config: {
                     name:'Subject',
-                    options: [
-                        {val: '1', text: 'First Subject'},
-                        {val:'2', text: 'Second Subject'},
-                        {val:'3', text:'Third Subject'},
-                        ]
+                    options: []
                 },
                 validation: {
                     required:false,
@@ -32,14 +108,14 @@ class AddNewExam extends Component {
               
             examType:{
                 element:'select', 
-                value:'',
+                value:'Regular',
                 label:true,
                 labelText:'Exam Type',
                 config: {
                     name:'examType',
                     options: [
-                        {val: '1', text: 'Regular'},
-                        {val:'2', text: 'Back'},
+                        {val: 'Regular', text: 'Regular'},
+                        {val:'Back', text: 'Back'},
                         ]
                 },
                 validation: {
@@ -73,27 +149,122 @@ class AddNewExam extends Component {
         error: false, 
         errorText : '',
         redirect:false,
+        programData:[],
+        subjectData:[],
+        filteredProgramData:[],
+        filteredSubjectData:[],
 
     }
+}
 
-updateForm = (newState) => {
-    this.setState (
-        {
-            formData:newState,
-        }
-    )
+componentWillMount = () =>
+    
+{
+    console.log("This is called")
+      fetch("http://localhost:4000/API/query/getProgramList")
+      .then(res=>res.json())
+      .then(json=>{
+          this.setState({
+              programData: json
+          })
+      });
+      fetch ("http://localhost:4000/API/query/getSubjectList")
+      .then (res=>res.json())
+      .then (json=>{          
+        this.setState ({
+          subjectData: json
+        })
+      });
+
+}
+
+updateForm = (newState,id) => {
+    console.log(id)
+    this.setState({formData:newState,})
+
+    let {programData, subjectData} = this.state;
+    let {subjectID, programID,level}  = this.state.formData;
+    let subjectOptions = subjectID.config.options;
+    let programOptions = programID.config.options;
+    
+    
+    
+    if (id ==='level')
+    {   
+        
+        let levelValue = level.value;
+        let filteredProgramData = programData.filter((item)=>{
+            return item["academicDegree"]===levelValue
+            })
+            let options1 = []
+            for (let program of filteredProgramData)
+            {   console.log(program)
+                let temp = {}
+                temp['val'] = program.programName
+                temp['text'] = program.programName
+                options1.push(temp)
+            }
+            this.setState({
+                ...this.state,
+                formData:{
+                    ...this.state.formData,
+                    programID:{
+                        ...this.state.formData.programID,
+                        config:{
+                            ...this.state.formData.programID.config,
+                            options:options1
+                        }
+                    }
+                }
+            })  
+        
+    }
+    else if (id ==='programID'||id ==="year"||id==="part"){
+        let programValue = programID.value;
+        let yearValue  = this.state.formData.year.value;
+        let partValue = this.state.formData.part.value;
+        let filteredSubjectData = subjectData.filter((item)=>{
+            return item["programName"] === programValue&&item["year"] ===yearValue &&item["part"]===partValue
+        })
+        let options1 = []
+        for (let subject of filteredSubjectData)
+            {   console.log(subject)
+                let temp = {}
+                temp['val'] = subject.id
+                temp['text'] = `${subject.subjectName}  (${subject.courseCode})`
+                options1.push (temp)
+            }
+            this.setState({
+                ...this.state,
+                formData:{
+                    ...this.state.formData,
+                    subjectID:{
+                        ...this.state.formData.subjectID,
+                        config:{
+                            ...this.state.formData.subjectID.config,
+                            options:options1
+                        }
+                    }
+                }
+            })   
+    }
+    
+    
+    
 }
 
 submitForm = (event) =>{
     event.preventDefault();
     let dataToSubmit = {};
+    let formData = this.state.formData
+    console.log(formData)
+    dataToSubmit["subjectID"] = formData["subjectID"].value
+    dataToSubmit["examType"] = formData["examType"].value
+    dataToSubmit["date"] = formData["date"].value
 
-    for (let key in this.state.formData) {
-        dataToSubmit[key] = this.state.formData[key].value
 
-    }
     console.log(dataToSubmit);
-    fetch("/API/query/addExam", {
+    fetch("http://localhost:4000/API/query/addExam", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -142,7 +313,7 @@ render(){
     if (!this.state.error&&this.state.redirect){
         return (
 
-            <Redirect to= '/'/>
+            <Redirect to= '/home'/>
             )
     }
    
@@ -153,7 +324,7 @@ render(){
             {this.errorCheck()}
                 <FormFields 
                     formData= {this.state.formData}
-                    change = {(newState)=>this.updateForm(newState)}
+                    change = {(newState,id)=>this.updateForm(newState,id)}
                 />
                 <button className = "btn btn-primary" type= 'submit'>Submit</button>
             </form>

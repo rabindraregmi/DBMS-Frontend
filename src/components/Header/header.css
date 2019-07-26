@@ -5,12 +5,12 @@
 body {
     background: #ededed;
     margin:0px;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif !important;
 
 }
 .header 
 {
-    position: relative;;
+    position: relative;
 }
 .main-header 
 {

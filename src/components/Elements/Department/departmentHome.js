@@ -9,18 +9,20 @@ class DepartmentHome extends React.Component {
     headings = 
     [
         {
-            text: 'Department Name',
-            colspan: '1',
-            type: 'sn',
+            text:'S.N',
+            colspan:'1',
+            type:'sn'
+
         },
         {
-          text:"Department Code",
-          colspan:'1',
-          type:'id',
+            text: 'Department Name',
+            colspan: '1',
+            type: 'departmentName',
         },
         
+        
     ]
-
+    actions= []
     state= {
         tableData:[],
         isLoaded:false,
@@ -28,7 +30,22 @@ class DepartmentHome extends React.Component {
         noResult:false,
         searchBy:''
     }
+    componentDidMount =()=> {
+        fetch ('http://localhost:4000/API/query/getDepartmentList')
+        .then (res=>res.json())
+        .then (json=>{
+          this.setState({
+            isLoaded:true,
+            tableData:json,
+          })
+          
+        })
+    }
 
+    statehandler=(states)=>{
+        this.setState(states)
+        console.log(this.state)
+      }
 
 
 
@@ -36,9 +53,13 @@ class DepartmentHome extends React.Component {
         return (
             <div>
                 <Breadcrumb/>
-                <Table headings = {this.headings}
-                        tableData = {this.state.tableData}
-                />
+                <Table
+            headings = {this.headings}
+            tableData = {this.state.noResult?this.state.filtered:this.state.tableData}
+            state = {this.state}
+            setState = {(states)=>this.statehandler(states)}
+            actions = {this.actions}
+        />
             </div>
         )
     }

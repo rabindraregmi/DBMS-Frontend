@@ -74,22 +74,22 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      subject: {
-        element: "select",
-        value: "",
-        label: true,
-        labelText: "Subject",
-        config: {
-          name: "subject",
-          options: []
-        },
-        validation: {
-          required: false
-        },
-        valid: true,
-        touched: false,
-        validationText: ""
-      },
+      // subject: {
+      //   element: "select",
+      //   value: "",
+      //   label: true,
+      //   labelText: "Subject",
+      //   config: {
+      //     name: "subject",
+      //     options: []
+      //   },
+      //   validation: {
+      //     required: false
+      //   },
+      //   valid: true,
+      //   touched: false,
+      //   validationText: ""
+      // },
       examID: {
         element: "select",
         value: "",
@@ -130,15 +130,15 @@ class AddNewPackage extends Component {
   {
     let {examID, subject}  = this.state.formData;
     let examOptions = examID.config.options;
-    let subjectOptions = subject.config.options;
+    //let subjectOptions = subject.config.options;
     fetch ("http://localhost:4000/API/query/getExams")
     .then (res=>res.json())
     .then (json=>{          
-      for(let exams of json)
+      for(let exam of json)
       {
         let temp = {}
-        temp ['val'] = exams.id 
-        temp ['text'] = exams.programName+" "+exams.date
+        temp ['val'] = exam.id 
+        temp ['text'] = `${exam.programName}(${exam.year}/${exam.part})-${exam.courseCode} ${exam.date}`
         examOptions.push(temp)
       }
       this.setState ({
