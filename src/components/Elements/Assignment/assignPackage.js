@@ -4,30 +4,6 @@ import FormFields from '../../Widgets/Form/forms.js'
 class AssignPackage extends Component {
     
     
-    packageID =[{
-        element:'select', 
-        value:'1',
-        label:true,
-        labelText:'Package ID',
-        config: {
-            name:'packageID_input',
-            options: [
-                {val: '1', text: 'First Package'},
-                {val:'2', text: 'Second Package'},
-                {val:'3', text:'Third Package'},
-                ]
-        },
-        validation: {
-            required:false,
-        }
-        ,
-        valid:true,
-        touched:false,
-        validationText:'',
-    }
-]
-    
-    
     state = {
         personID:'',
         personData:{},
@@ -184,11 +160,7 @@ dynamicForm = (noOfPacket) => {
             labelText:'Package#'+i,
             config: {
                 name:'packageID_input',
-                options: [
-                    {val: '1', text: 'First Package'},
-                    {val:'2', text: 'Second Package'},
-                    {val:'3', text:'Third Package'},
-                    ]
+                options: []
             },
             validation: {
                 required:false,
@@ -216,10 +188,7 @@ dynamicForm = (noOfPacket) => {
 
 componentDidMount = ()=>{
     let {params} = this.props.match;
-    console.log(params.personID)
-    this.setState({
-        personID:params.personID
-    })
+   
     fetch (`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
         .then (res=>res.json())
         .then (json=>{         
@@ -232,11 +201,13 @@ componentDidMount = ()=>{
 
         formData.name.value  = personData[0].name
         formData.contact.value = personData[0].contact
-        formData.address.value = personData[0].address
+        formData.address.value = personData[0].campus
         this.setState ({
             formData:formData
         })
         });
+
+    
     
 
 }
