@@ -104,32 +104,31 @@ class AddNewPackage extends Component {
         valid: true,
         touched: false,
         validationText: ""
-      },
+      }
     }
-
   };
 
-  componentWillMount = () =>
-  {
-    let {examID, subject}  = this.state.formData;
+  componentWillMount = () => {
+    let { examID, subject } = this.state.formData;
     let examOptions = examID.config.options;
     //let subjectOptions = subject.config.options;
-    fetch ("http://localhost:4000/API/query/getExams")
-    .then (res=>res.json())
-    .then (json=>{          
-      for(let exam of json)
-      {
-        let temp = {}
-        temp ['val'] = exam.id 
-        temp ['text'] = `${exam.programName}(${exam.year}/${exam.part})-${exam.courseCode} ${exam.date}`
-        examOptions.push(temp)
-      }
-      this.setState ({
-        examID :examID
-      })
-    });
-    console.log(examOptions)
-}
+    fetch("http://localhost:4000/API/query/getExams")
+      .then(res => res.json())
+      .then(json => {
+        for (let exam of json) {
+          let temp = {};
+          temp["val"] = exam.id;
+          temp["text"] = `${exam.programName}(${exam.year}/${exam.part})-${
+            exam.courseCode
+          } ${exam.date}`;
+          examOptions.push(temp);
+        }
+        this.setState({
+          examID: examID
+        });
+      });
+    console.log(examOptions);
+  };
 
   updateForm = newState => {
     this.setState({
@@ -143,7 +142,7 @@ class AddNewPackage extends Component {
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
     }
-    
+
     console.log(dataToSubmit);
     fetch("http://localhost:4000/API/query/addPackage", {
       method: "POST",
@@ -170,10 +169,12 @@ class AddNewPackage extends Component {
             formData={this.state.formData}
             change={newState => this.updateForm(newState)}
           />
-          <button className="btn btn-primary" type="submit">
+          <button className="btn btn-primary" type="submit" onSubmit={this.submitForm}>
             Save
           </button>
-          <button className ="btn btn-secondary" type="reset">Save and Continue</button>
+          <button className="btn btn-secondary" type="reset">
+            Save and Continue
+          </button>
         </form>
       </div>
     );
