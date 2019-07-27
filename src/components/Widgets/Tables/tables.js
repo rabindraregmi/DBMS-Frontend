@@ -11,7 +11,6 @@ import {
     MDBPopoverBody,
     MDBPopoverHeader,
     MDBBtn,
-    MDBContainer
 } from "mdbreact";
 
 const PendingPackageTable = props => {
