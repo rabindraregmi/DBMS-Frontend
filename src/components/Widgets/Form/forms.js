@@ -22,7 +22,7 @@ const formFields = (props)=> {
 
     const showLabel = (label, labelText)=>{
         return label? 
-        <label class="col-sm-4 col-form-label">{labelText}</label>
+        <label class="col-sm-4 col-form-label control-label">{labelText}</label>
         :null;
     }
     const changeHandler =(event,id)=>{
@@ -100,7 +100,9 @@ const formFields = (props)=> {
                     }
                     onMouseOut = {
                         (event) =>blurHandler(event,data.id)
+                   
                     }
+                    lists = {values.dataListName}
                     />
                     </div>
                 </div>

@@ -173,7 +173,7 @@ class AddNewPackage extends Component {
       });
   };
   
-  errorCheck = ()=>{
+errorCheck = ()=>{
     const {errorOnSubmission,errorText} = this.state;
     if (errorOnSubmission) {
         return(
@@ -221,7 +221,6 @@ mainContent = () =>{
   {
     return (
       <div>
-
         {this.loadForm()}
       </div>
     )
