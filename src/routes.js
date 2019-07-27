@@ -30,7 +30,7 @@ class Routes extends Component {
             <Route path="/add-new-exam" exact component={AddNewExam} />
             <Route path="/edit-exam/:examID" exact component={AddNewExam} />
 
-            <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack()} {...props}/>)}/>
+            <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack} {...props}/>)}/>
 
             <Route path="/packages" exact component={PackageHome} />
             <Route path="/departments" exact component={Department} />
