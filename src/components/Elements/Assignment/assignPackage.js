@@ -5,9 +5,7 @@ import FormFields from "../../Widgets/Form/forms.js";
 
 
 class AssignPackage extends Component {
-  
-  
-  
+  id = 0;
   state = {
     personID: "",
     personData: {},
@@ -129,9 +127,9 @@ class AssignPackage extends Component {
   increaseDynamicForm = noOfPacket => {
     noOfPacket = 1;
 
-    let key = "Package-";
-    //  newChild
+    let key = "Package-"+this.id;
 
+    //  newChild
     this.setState(prevState => ({
       ...prevState,
       formData: {
@@ -142,9 +140,10 @@ class AssignPackage extends Component {
         }
       }
     }));
+    this.id += 1;
   };
 
-  decreaseDynamic = () => {
+  decreaseDynamic = targetIndex => {
     this.setState(prevState => ({
       ...prevState,
       formData: {
@@ -152,7 +151,7 @@ class AssignPackage extends Component {
         packages: {
           ...prevState.formData.packages,
           childs: prevState.formData.packages.childs.filter((value, index) => {
-            return index != prevState.formData.packages.childs.length - 1;
+            return value.id != targetIndex;
           })
         }
       }

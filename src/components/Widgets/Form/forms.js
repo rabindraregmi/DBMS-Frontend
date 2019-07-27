@@ -24,7 +24,8 @@ const formFields = props => {
   const changeHandler = (event, id) => {
     const newState = props.formData;
     console.log(id);
-    if (id.includes("Package-")) {
+    var re = /^[0-9]+$/
+    if (re.test(id)) {
       newState.packages.childs[id].value = event.target.value;
     } else {
       newState[id].value = event.target.value;
@@ -33,11 +34,6 @@ const formFields = props => {
       newState[id].validationMessage = validateData[1];
     }
     props.change(newState, id);
-  };
-  const blurHandler = (event, id) => {
-    if (id === "noOfPacket") {
-      props.createNewForm(event.target.value);
-    }
   };
 
   const validate = element => {
@@ -52,13 +48,7 @@ const formFields = props => {
   };
 
   const increaseChild = () => {
-    // console.log(props);
     props.dynamicIncrease();
-  };
-
-  const decreaseChild = () => {
-    // console.log(props);
-    props.dynamicDecrease();
   };
 
   const renderChild = data => {
@@ -92,7 +82,6 @@ const formFields = props => {
                 {...values.config}
                 value={values.value}
                 onChange={event => changeHandler(event, data.id)}
-                onMouseOut={event => blurHandler(event, data.id)}
               />
             </div>
           </div>
@@ -193,7 +182,10 @@ const formFields = props => {
                   display: "table-cell",
                   verticalAlign: "middle"
                 }}
-                onClick={decreaseChild}
+                onClick={() => {
+                  // console.log(props);
+                  props.dynamicDecrease(values.id);
+                }}
               >
                 <i class="fas fa-times-circle" />
               </a>
