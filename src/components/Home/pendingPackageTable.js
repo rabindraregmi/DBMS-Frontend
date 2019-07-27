@@ -45,7 +45,7 @@ class PendingPackageTable extends React.Component {
     {
       text: "Edit",
       icon: faEdit,
-      link: "/"
+      link: "/add-new-package"
     },
     {
       text: "Delete",

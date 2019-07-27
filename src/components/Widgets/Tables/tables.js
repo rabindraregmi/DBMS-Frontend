@@ -15,8 +15,6 @@ import {
 } from "mdbreact";
 
 const PendingPackageTable = props => {
-
-
   const changeSelectHandler = event => {
     let searchByKeyword = props.headings[event.target.value].type;
 
@@ -30,7 +28,7 @@ const PendingPackageTable = props => {
     let keyword = event.target.value;
     let searchByKeyword = props.state.searchBy;
     // console.log('Stateprops', props.state.searchBy);
-    console.log('****', searchByKeyword);
+    console.log("****", searchByKeyword);
     let filteredData = props.state.tableData.filter(item => {
       return item[String(searchByKeyword)].indexOf(keyword) > -1;
     });
@@ -46,7 +44,10 @@ const PendingPackageTable = props => {
 
   const selections = () => {
     return props.headings.map((header, i) => {
-      if (!props.sortingOnlyList.includes(header.label))
+      if (
+        !props.sortingOnlyList ||
+        !props.sortingOnlyList.includes(header.label)
+      )
         return (
           <option key={i} value={i}>
             {header.label}
@@ -59,14 +60,14 @@ const PendingPackageTable = props => {
     const field = event.target.value;
     console.log(field);
     if (field === "Overdue") {
-        console.log('Here');
+      console.log("Here");
       let filteredData = props.state.tableData.filter(item => {
         return item["Overdue"].isOverdue;
       });
       props.setState({
         filtered: filteredData
       });
-    //   console.log(filteredData);
+      //   console.log(filteredData);
       if (props.state.filtered.length === 0)
         props.setState({
           noResult: true
@@ -79,19 +80,21 @@ const PendingPackageTable = props => {
   };
 
   const sortings = () => {
-    return [
-      <option key={0} value="All">
-        All
-      </option>,
-      ...props.headings.map((header, i) => {
-        if (props.sortingOnlyList.includes(header.label))
-          return (
-            <option key={i + 1} value={header.type}>
-              {header.type}
-            </option>
-          );
-      })
-    ];
+    return props.sortingOnlyList
+      ? [
+          <option key={0} value="All">
+            All
+          </option>,
+          ...props.headings.map((header, i) => {
+            if (props.sortingOnlyList.includes(header.label))
+              return (
+                <option key={i + 1} value={header.type}>
+                  {header.type}
+                </option>
+              );
+          })
+        ]
+      : null;
   };
 
   const SearchBar = () => {
@@ -140,6 +143,7 @@ const PendingPackageTable = props => {
     ];
     let columns = [remainingColumns[0], ...headings, remainingColumns[1]];
     let rows = tableData.map((datas, index) => {
+      console.log(datas);
       let tempData = {};
       tempData["sn"] = index + 1;
       for (let key in datas) {
@@ -148,14 +152,13 @@ const PendingPackageTable = props => {
         }
       }
 
-
       let actionTemplate = actions.map((action, index) => {
+        console.log("ID", datas.id);
         let templates = (
-          <Link to={`${action.link}${datas["id"]}`}>
+          <Link to={`${action.link}${datas['id']}`}>
             <FontAwesomeIcon icon={action.icon} />
           </Link>
         );
-
         return templates;
       });
 
