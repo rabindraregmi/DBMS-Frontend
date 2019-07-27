@@ -75,6 +75,8 @@ const formFields = props => {
       return <div key={i}>{renderTemplates(item)}</div>;
     });
   };
+
+  
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";

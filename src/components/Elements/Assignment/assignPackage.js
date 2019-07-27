@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 
+
+
+
 class AssignPackage extends Component {
+  
+  
+  
   state = {
     personID: "",
     personData: {},
@@ -91,26 +97,26 @@ class AssignPackage extends Component {
         touched: false,
         validationText: ""
       },
-      noOfPacket: {
-        element: "select",
-        value: "1",
-        label: true,
-        labelText: "Package",
-        config: {
-          name: "packageID_input",
-          options: []
-        },
-        validation: {
-          required: false
-        },
-        valid: true,
-        touched: false,
-        validationText: ""
-      },
       packages: {
         element: "dynamicbtn",
         childs: []
       }
+    },
+    newChilds : {
+      element: "selectDynamic",
+      value: "0",
+      label: true,
+      labelText: "Package",
+      config: {
+        name: "packageID_input",
+        options: [] 
+      },
+      validation: {
+        required: false
+      },
+      valid: true,
+      touched: false,
+      validationText: ""
     }
   };
 
@@ -125,24 +131,6 @@ class AssignPackage extends Component {
 
     let key = "Package-";
     //  newChild
-    let newChild = {
-      element: "selectDynamic",
-      value: "1",
-      label: true,
-      labelText: "Package",
-      config: {
-        name: "packageID_input",
-        options: []
-      },
-      validation: {
-        required: false
-      },
-      valid: true,
-      touched: false,
-      validationText: ""
-    };
-    // console.log(i)
-    // console.log("New Child", newChild)
 
     this.setState(prevState => ({
       ...prevState,
@@ -150,7 +138,7 @@ class AssignPackage extends Component {
         ...prevState.formData,
         packages: {
           ...prevState.formData.packages,
-          childs: [...prevState.formData.packages.childs, newChild]
+          childs: [...prevState.formData.packages.childs, this.state.newChilds]
         }
       }
     }));
@@ -192,6 +180,27 @@ class AssignPackage extends Component {
           formData: formData
         });
       });
+
+      let {newChilds} = this.state;
+      let packageOptions = newChilds.config.options
+      fetch('http://localhost:4000/API/query/getPackages')
+      .then(res=>res.json())
+      .then (json=>{
+        for(let pkg of json){
+          let temp = {}
+          temp ['val'] = pkg.id
+          temp ['text'] = pkg.packageCode
+          packageOptions.push(temp)
+        }
+        this.setState ({
+          newChilds:newChilds
+        })
+        console.log(this.state.newChilds)
+
+      })
+
+
+
   };
 
   submitForm = event => {
