@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 
-
-
-
 class AssignPackage extends Component {
   id = 0;
+  options = [];
   state = {
     personID: "",
     personData: {},
@@ -99,22 +97,6 @@ class AssignPackage extends Component {
         element: "dynamicbtn",
         childs: []
       }
-    },
-    newChilds : {
-      element: "selectDynamic",
-      value: "0",
-      label: true,
-      labelText: "Package",
-      config: {
-        name: "packageID_input",
-        options: [] 
-      },
-      validation: {
-        required: false
-      },
-      valid: true,
-      touched: false,
-      validationText: ""
     }
   };
 
@@ -127,16 +109,35 @@ class AssignPackage extends Component {
   increaseDynamicForm = noOfPacket => {
     noOfPacket = 1;
 
-    let key = "Package-"+this.id;
-
+    let key = "Package-";
     //  newChild
+    let newChild = {
+      id: this.id,
+      element: "selectDynamic",
+      value: "1",
+      label: true,
+      labelText: "Package",
+      config: {
+        name: "packageID_input",
+        options: this.options
+      },
+      validation: {
+        required: false
+      },
+      valid: true,
+      touched: false,
+      validationText: ""
+    };
+    // console.log(i)
+    // console.log("New Child", newChild)
+
     this.setState(prevState => ({
       ...prevState,
       formData: {
         ...prevState.formData,
         packages: {
           ...prevState.formData.packages,
-          childs: [...prevState.formData.packages.childs, this.state.newChilds]
+          childs: [...prevState.formData.packages.childs, newChild]
         }
       }
     }));
@@ -166,6 +167,7 @@ class AssignPackage extends Component {
       .then(res => res.json())
       .then(json => {
         this.setState({
+          personID: params.personID,
           isLoaded: true,
           personData: json
         });
@@ -180,26 +182,19 @@ class AssignPackage extends Component {
         });
       });
 
-      let {newChilds} = this.state;
-      let packageOptions = newChilds.config.options
-      fetch('http://localhost:4000/API/query/getPackages')
-      .then(res=>res.json())
-      .then (json=>{
-        for(let pkg of json){
-          let temp = {}
-          temp ['val'] = pkg.id
-          temp ['text'] = pkg.packageCode
-          packageOptions.push(temp)
+    // let packages = this.state.formData.packages;
+    // let allChilds = packages.childs;
+    // console.log('All childs', allChilds);
+    fetch("http://localhost:4000/API/query/getPackages")
+      .then(res => res.json())
+      .then(json => {
+        for (let pkg of json) {
+          let temp = {};
+          temp["val"] = pkg.id;
+          temp["text"] = pkg.packageCode;
+          this.options.push(temp);
         }
-        this.setState ({
-          newChilds:newChilds
-        })
-        console.log(this.state.newChilds)
-
-      })
-
-
-
+      });
   };
 
   submitForm = event => {
@@ -217,6 +212,7 @@ class AssignPackage extends Component {
       } else if (key === "packages") {
         const childs = this.state.formData[key].childs;
         const packages = [];
+        console.log(childs);
         for (let child in childs) {
           packages.push(childs[child].value);
         }
