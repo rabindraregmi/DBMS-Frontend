@@ -15,8 +15,11 @@ import {
 } from "mdbreact";
 
 const PendingPackageTable = props => {
+
+
   const changeSelectHandler = event => {
-    let searchByKeyword = props.headings[event.target.value].field;
+    let searchByKeyword = props.headings[event.target.value].type;
+
     let states = {
       searchBy: searchByKeyword
     };
@@ -26,6 +29,8 @@ const PendingPackageTable = props => {
   const changeHandler = event => {
     let keyword = event.target.value;
     let searchByKeyword = props.state.searchBy;
+    // console.log('Stateprops', props.state.searchBy);
+    console.log('****', searchByKeyword);
     let filteredData = props.state.tableData.filter(item => {
       return item[String(searchByKeyword)].indexOf(keyword) > -1;
     });
@@ -41,12 +46,52 @@ const PendingPackageTable = props => {
 
   const selections = () => {
     return props.headings.map((header, i) => {
-      return (
-        <option key={i} value={i}>
-          {header.label}
-        </option>
-      );
+      if (!props.sortingOnlyList.includes(header.label))
+        return (
+          <option key={i} value={i}>
+            {header.label}
+          </option>
+        );
     });
+  };
+
+  const changeSortHandler = event => {
+    const field = event.target.value;
+    console.log(field);
+    if (field === "Overdue") {
+        console.log('Here');
+      let filteredData = props.state.tableData.filter(item => {
+        return item["Overdue"].isOverdue;
+      });
+      props.setState({
+        filtered: filteredData
+      });
+    //   console.log(filteredData);
+      if (props.state.filtered.length === 0)
+        props.setState({
+          noResult: true
+        });
+    } else if (field === "All") {
+      props.setState({
+        filtered: props.state.tableData
+      });
+    }
+  };
+
+  const sortings = () => {
+    return [
+      <option key={0} value="All">
+        All
+      </option>,
+      ...props.headings.map((header, i) => {
+        if (props.sortingOnlyList.includes(header.label))
+          return (
+            <option key={i + 1} value={header.type}>
+              {header.type}
+            </option>
+          );
+      })
+    ];
   };
 
   const SearchBar = () => {
@@ -58,6 +103,14 @@ const PendingPackageTable = props => {
           onChange={event => changeSelectHandler(event)}
         >
           {selections()}
+        </select>
+
+        <label class="col-sm-2 col-form-label">Show: </label>
+        <select
+          className="form-control selectbar"
+          onChange={event => changeSortHandler(event)}
+        >
+          {sortings()}
         </select>
         <input
           type="text"
@@ -95,7 +148,6 @@ const PendingPackageTable = props => {
         }
       }
 
-      console.log(tempData);
 
       let actionTemplate = actions.map((action, index) => {
         let templates = (
@@ -108,8 +160,8 @@ const PendingPackageTable = props => {
       });
 
       //Template for blinking button
-      if (tempData.hasOwnProperty("overdue")) {
-        const overdueInfo = tempData["overdue"];
+      if (tempData.hasOwnProperty("Overdue")) {
+        const overdueInfo = tempData["Overdue"];
 
         const blinkingButton = overdueInfo.isOverdue ? (
           //If overdue
@@ -131,17 +183,15 @@ const PendingPackageTable = props => {
           </MDBPopover>
         );
 
-        tempData["overdue"] = blinkingButton;
+        tempData["Overdue"] = blinkingButton;
       }
 
-      
       tempData["action"] = actionTemplate;
       return tempData;
     });
 
     data["columns"] = columns;
     data["rows"] = rows;
-    console.log(data);
     return data;
   };
 

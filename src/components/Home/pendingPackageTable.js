@@ -2,12 +2,13 @@ import React from "react";
 import Table from "../Widgets/Tables/tables.js";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 class PendingPackageTable extends React.Component {
+  sortingOnlyList = ["Status"];
   headings = [
     {
       label: "Package Code",
       text: "Package ID",
       colspan: "2",
-      type: "packageID"
+      type: "packageCode"
     },
     {
       label: "Assigned Date",
@@ -31,13 +32,13 @@ class PendingPackageTable extends React.Component {
       label: "Deadline",
       text: "To be Submitted",
       colspan: "2",
-      type: "toBeSubmitted"
+      type: "tobeSubmitted"
     },
     {
       label: "Status",
       text: "Status",
       colspan: "2",
-      type: "overdue"
+      type: "Overdue"
     }
   ];
   actions = [
@@ -64,7 +65,7 @@ class PendingPackageTable extends React.Component {
 
   parseDate(str) {
     const mdy = str.split("-");
-    return new Date(mdy[0], mdy[1] - 1, parseInt(mdy[2])+1);
+    return new Date(mdy[0], mdy[1] - 1, parseInt(mdy[2]) + 1);
   }
 
   findDateDifference(myDate) {
@@ -82,7 +83,7 @@ class PendingPackageTable extends React.Component {
           console.log(element);
           const myDate = this.parseDate(element["tobeSubmitted"]);
           const diff = this.findDateDifference(myDate);
-          element["overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
+          element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
         });
         this.setState({
           isLoaded: true,
@@ -92,7 +93,6 @@ class PendingPackageTable extends React.Component {
   };
   statehandler = states => {
     this.setState(states);
-    console.log(this.state);
   };
   render() {
     var { isLoaded } = this.state;
@@ -107,6 +107,7 @@ class PendingPackageTable extends React.Component {
         <div>
           <Table
             headings={this.headings}
+            sortingOnlyList={this.sortingOnlyList}
             tableData={
               this.state.noResult ? this.state.filtered : this.state.tableData
             }
