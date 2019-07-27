@@ -52,7 +52,7 @@ const PendingPackageTable = (props) => {
 
             <div className = "form-group xxx">
 
-        <label class="col-sm-2 col-form-label">Filter By:</label>
+        <label class="col-sm-2 col-md-1 col-lg-1 col-form-label">Filter By:</label>
         <select className = "form-control selectbar" 
           onChange= {
               (event)=>changeSelectHandler(event)
@@ -116,16 +116,6 @@ const PendingPackageTable = (props) => {
         return data
         
     }
-
-
-
-
-
-
-
-
-
-
 
     return (
         <div>

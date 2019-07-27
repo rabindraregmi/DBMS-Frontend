@@ -19,7 +19,6 @@ class Routes extends Component {
       <div>
         <Layout>
           <Switch>
-            <Route path="/" exact component={Login} />
             <Route path="/home" exact component={Home}/>
             <Route path="/add-new-package" exact component={AddPackage} />
             <Route

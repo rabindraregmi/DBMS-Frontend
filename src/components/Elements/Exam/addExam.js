@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import FormFields from '../../Widgets/Form/forms.js'
 import { Redirect } from 'react-router-dom'
+import ExamTable from './examTable.js'
 class AddNewExam extends Component {
     
     constructor(props) {
@@ -153,6 +154,10 @@ class AddNewExam extends Component {
         subjectData:[],
         filteredProgramData:[],
         filteredSubjectData:[],
+        posted:false, 
+        errorOnSubmission:false,
+        errorText: '',
+        postedData: []
 
     }
 }
@@ -272,24 +277,32 @@ submitForm = (event) =>{
         },
         body: JSON.stringify(dataToSubmit)
       })
-        .then(res => {
-            if (res.status===200){
-                this.setState({
-                    redirect:true,
-                    error:false,
-                })
-            }
-            else{
-                this.setState({
-                    error:true,
-                    errorText:res.statusText
-                })
-            }
+      .then(res => {
+        res.json().then(body => {
+          let {postedData} = this.state
+          if (res.status ===200)
+          { 
+              console.log(body.exams[0])
+              let dataToDisplay = body.exams[0]
+            postedData.push (dataToDisplay)
             this.setState({
-                isLoaded:true
+              posted:true,
+              errorOnSubmission:false,
+              postedData:postedData
+            
             })
-            console.log(res);
-        })
+          }
+          else
+          {
+            this.setState ({
+              errorOnSubmission:true,
+              errorText:'Error in submission',
+              posted:true
+            })
+          }
+        });
+       
+      })
         .catch(err => {
             this.setState({
                 error:true,
@@ -301,36 +314,71 @@ submitForm = (event) =>{
 
 }
 errorCheck = ()=>{
-    const {isLoaded, error,errorText} = this.state;
-    if (error) {
+    const {errorOnSubmission,errorText} = this.state;
+    if (errorOnSubmission) {
         return(
             <p>{errorText}</p>
         )
     }
     
 }
-render(){
-    if (!this.state.error&&this.state.redirect){
-        return (
 
-            <Redirect to= '/home'/>
-            )
-    }
-   
-    return(
-        <div className= 'container'>
-            
-            <form className = "main-form" onSubmit= {this.submitForm}>
-            {this.errorCheck()}
-                <FormFields 
-                    formData= {this.state.formData}
-                    change = {(newState,id)=>this.updateForm(newState,id)}
-                />
-                <button className = "btn btn-primary" type= 'submit'>Submit</button>
-            </form>
-        </div>
-    )
+loadForm = ()=>{
+  return (
+    <form className="main-form" onSubmit = {(event)=>{event.preventDefault()}}>
+    {this.errorCheck()}
+    <FormFields
+      formData={this.state.formData}
+      change={(newState,id)=> this.updateForm(newState,id)}
+    />
+    <button className="btn btn-primary" id = "save" onClick = {(event)=>this.submitForm(event)} type="submit">
+      Save
+    </button>
+    <button className ="btn btn-secondary" type="reset" id = "snc" onClick = {(event)=>this.submitForm(event)}>Save and Continue</button>
+  </form>
+  )
 }
+
+mainContent = () =>{
+  let {postedData,posted} = this.state;
+
+
+  if (posted){
+    return (
+      <div className = "p">
+        <div className= "left-floated-form">
+        {this.loadForm()}
+
+        </div>
+        <div>
+        <ExamTable postedData = {postedData}/>
+
+        </div>
+      </div>
+    )
+  }
+  else
+  {
+    return (
+      <div>
+        {this.loadForm()}
+      </div>
+    )
+  }
+}
+
+
+  render() {
+    
+
+
+    return (
+      <div className="container-fluid">
+       
+      {this.mainContent()}
+      </div>
+    );
+  }
 }
 
 export default AddNewExam;

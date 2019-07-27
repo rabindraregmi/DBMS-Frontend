@@ -17,7 +17,11 @@
     width:88%
 
 }
-.radio-label 
-{
-    margin-left:-17px;
+.control-label:after { 
+    color: #d00;
+    content: "*";
+    position: absolute;
+    margin-left: 3px;
+    top:0px;
+    font-size:25px;
 }
