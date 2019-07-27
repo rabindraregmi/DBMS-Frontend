@@ -57,16 +57,28 @@ class ExamTable extends React.Component{
     }
 
     componentWillMount = () =>{
-        fetch ("http://localhost:4000/API/query/getExams")
-        .then (res=>res.json())
-        .then (json=>{          
+        let receivedProps = this.props;
+        if (receivedProps.hasOwnProperty('postedData'))
+        {
+         this.setState({
+           isLoaded:true,
+           tableData:this.props.postedData
+         })
+        }
+        else
+        {
+            fetch ("http://localhost:4000/API/query/getExams")
+            .then (res=>res.json())
+            .then (json=>{          
 
-          this.setState({
-            isLoaded:true,
-            tableData:json,
-          })
-        });
+            this.setState({
+                isLoaded:true,
+                tableData:json,
+            })
+            });
+        }
     }
+
     statehandler=(states)=>{
         this.setState(states)
       } 

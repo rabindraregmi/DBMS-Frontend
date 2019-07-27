@@ -28,9 +28,6 @@ class Layout extends Component {
             <div className = "main-content">
                 {this.props.children}
             </div>
-            <div className = "footer">
-                Footer
-            </div>
             </div>
         )
     }
