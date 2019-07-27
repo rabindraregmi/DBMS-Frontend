@@ -213,14 +213,15 @@ const PendingPackageTable = props => {
     return (
         <div>
             {SearchBar()}
-            <div className="table">
                 <MDBDataTable
+                className= "xxx"
                     searching={false}
                     data={data()}
                     tBodyColor="white"
                     bordered
+                    sortable
                 />
-            </div>
+           
         </div>
     );
 };

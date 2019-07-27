@@ -5,7 +5,7 @@
     margin-right:5px;
     
 }
-.table th
+.table thead
 {
     
     margin-right:5px;
@@ -31,4 +31,12 @@ thead th,tbody tr td {
 .action-element
 {
     margin-left: 15px;
+}
+.dataTable thead:last-child
+{
+    visibility: hidden;
+}
+.dataTables_paginate
+{
+    float: right;
 }

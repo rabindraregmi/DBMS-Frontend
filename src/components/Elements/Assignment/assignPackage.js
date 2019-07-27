@@ -128,9 +128,7 @@ class AssignPackage extends Component {
       touched: false,
       validationText: ""
     };
-    // console.log(i)
-    // console.log("New Child", newChild)
-
+  
     this.setState(prevState => ({
       ...prevState,
       formData: {
