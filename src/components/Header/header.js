@@ -27,7 +27,7 @@ const Header = props => {
         <div className="text-area">
           <div class="main-title">
  
-              <a href="/" style={{textDecoration:"none", color:"white"}}>Exam Package Management System</a>
+              <Link to="/" style={{textDecoration:"none", color:"white"}}>Exam Package Management System</Link>
           </div>
         </div>
         <div className="user-logo">
