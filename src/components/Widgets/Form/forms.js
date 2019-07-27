@@ -52,13 +52,7 @@ const formFields = props => {
   };
 
   const increaseChild = () => {
-    // console.log(props);
     props.dynamicIncrease();
-  };
-
-  const decreaseChild = () => {
-    // console.log(props);
-    props.dynamicDecrease();
   };
 
   const renderChild = data => {
@@ -191,7 +185,10 @@ const formFields = props => {
                   display: "table-cell",
                   verticalAlign: "middle"
                 }}
-                onClick={decreaseChild}
+                onClick={() => {
+                  // console.log(props);
+                  props.dynamicDecrease(values.id);
+                }}
               >
                 <i class="fas fa-times-circle" />
               </a>
