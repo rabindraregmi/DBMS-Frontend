@@ -7,7 +7,7 @@ class Person extends React.Component {
       name: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Name",
         config: {
           name: "name_input",
@@ -24,7 +24,7 @@ class Person extends React.Component {
       contact: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Contact",
         config: {
           name: "contact_input",
@@ -41,7 +41,7 @@ class Person extends React.Component {
       courseCode: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Course code",
         config: {
           name: "address_input",
@@ -58,7 +58,7 @@ class Person extends React.Component {
       programme: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Programme",
         config: {
           name: "address_input",
@@ -75,7 +75,7 @@ class Person extends React.Component {
       year_part: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Year/part",
         config: {
           name: "address_input",
@@ -92,7 +92,7 @@ class Person extends React.Component {
       subject: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Subject Name",
         config: {
           name: "address_input",
@@ -109,7 +109,7 @@ class Person extends React.Component {
       campus: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Campus",
         config: {
           name: "address_input",
@@ -126,7 +126,7 @@ class Person extends React.Component {
       teachingExperience: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Teaching experience",
         config: {
           name: "address_input",
@@ -143,7 +143,7 @@ class Person extends React.Component {
       experienceinthisSubj: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Experience in this subject",
         config: {
           name: "address_input",
@@ -160,7 +160,7 @@ class Person extends React.Component {
       academicQualification: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Academic qualification",
         config: {
           name: "address_input",
@@ -177,7 +177,7 @@ class Person extends React.Component {
       jobType: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Type of job",
         config: {
           name: "address_input",
@@ -194,7 +194,7 @@ class Person extends React.Component {
       email: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Email",
         config: {
           name: "address_input",

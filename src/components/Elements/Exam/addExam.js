@@ -11,7 +11,7 @@ class AddNewExam extends Component {
         level: {
           element: "select",
           value: "",
-          label: true,
+          required: true,
           labelText: "Level",
           config: {
             name: "Level",
@@ -30,7 +30,7 @@ class AddNewExam extends Component {
         programID: {
           element: "select",
           value: "",
-          label: true,
+          required: true,
           labelText: "Program",
           config: {
             name: "program",
@@ -46,7 +46,7 @@ class AddNewExam extends Component {
         year: {
           element: "select",
           value: "I",
-          label: true,
+          required: true,
           labelText: "Year",
           config: {
             name: "year",
@@ -67,7 +67,7 @@ class AddNewExam extends Component {
         part: {
           element: "select",
           value: "I",
-          label: true,
+          required: true,
           labelText: "Part",
           config: {
             name: "part",
@@ -84,7 +84,7 @@ class AddNewExam extends Component {
         subjectID: {
           element: "select",
           value: "",
-          label: true,
+          required: true,
           labelText: "Subject",
           config: {
             name: "Subject",
@@ -101,7 +101,7 @@ class AddNewExam extends Component {
         examType: {
           element: "select",
           value: "Regular",
-          label: true,
+          required: true,
           labelText: "Exam Type",
           config: {
             name: "examType",
@@ -120,7 +120,7 @@ class AddNewExam extends Component {
         date: {
           element: "input",
           value: "",
-          label: true,
+          required: true,
           labelText: "Date",
           config: {
             name: "date_input",

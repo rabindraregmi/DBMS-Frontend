@@ -80,11 +80,11 @@ class AssignPackage extends Component {
         element: "input",
         value: "",
         label: true,
-        labelText: "Date of Submission",
+        labelText: "Date of Deadline",
         config: {
           name: "submissionDay_input",
           type: "date",
-          placeholder: "Enter Submission Day"
+          placeholder: "Enter deadline for package"
         },
         validation: {
           required: false

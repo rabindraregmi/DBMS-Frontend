@@ -40,7 +40,7 @@ class SubjectsHome extends React.Component {
         isLoaded:false,
         filtered:[],
         noResult:false,
-        searchBy:'sn'
+        searchBy:'subjectName'
     }
     componentDidMount =()=> {
         fetch ('http://localhost:4000/API/query/getSubjectList')

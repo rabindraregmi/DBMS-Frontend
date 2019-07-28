@@ -8,7 +8,7 @@ class AddNewPackage extends Component {
       packageCode: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Package ID",
         config: {
           name: "packageID_input",
@@ -25,7 +25,7 @@ class AddNewPackage extends Component {
       noOfCopies: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "No of Copies",
         config: {
           name: "noOfCopies_input",
@@ -42,7 +42,7 @@ class AddNewPackage extends Component {
       codeStart: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Start Code",
         config: {
           name: "startCode_input",
@@ -59,7 +59,7 @@ class AddNewPackage extends Component {
       codeEnd: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Last Code",
         config: {
           name: "lastCode_input",
@@ -76,7 +76,7 @@ class AddNewPackage extends Component {
       examID: {
         element: "select",
         value: "",
-        label: true,
+        required: true,
         labelText: "Exam",
         config: {
           name: "exam",
@@ -190,7 +190,10 @@ class AddNewPackage extends Component {
         <button
           className="btn btn-primary"
           id="save"
-          onClick={event => this.submitForm(event)}
+          onClick={event => {
+            this.submitForm(event);
+            // browserHistory.goBack();
+          }}
           type="submit"
         >
           Save
