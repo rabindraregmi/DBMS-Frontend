@@ -34,7 +34,7 @@ thead th,tbody tr td {
 }
 .dataTable thead:last-child
 {
-    visibility: hidden;
+    display: none;
 }
 .dataTables_paginate
 {

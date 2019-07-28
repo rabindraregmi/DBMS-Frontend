@@ -15,7 +15,7 @@ import {
 
 const PendingPackageTable = props => {
     const changeSelectHandler = event => {
-        let searchByKeyword = props.headings[event.target.value].type;
+        let searchByKeyword = props.headings[event.target.value].field;
 
         let states = {
             searchBy: searchByKeyword
@@ -87,7 +87,7 @@ const PendingPackageTable = props => {
                     if (props.sortingOnlyList.includes(header.label))
                         return (
                             <option key={i + 1} value={header.type}>
-                                {header.type}
+                                {header.label}
                             </option>
                         );
                 })

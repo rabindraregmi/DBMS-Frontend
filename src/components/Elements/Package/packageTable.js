@@ -2,7 +2,7 @@ import React from 'react';
 import Table from '../../Widgets/Tables/tables.js'
 import { faEdit,faTrash } from '@fortawesome/free-solid-svg-icons';
 class PackageTable extends React.Component {
-    
+  sortingOnlyList = ['Status'];
     headings = [
         {
           label:"Package Code",
@@ -100,6 +100,7 @@ render () {
             state = {this.state}
             setState = {(states)=>this.statehandler(states)}
             actions = {this.actions}
+            sortingOnlyList={this.sortingOnlyList}
         />
         </div> 
         

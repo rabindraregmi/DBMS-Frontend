@@ -8,31 +8,31 @@ class PendingPackageTable extends React.Component {
       label: "Package Code",
       text: "Package ID",
       colspan: "2",
-      type: "packageCode"
+      field: "packageCode"
     },
     {
       label: "Assigned Date",
       text: "Assigned Date",
       colspan: "2",
-      type: "assignedDate"
+      field: "assignedDate"
     },
     {
       label: "Assigned To",
       text: "Assigned To",
       colspan: "2",
-      type: "assignedTo"
+      field: "assignedTo"
     },
     {
       label: "Contact",
       text: "Contact",
       colspan: "2",
-      type: "contact"
+      field: "contact"
     },
     {
       label: "Deadline",
       text: "To be Submitted",
       colspan: "2",
-      type: "tobeSubmitted"
+      field: "tobeSubmitted"
     },
     {
       label: "Status",
