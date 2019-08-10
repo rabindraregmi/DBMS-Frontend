@@ -229,23 +229,23 @@ class Person extends React.Component {
         fetch("http://localhost:4000/API/query/getOnePerson/" + personID)
           .then(res => res.json())
           .then(json => {
-            console.log(json[0]);
-            this.state.formData.academicQualification.value =
-              json[0].academicQualification;
-            this.state.formData.campus.value = json[0].campus;
-            this.state.formData.contact.value = json[0].contact;
-            this.state.formData.courseCode.value = json[0].courseCode;
-            this.state.formData.email.value = json[0].email;
-            this.state.formData.experienceinthisSubj.value =
-              json[0].experienceinthisSubj;
-            this.state.formData.jobType.value = json[0].jobType;
-            this.state.formData.name.value = json[0].name;
-            this.state.formData.programme.value = json[0].programme;
-            this.state.formData.subject.value = json[0].subject;
-            this.state.formData.teachingExperience.value =
-              json[0].teachingExperience;
-            this.state.formData.year_part.value = json[0].year_part;
-            this.forceUpdate();
+            let {formData} = this.state;
+            //console.log(json[0]);
+            formData.academicQualification.value=json[0].academicQualification;
+            formData.campus.value = json[0].campus;
+            formData.contact.value = json[0].contact;
+            formData.courseCode.value = json[0].courseCode;
+            formData.email.value = json[0].email;
+            formData.experienceinthisSubj.value =json[0].experienceinthisSubj;
+            formData.jobType.value = json[0].jobType;
+            formData.name.value = json[0].name;
+            formData.programme.value = json[0].programme;
+            formData.subject.value = json[0].subject;
+            formData.teachingExperience.value =json[0].teachingExperience;
+            formData.year_part.value = json[0].year_part;
+            this.setState({
+              formData
+            })
           });
       }
     }

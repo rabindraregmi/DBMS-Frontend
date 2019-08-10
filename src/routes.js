@@ -18,8 +18,10 @@ class Routes extends Component {
   render() {
     return (
       <div>
+        {/* Layout is HOC, it contains header and footer and loads for every component. Every other component are children of HOC*/}
         <Layout>
           <Switch>
+            {/*exact is used to match path of component exactly. Otherwise, if there are two path home and homes, path home is rendered */}
             <Route path="/home" exact component={Home}/>
             <Route path="/add-new-package" exact component={AddPackage} />
             <Route

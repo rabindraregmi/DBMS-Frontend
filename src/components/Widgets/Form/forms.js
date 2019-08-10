@@ -1,10 +1,13 @@
 import React from "react";
 import "./forms.css";
-import { breakStatement } from "@babel/types";
+
+
+
 const formFields = props => {
+  
+
   const renderFields = () => {
     const formArray = [];
-
     for (let elementName in props.formData) {
       formArray.push({
         id: elementName,
@@ -21,6 +24,7 @@ const formFields = props => {
       <label class="col-sm-4 col-form-label">{labelText}</label>
     ) : null;
   };
+  
   const changeHandler = (event, id) => {
     const newState = props.formData;
     console.log(id);

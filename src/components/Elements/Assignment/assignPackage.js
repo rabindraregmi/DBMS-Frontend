@@ -76,15 +76,15 @@ class AssignPackage extends Component {
         touched: false,
         validationText: ""
       },
-      dateOfSubmission: {
+      dateOfDeadline: {
         element: "input",
         value: "",
         label: true,
-        labelText: "Date of Submission",
+        labelText: "Date of Deadline",
         config: {
           name: "submissionDay_input",
           type: "date",
-          placeholder: "Enter Submission Day"
+          placeholder: "Enter Deadline Day"
         },
         validation: {
           required: false
@@ -180,9 +180,8 @@ class AssignPackage extends Component {
         });
       });
 
-    // let packages = this.state.formData.packages;
-    // let allChilds = packages.childs;
-    // console.log('All childs', allChilds);
+
+     //Fetch data from API and store data in options 
     fetch("http://localhost:4000/API/query/getPackages")
       .then(res => res.json())
       .then(json => {

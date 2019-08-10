@@ -11,6 +11,7 @@ class App extends React.Component {
     render (){
         return (
             <div>
+                {/* first time this app is get rendered and all other component are inside Routes*/}
                <BrowserRouter>
                 <LoginRoutes/>
                 <Routes/>

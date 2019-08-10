@@ -6,6 +6,7 @@ class Layout extends Component {
     state = {
         showNav: false
     }
+    //This is used to display Sidenav after button is clicked
     toggleSideNav = (action) =>
     {
         this.setState (
@@ -26,6 +27,7 @@ class Layout extends Component {
                 />
             </div>
             <div className = "main-content">
+                {/* EVery other component is rendered here as a child of HOC */}
                 {this.props.children}
             </div>
             </div>
