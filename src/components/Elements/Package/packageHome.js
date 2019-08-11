@@ -63,13 +63,13 @@ class PackageHome extends React.Component {
         return(
             <div>
               <BreadCrumb className ="breadcrumb"/>
-                <div className="chart-buttons">
+                {/* <div className="chart-buttons">
                     <MDBContainer>
                       <MDBCard>
                         <MDBCardHeader>
                           Package Status
 
-                          {/* <MDBFormInline className="md-form m-0">
+                          <MDBFormInline className="md-form m-0">
                             <label>Show By: </label>
                             <select className = "browser-default custom-select">
                                 <option>First Year</option>
@@ -77,8 +77,8 @@ class PackageHome extends React.Component {
                                 <option>Third Year</option>
                                 <option>Fourth Year</option>
                               </select>
-            </MDBFormInline> */}
-                          {/* <MDBRow className = "package-chart-select">
+            </MDBFormInline>
+                          <MDBRow className = "package-chart-select">
                             <MDBCol md= "2"><label>Show By:</label></MDBCol>
                             <MDBCol md= "2">
                               
@@ -91,11 +91,11 @@ class PackageHome extends React.Component {
                                 <option>Fourth Year</option>
                               </select>
                              </MDBCol>
-                           </MDBRow> */}
+                           </MDBRow>
                         </MDBCardHeader>
                         <MDBCardBody>
                           {/* COde For Bar chart */}
-                          <Chart data ={this.state.data}/>
+                          {/* <Chart data ={this.state.data}/>
                         </MDBCardBody>
                         </MDBCard>
                       </MDBContainer>
@@ -109,7 +109,7 @@ class PackageHome extends React.Component {
                         </MDBCardBody>
                         </MDBCard>
                     </div>
-                </div>
+                </div> */} 
                 <PackageTable/>
 
             </div>

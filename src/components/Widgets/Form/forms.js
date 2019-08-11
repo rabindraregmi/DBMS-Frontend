@@ -1,10 +1,13 @@
 import React from "react";
 import "./forms.css";
-import { breakStatement } from "@babel/types";
+
+
+
 const formFields = props => {
+  
+
   const renderFields = () => {
     const formArray = [];
-
     for (let elementName in props.formData) {
       formArray.push({
         id: elementName,
@@ -23,6 +26,7 @@ const formFields = props => {
       <label class="col-sm-4 col-form-label">{labelText}</label>
     );
   };
+  
   const changeHandler = (event, id) => {
     const newState = props.formData;
     console.log(id);
@@ -150,10 +154,10 @@ const formFields = props => {
         formTemplate = (
           <div>
             {renderChild(data.settings.childs)}
-            <a style={{ color: "green" }} onClick={increaseChild}>
+            <button className = "btn btn-md btn-success"style={{ color: "white" }} onClick={increaseChild}>
               <i class="fas fa-plus-circle"> </i>
               Add
-            </a>
+            </button>
             {/* {renderChild(data.settings.childs)} */}
           </div>
         );
@@ -177,19 +181,16 @@ const formFields = props => {
                 ))}
               </select>
 
-              <a
-                style={{
-                  color: "red",
-                  display: "table-cell",
-                  verticalAlign: "middle"
-                }}
+              <button
+               className = "btn btn-md btn-danger"
+               style = {{marginTop:'-1.8px', marginLeft:'10px'}}
                 onClick={() => {
                   // console.log(props);
                   props.dynamicDecrease(values.id);
                 }}
               >
-                <i class="fas fa-times-circle" />
-              </a>
+                Delete
+              </button>
             </div>
           </div>
         );

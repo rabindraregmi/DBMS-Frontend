@@ -76,7 +76,7 @@ class AssignPackage extends Component {
         touched: false,
         validationText: ""
       },
-      dateOfSubmission: {
+      dateOfDeadline: {
         element: "input",
         value: "",
         label: true,
@@ -84,7 +84,7 @@ class AssignPackage extends Component {
         config: {
           name: "submissionDay_input",
           type: "date",
-          placeholder: "Enter deadline for package"
+          placeholder: "Enter Deadline Day"
         },
         validation: {
           required: false
@@ -118,7 +118,7 @@ class AssignPackage extends Component {
       label: true,
       labelText: "Package",
       config: {
-        name: "packageID_input",
+        name: "Package",
         options: this.options
       },
       validation: {
@@ -180,10 +180,9 @@ class AssignPackage extends Component {
         });
       });
 
-    // let packages = this.state.formData.packages;
-    // let allChilds = packages.childs;
-    // console.log('All childs', allChilds);
-    fetch("http://localhost:4000/API/query/getPackages")
+
+     //Fetch data from API and store data in options 
+    fetch("http://localhost:4000/API/query/getNotAssignedPackages")
       .then(res => res.json())
       .then(json => {
         for (let pkg of json) {

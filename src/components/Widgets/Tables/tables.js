@@ -1,16 +1,17 @@
 import React from "react";
-import TableHeader from "./tableHeader.js";
-import TableBody from "./tablesBody.js";
 import "./tables.css";
 import { MDBDataTable } from "mdbreact";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBBtn } from "mdbreact";
 
 const PendingPackageTable = props => {
-  const changeSelectHandler = event => {
-    let searchByKeyword = props.headings[event.target.value].type;
+    
+  
+  //CHangeSelectHandler Function is for setting State for selected Value in FILTER BY: option in every table
+  //After the change in dropdown
+  const filterByFieldChangeHandler = event => {
+        let searchByKeyword = props.headings[event.target.value].field;
 
     let states = {
       searchBy: searchByKeyword
@@ -18,17 +19,19 @@ const PendingPackageTable = props => {
     props.setState(states);
   };
 
-  const changeHandler = event => {
+//This function is used for Searching within Table and render only searched item
+  const searchFieldChangeHandler = event => {
     let keyword = event.target.value;
     let searchByKeyword = props.state.searchBy;
-    // console.log('Stateprops', props.state.searchBy);
     console.log("****", searchByKeyword);
     let filteredData = props.state.tableData.filter(item => {
       return item[String(searchByKeyword)].indexOf(keyword) > -1;
     });
+    //SETSTATE is not setting state, it is calling function passed in props which is setting state
     props.setState({
       filtered: filteredData
     });
+    //Case for No Result
     if ((keyword !== "") & (props.state.filtered.length === 0)) {
       props.setState({
         noResult: true
@@ -36,8 +39,10 @@ const PendingPackageTable = props => {
     }
   };
 
+  //This method for showing options in Filter By:
   const selections = () => {
     return props.headings.map((header, i) => {
+      
       if (
         !props.sortingOnlyList ||
         !props.sortingOnlyList.includes(header.label)
@@ -99,7 +104,7 @@ const PendingPackageTable = props => {
             <select
               id="selectbar"
               className="form-control "
-              onChange={event => changeSelectHandler(event)}
+              onChange={event => filterByFieldChangeHandler(event)}
             >
               {selections()}
             </select>
@@ -120,7 +125,7 @@ const PendingPackageTable = props => {
               type="text"
               className="form-control"
               placeholder="Search..."
-              onChange={event => changeHandler(event)}
+              onChange={event => searchFieldChangeHandler(event)}
             />
           </div>
         </div>
@@ -128,11 +133,17 @@ const PendingPackageTable = props => {
     );
   };
 
+  //MDBtable needs data in JSON format.Data methods is used for that.
+  //Headings is looped and stored in columns
+  //tableData is looped and stored in rows
   const data = () => {
+    //headings is passed in props
     let headings = props.headings;
+    //tableData are datas to be rendered in tabular format
     let tableData = props.tableData;
     let actions = props.actions;
     let data = {};
+    //Manually added first and Last column of Table which is absent in props.heading
     let remainingColumns = [
       {
         label: "S.N",
@@ -144,7 +155,9 @@ const PendingPackageTable = props => {
         sort: ""
       }
     ];
+    //to make SN first column and Action Last column
     let columns = [remainingColumns[0], ...headings, remainingColumns[1]];
+    console.log(tableData)
     let rows = tableData.map((datas, index) => {
       //   console.log(datas);
       let tempData = {};
@@ -152,16 +165,27 @@ const PendingPackageTable = props => {
       for (let key in datas) {
         if (key != "id") {
           tempData[key] = datas[key];
+
         }
       }
-
+      //Adding Icon/Button in Action Column in every row
       let actionTemplate = actions.map((action, index) => {
         // console.log("ID", datas.id);
-        let templates = (
+        let templates = null
+        if (action.hasOwnProperty('onClick')){
+          templates = (
+            <button className = "btn-xs btn-primary" onClick = {()=>action.onClick(datas["id"])}>Receive Package</button>
+          )
+        }
+        else {
+        templates = (
           <Link to={`${action.link}${datas["id"]}`}>
-            <FontAwesomeIcon icon={action.icon} />
+
+            <FontAwesomeIcon  icon={action.icon} />
+             
           </Link>
         );
+      }
         return templates;
       });
 
@@ -191,16 +215,16 @@ const PendingPackageTable = props => {
 
         tempData["Overdue"] = blinkingButton;
       }
-
+      console.log(tempData)
       tempData["action"] = actionTemplate;
-      return tempData;
+            return tempData;
     });
 
     data["columns"] = columns;
     data["rows"] = rows;
     return data;
   };
-
+ 
   return (
     <div>
       {SearchBar()}

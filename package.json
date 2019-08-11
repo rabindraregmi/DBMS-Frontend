@@ -9,6 +9,8 @@
     "axios": "^0.19.0",
     "mdbreact": "^4.18.0",
     "react": "^16.8.6",
+    "react-confirm-alert": "^2.4.1",
+    "react-datepicker-nepali": "^1.0.1",
     "react-dom": "^16.8.6",
     "react-fontawesome": "^1.6.1",
     "react-router-dom": "^5.0.1",

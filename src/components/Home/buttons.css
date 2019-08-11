@@ -66,3 +66,9 @@ g.recharts-cartesian-axis-ticks {
     color:white;
   }
 }
+
+.pendingPackageTable tr:hover
+{
+  cursor: pointer;  
+  color:blue;
+}
