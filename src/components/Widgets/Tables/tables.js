@@ -1,10 +1,7 @@
 import React from "react";
-import TableHeader from "./tableHeader.js";
-import TableBody from "./tablesBody.js";
 import "./tables.css";
 import { MDBDataTable } from "mdbreact";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBBtn } from "mdbreact";
 

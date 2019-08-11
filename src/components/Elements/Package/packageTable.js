@@ -69,7 +69,7 @@ class PackageTable extends React.Component {
      
 
 
-      fetch ("http://localhost:4000/API/query/getPackages")
+      fetch ("http://localhost:4000/API/query/getAllPackages")
       .then (res=>res.json())
       .then (json=>{          
 

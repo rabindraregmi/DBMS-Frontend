@@ -153,10 +153,10 @@ const formFields = props => {
         formTemplate = (
           <div>
             {renderChild(data.settings.childs)}
-            <a style={{ color: "green" }} onClick={increaseChild}>
+            <button className = "btn btn-md btn-success"style={{ color: "white" }} onClick={increaseChild}>
               <i class="fas fa-plus-circle"> </i>
               Add
-            </a>
+            </button>
             {/* {renderChild(data.settings.childs)} */}
           </div>
         );
@@ -180,19 +180,16 @@ const formFields = props => {
                 ))}
               </select>
 
-              <a
-                style={{
-                  color: "red",
-                  display: "table-cell",
-                  verticalAlign: "middle"
-                }}
+              <button
+               className = "btn btn-md btn-danger"
+               style = {{marginTop:'-1.8px', marginLeft:'10px'}}
                 onClick={() => {
                   // console.log(props);
                   props.dynamicDecrease(values.id);
                 }}
               >
-                <i class="fas fa-times-circle" />
-              </a>
+                Delete
+              </button>
             </div>
           </div>
         );

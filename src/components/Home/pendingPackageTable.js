@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "../Widgets/Tables/tables.js";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
@@ -48,9 +48,8 @@ class PendingPackageTable extends React.Component {
   actions = [
     {
       text: "Receive",
-      icon: faEdit,
-      link: '/home',
-      onClick : (id)=>this.handleReceiveClick(id),
+      icon: faReceipt,
+      link: '/receivePackage/',
     },
   ];
 
@@ -83,16 +82,7 @@ class PendingPackageTable extends React.Component {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
-}
-
-  handleReceiveClick= (id)=>{
-    let dataToSubmit = {}
-    dataToSubmit['id'] = id
-    let date = this.formatDate(new Date())
-    dataToSubmit['dateOfSubmission'] = date
-    console.log(dataToSubmit)
-  }
-  
+} 
   getPendingPackageFromAPI= ()=>{
     fetch("http://localhost:4000/API/query/getPendingPackages")
     .then(res => res.json())

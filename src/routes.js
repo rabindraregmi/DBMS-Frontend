@@ -12,6 +12,8 @@ import Subject from "./components/Elements/Subjects/subjects.js";
 import Intermediate from "./components/Elements/Assignment/intermediate.js";
 import ExamTable from "./components/Elements/Exam/examTable.js";
 import Person from "./components/Elements/Person/person.js"
+import ReceivePackage from './components/Elements/Package/receivePackage.js'
+import Test from './components/Widgets/test.js'
 import Login from "./components/Elements/Login/login.js";
 
 class Routes extends Component {
@@ -39,6 +41,8 @@ class Routes extends Component {
             <Route path="/subjects" exact component={Subject} />
             <Route path="/intermediate" exact component={Intermediate} />
             <Route path="/exams" exact component={ExamTable} />
+            <Route path = "/receivePackage/:assignmentID" exact component = {ReceivePackage}/>
+            <Route path = '/test' exact component = {Test}/>
           </Switch>
         </Layout>
       </div>
