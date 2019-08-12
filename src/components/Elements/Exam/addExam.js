@@ -182,8 +182,6 @@ class AddNewExam extends Component {
           subjectData: json
         });
       });
-
-    
   };
 
   updateForm = (newState, id) => {
@@ -264,6 +262,28 @@ class AddNewExam extends Component {
     dataToSubmit["subjectID"] = formData["subjectID"].value;
     dataToSubmit["examType"] = formData["examType"].value;
     dataToSubmit["date"] = formData["date"].value;
+
+    const state = this.state;
+    for (let key in this.state.formData) {
+      if (key === "subjectID" || key === "examType" || key === "date") {
+        if (
+          dataToSubmit[key] === null ||
+          dataToSubmit[key].match(/^ *$/) !== null ||
+          dataToSubmit[key] == 0
+        ) {
+          console.log("Empty ");
+          state.formData[key].validationText =
+            state.formData[key].labelText + " cannot be empty";
+          state.formData[key].valid = false;
+          this.setState(state);
+          return;
+        } else {
+          state.formData[key].validationText = "";
+          state.formData[key].valid = true;
+          this.setState(state);
+        }
+      }
+    }
 
     console.log(dataToSubmit);
     fetch("http://localhost:4000/API/query/addExam", {

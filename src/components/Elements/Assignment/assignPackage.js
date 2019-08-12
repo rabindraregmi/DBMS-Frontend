@@ -128,7 +128,7 @@ class AssignPackage extends Component {
       touched: false,
       validationText: ""
     };
-  
+
     this.setState(prevState => ({
       ...prevState,
       formData: {
@@ -180,8 +180,7 @@ class AssignPackage extends Component {
         });
       });
 
-
-     //Fetch data from API and store data in options 
+    //Fetch data from API and store data in options
     fetch("http://localhost:4000/API/query/getNotAssignedPackages")
       .then(res => res.json())
       .then(json => {
@@ -216,6 +215,25 @@ class AssignPackage extends Component {
         dataToSubmit[key] = packages;
       } else {
         dataToSubmit[key] = this.state.formData[key].value;
+
+        //Validation
+        const state = this.state;
+        if (
+          dataToSubmit[key] === null ||
+          dataToSubmit[key].match(/^ *$/) !== null ||
+          dataToSubmit[key] == 0
+        ) {
+          console.log("Empty ");
+          state.formData[key].validationText =
+            state.formData[key].labelText + " cannot be empty";
+          state.formData[key].valid = false;
+          this.setState(state);
+          return;
+        } else {
+          state.formData[key].validationText = "";
+          state.formData[key].valid = true;
+          this.setState(state);
+        }
       }
     }
     console.log(dataToSubmit);

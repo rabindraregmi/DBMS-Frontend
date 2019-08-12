@@ -130,6 +130,20 @@ class AddNewPackage extends Component {
     let dataToSubmit = {};
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
+      const state = this.state;
+      //0 check for dropdown
+      if (dataToSubmit[key] === null || dataToSubmit[key].match(/^ *$/) !== null || dataToSubmit[key] == 0) {
+        console.log("Empty ");
+        state.formData[key].validationText =
+          state.formData[key].labelText + " cannot be empty";
+        state.formData[key].valid = false;
+        this.setState(state);
+        return;
+      } else {
+        state.formData[key].validationText = "";
+        state.formData[key].valid = true;
+        this.setState(state);
+      }
     }
 
     console.log(dataToSubmit);
@@ -209,6 +223,8 @@ class AddNewPackage extends Component {
       </form>
     );
   };
+
+  
 
   mainContent = () => {
     let { postedData, posted } = this.state;

@@ -1,11 +1,7 @@
 import React from "react";
 import "./forms.css";
 
-
-
 const formFields = props => {
-  
-
   const renderFields = () => {
     const formArray = [];
     for (let elementName in props.formData) {
@@ -21,12 +17,15 @@ const formFields = props => {
 
   const showLabel = (required, labelText) => {
     return required ? (
-      (<label class="col-sm-4 col-form-label">{labelText}<span style={{color: 'red', fontSize:'1.2rem'}}>*</span></label>)
+      <label class="col-sm-4 col-form-label">
+        {labelText}
+        <span style={{ color: "red", fontSize: "1.2rem" }}>*</span>
+      </label>
     ) : (
       <label class="col-sm-4 col-form-label">{labelText}</label>
     );
   };
-  
+
   const changeHandler = (event, id) => {
     const newState = props.formData;
     console.log(id);
@@ -83,11 +82,13 @@ const formFields = props => {
             {showLabel(values.required, values.labelText)}
             <div className="col-sm-6">
               <input
+                // required={values.required}
                 className="form-control"
                 {...values.config}
                 value={values.value}
                 onChange={event => changeHandler(event, data.id)}
-              />
+                />
+                {!values.valid? <div className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
@@ -111,6 +112,7 @@ const formFields = props => {
                   </option>
                 ))}
               </select>
+              {!values.valid? <div className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
@@ -154,7 +156,11 @@ const formFields = props => {
         formTemplate = (
           <div>
             {renderChild(data.settings.childs)}
-            <button className = "btn btn-md btn-success"style={{ color: "white" }} onClick={increaseChild}>
+            <button
+              className="btn btn-md btn-success"
+              style={{ color: "white" }}
+              onClick={increaseChild}
+            >
               <i class="fas fa-plus-circle"> </i>
               Add
             </button>
@@ -182,8 +188,8 @@ const formFields = props => {
               </select>
 
               <button
-               className = "btn btn-md btn-danger"
-               style = {{marginTop:'-1.8px', marginLeft:'10px'}}
+                className="btn btn-md btn-danger"
+                style={{ marginTop: "-1.8px", marginLeft: "10px" }}
                 onClick={() => {
                   // console.log(props);
                   props.dynamicDecrease(values.id);
