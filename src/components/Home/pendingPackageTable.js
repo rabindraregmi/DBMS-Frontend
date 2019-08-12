@@ -1,9 +1,9 @@
 import React from "react";
 import Table from "../Widgets/Tables/tables.js";
-import { faTrash, faReceipt } from "@fortawesome/free-solid-svg-icons";
+import {faReceipt } from "@fortawesome/free-solid-svg-icons";
 
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+//import { confirmAlert } from 'react-confirm-alert'; // Import
+//import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
  
 class PendingPackageTable extends React.Component {
   sortingOnlyList = ["Status"];

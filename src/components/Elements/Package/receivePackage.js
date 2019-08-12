@@ -155,12 +155,16 @@ class ReceivePackage extends Component {
               }
           }
     }
+
+    //This methods will be called from form.js to set value of formElement in state of this component
     updateForm = (newState)=>
     {
         this.setState({
             formData:newState
         })
     }
+
+    //Format Date function is used to format date in proper format (YYYY/MM/DD)
     formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
@@ -173,13 +177,16 @@ class ReceivePackage extends Component {
         return [year, month, day].join('-');
     }
 
+
+    //This method will automatically called by React once the Component finished mount    
     componentDidMount = ()=>{
-        let { params } = this.props.match;
-        console.log(params);
+        
+      let { params } = this.props.match;//this.props.match.params gives the parameter sent along with link eg revivePackeg/ <<assignmentID>>
 
     fetch(`http://localhost:4000/API/query/getOneAssignment/${params.assignmentID}`)
       .then(res => res.json())
       .then(json => {
+        //This type of Destructing enable to use that state variable directly and it is better than setting state directly this.state = ....
         let {formData} = this.state;
         for (let [key, value] of Object.entries(json[0])) {
             console.log(key, json[0][key])
@@ -220,12 +227,15 @@ class ReceivePackage extends Component {
       })
     }
 
+    //This method is used to convert String to Date format
     parseDate(str) {
         const mdy = str.split("-");
         return new Date(mdy[0], mdy[1] - 1, parseInt(mdy[2]) + 1);
       }
+
+      //Difference between Deadling and Submission Day to calculate Due Day
     setDifference = ()=>{
-            let {dateOfDeadline, dateOfSubmission, dueDay} = this.state.formData;
+           let {dateOfDeadline, dateOfSubmission, dueDay} = this.state.formData;
            let deadlineDate = this.parseDate (dateOfDeadline.value)
            let submissionDate = this.parseDate (dateOfSubmission.value)
             dueDay.value = Math.round((deadlineDate - submissionDate) / (1000 * 60 * 60 * 24));
@@ -240,16 +250,12 @@ class ReceivePackage extends Component {
         }
         return (
             <div>
-                <form className="main-form" onSubmit = {(event)=>{event.preventDefault()}} onChange = {this.setDifference}>
-                <Form
+                  <Form
                     formData={this.state.formData}
-                    change={newState => this.updateForm(newState)}/>
-          <br />
-          <br />
-          <button className="btn btn-primary" type="submit" onClick = {this.handleReceive}>
-            Receive
-          </button>
-        </form>
+                    change={newState => this.updateForm(newState)}
+                    submitForm = {event => this.submitForm(event)}
+                    setDifference = {()=>this.setDifference()}
+                    />
             </div>
         )
     }

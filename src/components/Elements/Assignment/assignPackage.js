@@ -236,23 +236,16 @@ class AssignPackage extends Component {
   };
   render() {
     return (
-      <div className="container">
-        <form className="main-form" onSubmit={this.submitForm}>
+
           <FormFields
             formData={this.state.formData}
             change={newState => this.updateForm(newState)}
             createNewForm={noOfPacket => this.increaseDynamicForm(noOfPacket)}
             dynamicIncrease={this.increaseDynamicForm}
             dynamicDecrease={this.decreaseDynamic}
+            submitForm = {event => this.submitForm(event)}          
           />
-          <br />
-          <br />
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
-        </form>
-      </div>
-    );
+          );
   }
 }
 

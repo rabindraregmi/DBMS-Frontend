@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 import PackageTable from "./packageTable.js";
-import { Redirect } from "react-router-dom";
+//import { Redirect } from "react-router-dom";
 class AddNewPackage extends Component {
   state = {
     formData: {
@@ -73,7 +73,94 @@ class AddNewPackage extends Component {
         touched: false,
         validationText: ""
       },
-      examID: {
+      level: {
+        element: "select",
+        value: "",
+        label: true,
+        labelText: "Level",
+        config: {
+          name: "Level",
+          options: [
+            { val: "Bachelors", text: "Bachelors" },
+            { val: "Masters", text: "Masters" }
+          ]
+        },
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationText: ""
+      },
+      programID: {
+        element: "select",
+        value: "",
+        label: true,
+        labelText: "Program",
+        config: {
+          name: "program",
+          options: []
+        },
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationText: ""
+      },
+      year: {
+        element: "select",
+        value: "I",
+        label: true,
+        labelText: "Year",
+        config: {
+          name: "year",
+          options: [
+            
+          ]
+        },
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationText: ""
+      },
+      part: {
+        element: "select",
+        value: "I",
+        label: true,
+        labelText: "Part",
+        config: {
+          name: "part",
+          options: [{ val: "I", text: "I" }, { val: "II", text: "II" }]
+        },
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationText: ""
+      },
+
+      subjectID: {
+        element: "select",
+        value: "",
+        label: true,
+        labelText: "Subject",
+        config: {
+          name: "Subject",
+          options: []
+        },
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationText: ""
+      },
+
+      examID:{
         element: "select",
         value: "",
         label: true,
@@ -93,34 +180,202 @@ class AddNewPackage extends Component {
     posted: false,
     errorOnSubmission: false,
     errorText: "",
-    postedData: []
+    postedData: [],
+    examData:[],
+    programData:[],
+    subjectData:[],
+
   };
+  loadProgramOptions = ()=>{
+    
+    let { programData} = this.state;
+    let { level } = this.state.formData;
+    
+    let levelValue = level.value;
+    let filteredProgramData = programData.filter(item => {
+      return item["academicDegree"] === levelValue;
+    });
+    let yearChoices = ['I', 'II', 'III', 'IV'];
+    let yearOptions = []
+   if (levelValue === 'Bachelors')
+   {
+     for (let yearChoice of yearChoices)
+     {
+       let temp = {}
+       temp["val"] = yearChoice
+       temp["text"] = yearChoice
+       yearOptions.push(temp)
+     }
+   }
+   else 
+   {
+    for (let yearChoice of yearChoices.slice(0,2))//Masters Level has only 2 years
+    {
+      let temp = {}
+      temp["val"] = yearChoice
+      temp["text"] = yearChoice
+      yearOptions.push(temp)
+    }
+   }
+      
+
+    let options1 = [];
+    for (let program of filteredProgramData) {
+      //console.log(program);
+      let temp = {};
+      temp["val"] = program.programName;
+      temp["text"] = program.programName;
+      options1.push(temp);
+    }
+    this.setState({
+      ...this.state,
+      formData: {
+        ...this.state.formData,
+        year:{
+          ...this.state.formData.year,
+          config:{
+            ...this.state.formData.year.config,
+            options:yearOptions
+          }
+        },
+        programID: {
+          ...this.state.formData.programID,
+          config: {
+            ...this.state.formData.programID.config,
+            options: options1
+          }
+        }
+      }
+    }); 
+  }
+
+  loadSubjectOptions = ()=>{
+    let { subjectData,formData } = this.state;
+    let { programID } = this.state.formData;
+
+      let programValue = programID.value;
+      let yearValue =formData.year.value;
+      let partValue =formData.part.value;
+      
+      //Acoording to Value in Program Year and Part value, filter Subjects
+      let filteredSubjectData = subjectData.filter(item => {
+        return (
+          item["programName"] === programValue &&
+          item["year"] === yearValue &&
+          item["part"] === partValue
+        );
+      });
+
+      //Only those filtered Subjects are added to subject options for Subject Select field
+      let subjectOptions = [];
+      for (let subject of filteredSubjectData) {
+        //console.log(subject);
+        let temp = {};
+        temp["val"] = subject.id;
+        temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
+        subjectOptions.push(temp);
+      }
+      this.setState({
+        ...this.state,
+        formData: {
+          ...this.state.formData,
+          subjectID: {
+            ...this.state.formData.subjectID,
+            config: {
+              ...this.state.formData.subjectID.config,
+              options: subjectOptions
+            }
+          }
+        }
+      });
+  }
+  loadExamOptions = ()=>{
+    let {examData, formData} = this.state;
+    let {subjectID} = this.state.formData
+    
+    let subjectValue = subjectID.value;
+    //console.log("Subject Value", examData)
+    let filteredExamData = examData.filter(item => {
+      return (
+        item["subjectID"] === parseInt(subjectValue)
+      );
+    });
+    
+    let examOptions = []
+
+    for (let exam of filteredExamData) {
+      let temp = {};
+      temp["val"] = exam.id;
+      temp["text"] = `${exam.programName}(${exam.year}/${exam.part})-${
+        exam.courseCode
+      } ${exam.date}`;
+      examOptions.push(temp);
+    }
+    //console.log(filteredExamData)
+    this.setState({
+      ...this.state,
+      formData: {
+        ...this.state.formData,
+        examID: {
+          ...this.state.formData.examID,
+          config: {
+            ...this.state.formData.examID.config,
+            options: examOptions
+          }
+        }
+      }
+    });
+
+  }
 
   componentWillMount = () => {
-    let { examID, subject } = this.state.formData;
+    let { examID} = this.state.formData;
     let examOptions = examID.config.options;
+    fetch("http://localhost:4000/API/query/getProgramList")
+    .then(res => res.json())
+    .then(json => {
+      this.setState({
+        programData: json
+      });
+    });
+
+    fetch("http://localhost:4000/API/query/getSubjectList")
+    .then(res => res.json())
+    .then(json => {
+      this.setState({
+        subjectData: json
+      });
+    });
     fetch("http://localhost:4000/API/query/getExams")
       .then(res => res.json())
       .then(json => {
-        for (let exam of json) {
-          let temp = {};
-          temp["val"] = exam.id;
-          temp["text"] = `${exam.programName}(${exam.year}/${exam.part})-${
-            exam.courseCode
-          } ${exam.date}`;
-          examOptions.push(temp);
-        }
         this.setState({
-          examID: examID
-        });
+          examData:json
+        })
+
       });
     console.log(examOptions);
   };
 
-  updateForm = newState => {
+  updateForm = (newState,id) => {
     this.setState({
       formData: newState
     });
+
+    if (id==='level'){
+      this.loadProgramOptions()
+    }
+    else if (id === "programID" || id === "year" || id === "part") {
+      this.loadSubjectOptions()
+    }
+    else if (id ==='subjectID'){
+      this.loadExamOptions()
+    }
+    
+
+
+
+
   };
 
   submitForm = event => {
@@ -176,34 +431,14 @@ class AddNewPackage extends Component {
 
   loadForm = () => {
     return (
-      <form
-        className="main-form"
-        onSubmit={event => {
-          event.preventDefault();
-        }}
-      >
-        {this.errorCheck()}
-        <FormFields
-          formData={this.state.formData}
-          change={newState => this.updateForm(newState)}
-        />
-        <button
-          className="btn btn-primary"
-          id="save"
-          onClick={event => this.submitForm(event)}
-          type="submit"
-        >
-          Save
-        </button>
-        <button
-          className="btn btn-secondary"
-          type="reset"
-          id="snc"
-          onClick={event => this.submitForm(event)}
-        >
-          Save and Continue
-        </button>
-      </form>
+      <div>    
+          {this.errorCheck()}
+          <FormFields
+            formData={this.state.formData}
+            change={(newState, id) => this.updateForm(newState, id)}
+            submitForm = {(event)=>this.submitForm(event)}
+          />
+      </div>
     );
   };
 

@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import style from './sideNav.css'
-import { faHome, faUser} from '@fortawesome/free-solid-svg-icons'
-import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
+import './sideNav.css'
+import { faHome} from '@fortawesome/free-solid-svg-icons'
+//import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
 const SideNavItems = () => {
 
     const items = [
@@ -50,15 +50,15 @@ const SideNavItems = () => {
         return items.map( (item,i) =>{
     
         
-        const childrens = () => {
-            return item.children.map((child,j)=> {
-                return(
-                    <div>
-                        {child.texts}
-                    </div>
-                )
-            })
-        }
+        // const childrens = () => {
+        //     return item.children.map((child,j)=> {
+        //         return(
+        //             <div>
+        //                 {child.texts}
+        //             </div>
+        //         )
+        //     })
+        // }
         
             return (
                 <div key={i} className={item.className}>

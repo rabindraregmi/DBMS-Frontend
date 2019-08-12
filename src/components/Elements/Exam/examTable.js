@@ -79,7 +79,7 @@ class ExamTable extends React.Component {
     this.setState(states);
   };
   render() {
-    let { isLoaded } = this.state;
+    //let { isLoaded } = this.state;
     return (
       <div className="container-fluid">
         <Table
