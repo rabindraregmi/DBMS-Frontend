@@ -207,7 +207,35 @@ const formFields = props => {
     }
     return formTemplate;
   };
-  return <div>{renderFields()}</div>;
+  return (
+    <form 
+        className="main-form"
+        onSubmit={event => {
+        event.preventDefault();
+        }}
+    
+    >
+      {renderFields()}
+
+      <button
+          className="btn btn-primary"
+          id="save"
+          onClick={event => props.submitForm(event)}
+          type="submit"
+          >
+          Save
+        </button>
+
+        <button
+          className="btn btn-secondary"
+          type="reset"
+          id="snc"
+          onClick={event => this.submitForm(event)}
+          >
+          Save and Continue
+        </button>
+    </form>
+  );
 };
 
 export default formFields;
