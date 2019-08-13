@@ -88,7 +88,7 @@ const formFields = props => {
                 value={values.value}
                 onChange={event => changeHandler(event, data.id)}
                 />
-                {!values.valid? <div className="alert alert-danger">{values.validationText}</div>: null}
+                {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
@@ -112,7 +112,7 @@ const formFields = props => {
                   </option>
                 ))}
               </select>
-              {!values.valid? <div className="alert alert-danger">{values.validationText}</div>: null}
+              {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
