@@ -50,9 +50,7 @@ class AddNewExam extends Component {
           labelText: "Year",
           config: {
             name: "year",
-            options: [
-              
-            ]
+            options: []
           },
           validation: {
             required: false
@@ -146,39 +144,32 @@ class AddNewExam extends Component {
     };
   }
 
-
-  loadProgramOptions = ()=>{
-    
-    let { programData} = this.state;
+  loadProgramOptions = () => {
+    let { programData } = this.state;
     let { level } = this.state.formData;
-    
+
     let levelValue = level.value;
     let filteredProgramData = programData.filter(item => {
       return item["academicDegree"] === levelValue;
     });
-    let yearChoices = ['I', 'II', 'III', 'IV'];
-    let yearOptions = []
-   if (levelValue === 'Bachelors')
-   {
-     for (let yearChoice of yearChoices)
-     {
-       let temp = {}
-       temp["val"] = yearChoice
-       temp["text"] = yearChoice
-       yearOptions.push(temp)
-     }
-   }
-   else 
-   {
-    for (let yearChoice of yearChoices.slice(0,2))//Masters Level has only 2 years
-    {
-      let temp = {}
-      temp["val"] = yearChoice
-      temp["text"] = yearChoice
-      yearOptions.push(temp)
+    let yearChoices = ["I", "II", "III", "IV"];
+    let yearOptions = [];
+    if (levelValue === "Bachelors") {
+      for (let yearChoice of yearChoices) {
+        let temp = {};
+        temp["val"] = yearChoice;
+        temp["text"] = yearChoice;
+        yearOptions.push(temp);
+      }
+    } else {
+      for (let yearChoice of yearChoices.slice(0, 2)) {
+        //Masters Level has only 2 years
+        let temp = {};
+        temp["val"] = yearChoice;
+        temp["text"] = yearChoice;
+        yearOptions.push(temp);
+      }
     }
-   }
-      
 
     let options1 = [];
     for (let program of filteredProgramData) {
@@ -192,11 +183,11 @@ class AddNewExam extends Component {
       ...this.state,
       formData: {
         ...this.state.formData,
-        year:{
+        year: {
           ...this.state.formData.year,
-          config:{
+          config: {
             ...this.state.formData.year.config,
-            options:yearOptions
+            options: yearOptions
           }
         },
         programID: {
@@ -207,69 +198,66 @@ class AddNewExam extends Component {
           }
         }
       }
-    }); 
-  }
+    });
+  };
 
-  loadSubjectOptions = ()=>{
-    let { subjectData,formData } = this.state;
+  loadSubjectOptions = () => {
+    let { subjectData, formData } = this.state;
     let { programID } = this.state.formData;
 
-      let programValue = programID.value;
-      let yearValue =formData.year.value;
-      let partValue =formData.part.value;
-      
-      //Acoording to Value in Program Year and Part value, filter Subjects
-      let filteredSubjectData = subjectData.filter(item => {
-        return (
-          item["programName"] === programValue &&
-          item["year"] === yearValue &&
-          item["part"] === partValue
-        );
-      });
+    let programValue = programID.value;
+    let yearValue = formData.year.value;
+    let partValue = formData.part.value;
 
-      //Only those filtered Subjects are added to subject options for Subject Select field
-      let subjectOptions = [];
-      for (let subject of filteredSubjectData) {
-        console.log(subject);
-        let temp = {};
-        temp["val"] = subject.id;
-        temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
-        subjectOptions.push(temp);
-      }
-      this.setState({
-        ...this.state,
-        formData: {
-          ...this.state.formData,
-          subjectID: {
-            ...this.state.formData.subjectID,
-            config: {
-              ...this.state.formData.subjectID.config,
-              options: subjectOptions
-            }
+    //Acoording to Value in Program Year and Part value, filter Subjects
+    let filteredSubjectData = subjectData.filter(item => {
+      return (
+        item["programName"] === programValue &&
+        item["year"] === yearValue &&
+        item["part"] === partValue
+      );
+    });
+
+    //Only those filtered Subjects are added to subject options for Subject Select field
+    let subjectOptions = [];
+    for (let subject of filteredSubjectData) {
+      console.log(subject);
+      let temp = {};
+      temp["val"] = subject.id;
+      temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
+      subjectOptions.push(temp);
+    }
+    this.setState({
+      ...this.state,
+      formData: {
+        ...this.state.formData,
+        subjectID: {
+          ...this.state.formData.subjectID,
+          config: {
+            ...this.state.formData.subjectID.config,
+            options: subjectOptions
           }
         }
-      });
-  }
-
+      }
+    });
+  };
 
   componentDidMount = () => {
-
     fetch("http://localhost:4000/API/query/getProgramList")
-    .then(res => res.json())
-    .then(json => {
-      this.setState({
-        programData: json
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          programData: json
+        });
       });
-    });
 
     fetch("http://localhost:4000/API/query/getSubjectList")
-    .then(res => res.json())
-    .then(json => {
-      this.setState({
-        subjectData: json
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          subjectData: json
+        });
       });
-    });
-
 
     //Edit route
     const examID = this.props.match.params.examID;
@@ -277,26 +265,26 @@ class AddNewExam extends Component {
       fetch("http://localhost:4000/API/query/getExams/" + examID)
         .then(res => res.json())
         .then(json => {
-          let {formData} = this.state;
-          console.log(json[0])
+          let { formData } = this.state;
+          console.log(json[0]);
 
-          formData.level.value = json[0].academicDegree;
+          formData.level.value = "Bachelors";
           formData.programID.value = json[0].programName;
           formData.year.value = json[0].year;
           formData.subjectID.value = json[0].subjectID;
           formData.date.value = json[0].date;
           formData.examType.value = json[0].examType;
           formData.part.value = json[0].part;
-          
-          this.setState ({
-            formData:formData
-          })
+
+          this.setState({
+            formData: formData
+          });
           this.loadProgramOptions();
           this.loadSubjectOptions();
+          console.log(this.state.formData);
+          console.log("Value set");
         });
     }
-
-    
   };
 
   updateForm = (newState, id) => {
@@ -305,10 +293,10 @@ class AddNewExam extends Component {
     //If Change in Level Options Occur, Load Programs List and year list for that Level
     if (id === "level") {
       this.loadProgramOptions();
-      } 
-      //If change in these fields occur, load subject list according to those changed values 
-      else if (id === "programID" || id === "year" || id === "part") {
-      this.loadSubjectOptions()
+    }
+    //If change in these fields occur, load subject list according to those changed values
+    else if (id === "programID" || id === "year" || id === "part") {
+      this.loadSubjectOptions();
     }
   };
 
@@ -316,9 +304,10 @@ class AddNewExam extends Component {
     let dataToSubmit = {};
     let formData = this.state.formData;
     console.log(formData);
-    dataToSubmit["subjectID"] = formData["subjectID"].value;
+    dataToSubmit["subjectID"] = formData["subjectID"].value.toString();
     dataToSubmit["examType"] = formData["examType"].value;
     dataToSubmit["date"] = formData["date"].value;
+    console.log(dataToSubmit);
 
     const state = this.state;
     for (let key in this.state.formData) {
@@ -343,8 +332,17 @@ class AddNewExam extends Component {
     }
 
     console.log(dataToSubmit);
-    fetch("http://localhost:4000/API/query/addExam", {
-      method: "POST",
+    let url = "http://localhost:4000/API/query/addExam";
+    let methodType = "POST";
+
+    //URL for update route
+    const examID = this.props.match.params.examID;
+    if (examID !== undefined) {
+      url = `http://localhost:4000/API/query/editExam/${examID}`;
+      methodType = "PUT";
+    }
+    fetch(url, {
+      method: methodType,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
@@ -355,6 +353,10 @@ class AddNewExam extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
+            if (examID != undefined) {
+              this.props.history.goBack();
+              return;
+            }
             console.log(body.exams[0]);
             let dataToDisplay = body.exams[0];
             postedData.push(dataToDisplay);
@@ -390,16 +392,13 @@ class AddNewExam extends Component {
   loadForm = () => {
     return (
       <div>
-
         {this.errorCheck()}
         <FormFields
           formData={this.state.formData}
           change={(newState, id) => this.updateForm(newState, id)}
-          submitForm = {event => this.submitForm(event)}
-          />
-        
+          submitForm={event => this.submitForm(event)}
+        />
       </div>
-      
     );
   };
 
