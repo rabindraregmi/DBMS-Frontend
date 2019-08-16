@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 //import { Redirect } from "react-router-dom";
 import ExamTable from "./examTable.js";
+import { async } from "q";
 class AddNewExam extends Component {
   constructor(props) {
     super(props);
@@ -144,7 +145,7 @@ class AddNewExam extends Component {
     };
   }
 
-  loadProgramOptions = () => {
+  loadProgramOptions = async () => {
     let { programData } = this.state;
     let { level } = this.state.formData;
 
@@ -179,7 +180,7 @@ class AddNewExam extends Component {
       temp["text"] = program.programName;
       options1.push(temp);
     }
-    this.setState({
+    await this.setState({
       ...this.state,
       formData: {
         ...this.state.formData,
@@ -201,7 +202,7 @@ class AddNewExam extends Component {
     });
   };
 
-  loadSubjectOptions = () => {
+  loadSubjectOptions = async () => {
     let { subjectData, formData } = this.state;
     let { programID } = this.state.formData;
 
@@ -227,7 +228,7 @@ class AddNewExam extends Component {
       temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
       subjectOptions.push(temp);
     }
-    this.setState({
+    await this.setState({
       ...this.state,
       formData: {
         ...this.state.formData,
@@ -276,13 +277,17 @@ class AddNewExam extends Component {
           formData.examType.value = json[0].examType;
           formData.part.value = json[0].part;
 
-          this.setState({
-            formData: formData
-          });
-          this.loadProgramOptions();
-          this.loadSubjectOptions();
-          console.log(this.state.formData);
-          console.log("Value set");
+          this.setState(
+            {
+              formData: formData
+            },
+            async () => {
+              await this.loadProgramOptions();
+              await this.loadSubjectOptions();
+              console.log(this.state.formData);
+              console.log("Value set");
+            }
+          );
         });
     }
   };
