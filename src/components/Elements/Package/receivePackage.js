@@ -253,7 +253,7 @@ class ReceivePackage extends Component {
                   <Form
                     formData={this.state.formData}
                     change={newState => this.updateForm(newState)}
-                    submitForm = {event => this.submitForm(event)}
+                    submitForm = {() => this.handleReceive()}
                     setDifference = {()=>this.setDifference()}
                     />
             </div>
