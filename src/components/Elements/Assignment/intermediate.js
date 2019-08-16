@@ -31,7 +31,7 @@ class Intermediate extends Component {
             className="btn btn-danger notRegisteredButton"
             onClick={this.onChangeHandler}
           >
-            Not Registerd Yet?
+            Not Registered Yet?
           </button>
           <div className="col-sm-2 pointer">
             <span className="pointer-text">Choose person to Assign</span>

@@ -39,7 +39,7 @@ class PackageTable extends React.Component {
     actions = [{
       text: 'Edit', 
       icon: faEdit, 
-      link: '/',
+      link: '/edit-package/',
       },
       {
       text: 'Delete', 

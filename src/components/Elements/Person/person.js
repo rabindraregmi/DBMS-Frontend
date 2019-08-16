@@ -7,7 +7,7 @@ class Person extends React.Component {
       name: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Name",
         config: {
           name: "name_input",
@@ -24,7 +24,7 @@ class Person extends React.Component {
       contact: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Contact",
         config: {
           name: "contact_input",
@@ -41,7 +41,7 @@ class Person extends React.Component {
       courseCode: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Course code",
         config: {
           name: "address_input",
@@ -58,7 +58,7 @@ class Person extends React.Component {
       programme: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Programme",
         config: {
           name: "address_input",
@@ -75,7 +75,7 @@ class Person extends React.Component {
       year_part: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Year/part",
         config: {
           name: "address_input",
@@ -92,7 +92,7 @@ class Person extends React.Component {
       subject: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Subject Name",
         config: {
           name: "address_input",
@@ -109,7 +109,7 @@ class Person extends React.Component {
       campus: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Campus",
         config: {
           name: "address_input",
@@ -126,7 +126,7 @@ class Person extends React.Component {
       teachingExperience: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Teaching experience",
         config: {
           name: "address_input",
@@ -143,7 +143,7 @@ class Person extends React.Component {
       experienceinthisSubj: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Experience in this subject",
         config: {
           name: "address_input",
@@ -160,7 +160,7 @@ class Person extends React.Component {
       academicQualification: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Academic qualification",
         config: {
           name: "address_input",
@@ -177,7 +177,7 @@ class Person extends React.Component {
       jobType: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Type of job",
         config: {
           name: "address_input",
@@ -194,7 +194,7 @@ class Person extends React.Component {
       email: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Email",
         config: {
           name: "address_input",
@@ -229,23 +229,24 @@ class Person extends React.Component {
         fetch("http://localhost:4000/API/query/getOnePerson/" + personID)
           .then(res => res.json())
           .then(json => {
-            let {formData} = this.state;
+            let { formData } = this.state;
             //console.log(json[0]);
-            formData.academicQualification.value=json[0].academicQualification;
+            formData.academicQualification.value =
+              json[0].academicQualification;
             formData.campus.value = json[0].campus;
             formData.contact.value = json[0].contact;
             formData.courseCode.value = json[0].courseCode;
             formData.email.value = json[0].email;
-            formData.experienceinthisSubj.value =json[0].experienceinthisSubj;
+            formData.experienceinthisSubj.value = json[0].experienceinthisSubj;
             formData.jobType.value = json[0].jobType;
             formData.name.value = json[0].name;
             formData.programme.value = json[0].programme;
             formData.subject.value = json[0].subject;
-            formData.teachingExperience.value =json[0].teachingExperience;
+            formData.teachingExperience.value = json[0].teachingExperience;
             formData.year_part.value = json[0].year_part;
             this.setState({
               formData
-            })
+            });
           });
       }
     }
@@ -256,6 +257,23 @@ class Person extends React.Component {
     let dataToSubmit = {};
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
+      const state = this.state;
+      if (
+        dataToSubmit[key] === null ||
+        dataToSubmit[key].match(/^ *$/) !== null ||
+        dataToSubmit[key] == 0
+      ) {
+        console.log("Empty ");
+        state.formData[key].validationText =
+          state.formData[key].labelText + " cannot be empty";
+        state.formData[key].valid = false;
+        this.setState(state);
+        return;
+      } else {
+        state.formData[key].validationText = "";
+        state.formData[key].valid = true;
+        this.setState(state);
+      }
     }
     console.log(dataToSubmit);
     let url = "http://localhost:4000/API/query/addPerson";
@@ -278,7 +296,7 @@ class Person extends React.Component {
       body: JSON.stringify(dataToSubmit)
     })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           this.setState({ error: false });
           this.props.onSubmission();

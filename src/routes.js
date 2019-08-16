@@ -26,6 +26,8 @@ class Routes extends Component {
             {/*exact is used to match path of component exactly. Otherwise, if there are two path home and homes, path home is rendered */}
             <Route path="/home" exact component={Home}/>
             <Route path="/add-new-package" exact component={AddPackage} />
+            <Route path="/edit-package/:packageID" exact component={AddPackage} />
+
             <Route
               path="/assign-package/:personID"
               exact
@@ -37,6 +39,7 @@ class Routes extends Component {
             <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack} {...props}/>)}/>
 
             <Route path="/packages" exact component={PackageHome} />
+
             <Route path="/departments" exact component={Department} />
             <Route path="/subjects" exact component={Subject} />
             <Route path="/intermediate" exact component={Intermediate} />

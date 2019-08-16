@@ -1,11 +1,7 @@
 import React from "react";
 import "./forms.css";
 
-
-
 const formFields = props => {
-  
-
   const renderFields = () => {
     const formArray = [];
     for (let elementName in props.formData) {
@@ -19,16 +15,21 @@ const formFields = props => {
     });
   };
 
-  const showLabel = (label, labelText) => {
-    return label ? (
+  const showLabel = (required, labelText) => {
+    return required ? (
+      <label class="col-sm-4 col-form-label">
+        {labelText}
+        <span style={{ color: "red", fontSize: "1.2rem" }}>*</span>
+      </label>
+    ) : (
       <label class="col-sm-4 col-form-label">{labelText}</label>
-    ) : null;
+    );
   };
-  
+
   const changeHandler = (event, id) => {
     const newState = props.formData;
     console.log(id);
-    var re = /^[0-9]+$/
+    var re = /^[0-9]+$/;
     if (re.test(id)) {
       newState.packages.childs[id].value = event.target.value;
     } else {
@@ -70,7 +71,6 @@ const formFields = props => {
     });
   };
 
-  
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";
@@ -79,14 +79,16 @@ const formFields = props => {
       case "input":
         formTemplate = (
           <div class="form-group row">
-            {showLabel(values.label, values.labelText)}
+            {showLabel(values.required, values.labelText)}
             <div className="col-sm-6">
               <input
+                // required={values.required}
                 className="form-control"
                 {...values.config}
                 value={values.value}
                 onChange={event => changeHandler(event, data.id)}
-              />
+                />
+                {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
@@ -95,7 +97,7 @@ const formFields = props => {
       case "select":
         formTemplate = (
           <div className="form-group row">
-            {showLabel(values.label, values.labelText)}
+            {showLabel(values.required, values.labelText)}
             <div className="col-sm-6">
               <select
                 value={values.value}
@@ -110,6 +112,7 @@ const formFields = props => {
                   </option>
                 ))}
               </select>
+              {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
@@ -128,7 +131,7 @@ const formFields = props => {
         formTemplate = (
           <div className="form-group">
             <div className="radio-label">
-              {showLabel(values.label, values.labelText)}
+              {showLabel(values.required, values.labelText)}
             </div>
 
             {values.config.options.map((item, i) => (
@@ -153,7 +156,11 @@ const formFields = props => {
         formTemplate = (
           <div>
             {renderChild(data.settings.childs)}
-            <button className = "btn btn-md btn-success"style={{ color: "white" }} onClick={increaseChild}>
+            <button
+              className="btn btn-md btn-success"
+              style={{ color: "white" }}
+              onClick={increaseChild}
+            >
               <i class="fas fa-plus-circle"> </i>
               Add
             </button>
@@ -164,7 +171,7 @@ const formFields = props => {
       case "selectDynamic":
         formTemplate = (
           <div className="form-group row">
-            {showLabel(values.label, values.labelText)}
+            {showLabel(values.required, values.labelText)}
             <div className="col-sm-6" style={{ display: "flex" }}>
               <select
                 value={values.value}
@@ -181,8 +188,8 @@ const formFields = props => {
               </select>
 
               <button
-               className = "btn btn-md btn-danger"
-               style = {{marginTop:'-1.8px', marginLeft:'10px'}}
+                className="btn btn-md btn-danger"
+                style={{ marginTop: "-1.8px", marginLeft: "10px" }}
                 onClick={() => {
                   // console.log(props);
                   props.dynamicDecrease(values.id);

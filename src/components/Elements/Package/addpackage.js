@@ -8,7 +8,7 @@ class AddNewPackage extends Component {
       packageCode: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Package ID",
         config: {
           name: "packageID_input",
@@ -25,7 +25,7 @@ class AddNewPackage extends Component {
       noOfCopies: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "No of Copies",
         config: {
           name: "noOfCopies_input",
@@ -42,7 +42,7 @@ class AddNewPackage extends Component {
       codeStart: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Start Code",
         config: {
           name: "startCode_input",
@@ -59,7 +59,7 @@ class AddNewPackage extends Component {
       codeEnd: {
         element: "input",
         value: "",
-        label: true,
+        required: true,
         labelText: "Last Code",
         config: {
           name: "lastCode_input",
@@ -115,9 +115,7 @@ class AddNewPackage extends Component {
         labelText: "Year",
         config: {
           name: "year",
-          options: [
-            
-          ]
+          options: []
         },
         validation: {
           required: false
@@ -160,10 +158,10 @@ class AddNewPackage extends Component {
         validationText: ""
       },
 
-      examID:{
+      examID: {
         element: "select",
         value: "",
-        label: true,
+        required: true,
         labelText: "Exam",
         config: {
           name: "exam",
@@ -181,43 +179,35 @@ class AddNewPackage extends Component {
     errorOnSubmission: false,
     errorText: "",
     postedData: [],
-    examData:[],
-    programData:[],
-    subjectData:[],
-
+    examData: [],
+    programData: [],
+    subjectData: []
   };
-  loadProgramOptions = ()=>{
-    
-    let { programData} = this.state;
+  loadProgramOptions = () => {
+    let { programData } = this.state;
     let { level } = this.state.formData;
-    
+
     let levelValue = level.value;
     let filteredProgramData = programData.filter(item => {
       return item["academicDegree"] === levelValue;
     });
-    let yearChoices = ['I', 'II', 'III', 'IV'];
-    let yearOptions = []
-   if (levelValue === 'Bachelors')
-   {
-     for (let yearChoice of yearChoices)
-     {
-       let temp = {}
-       temp["val"] = yearChoice
-       temp["text"] = yearChoice
-       yearOptions.push(temp)
-     }
-   }
-   else 
-   {
-    for (let yearChoice of yearChoices.slice(0,2))//Masters Level has only 2 years
-    {
-      let temp = {}
-      temp["val"] = yearChoice
-      temp["text"] = yearChoice
-      yearOptions.push(temp)
+    let yearChoices = ["I", "II", "III", "IV"];
+    let yearOptions = [];
+    if (levelValue === "Bachelors") {
+      for (let yearChoice of yearChoices) {
+        let temp = {};
+        temp["val"] = yearChoice;
+        temp["text"] = yearChoice;
+        yearOptions.push(temp);
+      }
+    } else {
+      for (let yearChoice of yearChoices.slice(0, 2)) { //Masters Level has only 2 years
+        let temp = {};
+        temp["val"] = yearChoice;
+        temp["text"] = yearChoice;
+        yearOptions.push(temp);
+      }
     }
-   }
-      
 
     let options1 = [];
     for (let program of filteredProgramData) {
@@ -231,11 +221,11 @@ class AddNewPackage extends Component {
       ...this.state,
       formData: {
         ...this.state.formData,
-        year:{
+        year: {
           ...this.state.formData.year,
-          config:{
+          config: {
             ...this.state.formData.year.config,
-            options:yearOptions
+            options: yearOptions
           }
         },
         programID: {
@@ -246,62 +236,60 @@ class AddNewPackage extends Component {
           }
         }
       }
-    }); 
-  }
+    });
+  };
 
-  loadSubjectOptions = ()=>{
-    let { subjectData,formData } = this.state;
+  loadSubjectOptions = () => {
+    let { subjectData, formData } = this.state;
     let { programID } = this.state.formData;
 
-      let programValue = programID.value;
-      let yearValue =formData.year.value;
-      let partValue =formData.part.value;
-      
-      //Acoording to Value in Program Year and Part value, filter Subjects
-      let filteredSubjectData = subjectData.filter(item => {
-        return (
-          item["programName"] === programValue &&
-          item["year"] === yearValue &&
-          item["part"] === partValue
-        );
-      });
+    let programValue = programID.value;
+    let yearValue = formData.year.value;
+    let partValue = formData.part.value;
 
-      //Only those filtered Subjects are added to subject options for Subject Select field
-      let subjectOptions = [];
-      for (let subject of filteredSubjectData) {
-        //console.log(subject);
-        let temp = {};
-        temp["val"] = subject.id;
-        temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
-        subjectOptions.push(temp);
-      }
-      this.setState({
-        ...this.state,
-        formData: {
-          ...this.state.formData,
-          subjectID: {
-            ...this.state.formData.subjectID,
-            config: {
-              ...this.state.formData.subjectID.config,
-              options: subjectOptions
-            }
+    //Acoording to Value in Program Year and Part value, filter Subjects
+    let filteredSubjectData = subjectData.filter(item => {
+      return (
+        item["programName"] === programValue &&
+        item["year"] === yearValue &&
+        item["part"] === partValue
+      );
+    });
+
+    //Only those filtered Subjects are added to subject options for Subject Select field
+    let subjectOptions = [];
+    for (let subject of filteredSubjectData) {
+      //console.log(subject);
+      let temp = {};
+      temp["val"] = subject.id;
+      temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
+      subjectOptions.push(temp);
+    }
+    this.setState({
+      ...this.state,
+      formData: {
+        ...this.state.formData,
+        subjectID: {
+          ...this.state.formData.subjectID,
+          config: {
+            ...this.state.formData.subjectID.config,
+            options: subjectOptions
           }
         }
-      });
-  }
-  loadExamOptions = ()=>{
-    let {examData, formData} = this.state;
-    let {subjectID} = this.state.formData
-    
+      }
+    });
+  };
+  loadExamOptions = () => {
+    let { examData, formData } = this.state;
+    let { subjectID } = this.state.formData;
+
     let subjectValue = subjectID.value;
     //console.log("Subject Value", examData)
     let filteredExamData = examData.filter(item => {
-      return (
-        item["subjectID"] === parseInt(subjectValue)
-      );
+      return item["subjectID"] === parseInt(subjectValue);
     });
-    
-    let examOptions = []
+
+    let examOptions = [];
 
     for (let exam of filteredExamData) {
       let temp = {};
@@ -325,57 +313,74 @@ class AddNewPackage extends Component {
         }
       }
     });
+  };
 
-  }
-
-  componentWillMount = () => {
-    let { examID} = this.state.formData;
+  componentDidMount = () => {
+    let { examID } = this.state.formData;
     let examOptions = examID.config.options;
     fetch("http://localhost:4000/API/query/getProgramList")
-    .then(res => res.json())
-    .then(json => {
-      this.setState({
-        programData: json
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          programData: json
+        });
       });
-    });
 
     fetch("http://localhost:4000/API/query/getSubjectList")
-    .then(res => res.json())
-    .then(json => {
-      this.setState({
-        subjectData: json
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          subjectData: json
+        });
       });
-    });
     fetch("http://localhost:4000/API/query/getExams")
       .then(res => res.json())
       .then(json => {
         this.setState({
-          examData:json
-        })
-
+          examData: json
+        });
       });
     console.log(examOptions);
+
+    const packageID = this.props.match.params.packageID;
+    if (packageID !== undefined) {
+      fetch("http://localhost:4000/API/query/getPackage/" + packageID)
+        .then(res => res.json())
+        .then(json => {
+        //   let { formData } = this.state;
+        //   console.log(json[0]);
+
+        //   formData.level.value = "Bachelors";
+        //   formData.programID.value = json[0].programName;
+        //   formData.year.value = json[0].year;
+        //   formData.subjectID.value = json[0].subjectID;
+        //   formData.date.value = json[0].date;
+        //   formData.examType.value = json[0].examType;
+        //   formData.part.value = json[0].part;
+
+        //   this.setState({
+        //     formData: formData
+        //   });
+        //   this.loadProgramOptions();
+        //   this.loadSubjectOptions();
+        //   console.log(this.state.formData);
+        //   console.log("Value set");
+        });
+    }
   };
 
-  updateForm = (newState,id) => {
+  updateForm = (newState, id) => {
     this.setState({
       formData: newState
     });
 
-    if (id==='level'){
-      this.loadProgramOptions()
+    if (id === "level") {
+      this.loadProgramOptions();
+    } else if (id === "programID" || id === "year" || id === "part") {
+      this.loadSubjectOptions();
+    } else if (id === "subjectID") {
+      this.loadExamOptions();
     }
-    else if (id === "programID" || id === "year" || id === "part") {
-      this.loadSubjectOptions()
-    }
-    else if (id ==='subjectID'){
-      this.loadExamOptions()
-    }
-    
-
-
-
-
   };
 
   submitForm = event => {
@@ -385,6 +390,24 @@ class AddNewPackage extends Component {
     let dataToSubmit = {};
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
+      const state = this.state;
+      //0 check for dropdown
+      if (
+        dataToSubmit[key] === null ||
+        dataToSubmit[key].match(/^ *$/) !== null ||
+        dataToSubmit[key] == 0
+      ) {
+        console.log("Empty ");
+        state.formData[key].validationText =
+          state.formData[key].labelText + " cannot be empty";
+        state.formData[key].valid = false;
+        this.setState(state);
+        return;
+      } else {
+        state.formData[key].validationText = "";
+        state.formData[key].valid = true;
+        this.setState(state);
+      }
     }
 
     console.log(dataToSubmit);
@@ -431,13 +454,13 @@ class AddNewPackage extends Component {
 
   loadForm = () => {
     return (
-      <div>    
-          {this.errorCheck()}
-          <FormFields
-            formData={this.state.formData}
-            change={(newState, id) => this.updateForm(newState, id)}
-            submitForm = {(event)=>this.submitForm(event)}
-          />
+      <div>
+        {this.errorCheck()}
+        <FormFields
+          formData={this.state.formData}
+          change={(newState, id) => this.updateForm(newState, id)}
+          submitForm={event => this.submitForm(event)}
+        />
       </div>
     );
   };
