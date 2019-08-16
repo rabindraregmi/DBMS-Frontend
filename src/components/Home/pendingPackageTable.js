@@ -1,10 +1,10 @@
 import React from "react";
 import Table from "../Widgets/Tables/tables.js";
-import {faReceipt } from "@fortawesome/free-solid-svg-icons";
+import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 //import { confirmAlert } from 'react-confirm-alert'; // Import
 //import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
- 
+
 class PendingPackageTable extends React.Component {
   sortingOnlyList = ["Status"];
   headings = [
@@ -49,8 +49,8 @@ class PendingPackageTable extends React.Component {
     {
       text: "Receive",
       icon: faReceipt,
-      link: '/receivePackage/',
-    },
+      link: "/receivePackage/"
+    }
   ];
 
   state = {
@@ -61,7 +61,7 @@ class PendingPackageTable extends React.Component {
     items: [],
     isLoaded: true
   };
-  
+
   parseDate(str) {
     const mdy = str.split("-");
     return new Date(mdy[0], mdy[1] - 1, parseInt(mdy[2]) + 1);
@@ -74,39 +74,57 @@ class PendingPackageTable extends React.Component {
   }
   formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join('-');
-} 
-  getPendingPackageFromAPI= ()=>{
+    return [year, month, day].join("-");
+  }
+  getPendingPackageFromAPI = () => {
     fetch("http://localhost:4000/API/query/getPendingPackages")
-    .then(res => res.json())
-    .then(json => {
-      //Calculate if package is overdue
+      .then(res => res.json())
+      .then(json => {
+        //Calculate if package is overdue
+        json.forEach(element => {
+          console.log(element);
+          const myDate = this.parseDate(element["tobeSubmitted"]);
+          const diff = this.findDateDifference(myDate);
+          element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
+          element["clickEvent"] = this.handleRowClick;
+        });
+        this.setState({
+          isLoaded: true,
+          tableData: json
+        });
+      });
+  };
+
+  componentWillReceiveProps(props) {
+    if (props.initialData) {
+      console.log(this.headings);
+      let json = props.initialData;
       json.forEach(element => {
         console.log(element);
         const myDate = this.parseDate(element["tobeSubmitted"]);
         const diff = this.findDateDifference(myDate);
         element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
-        element["clickEvent"] = this.handleRowClick
+        element["clickEvent"] = this.handleRowClick;
       });
       this.setState({
         isLoaded: true,
         tableData: json
       });
-    });
+    }
   }
 
-
   componentDidMount = () => {
-   this.getPendingPackageFromAPI()
+    if (!this.props.initialData) {
+      this.getPendingPackageFromAPI();
+    }
   };
-
 
   statehandler = states => {
     this.setState(states);
@@ -121,7 +139,7 @@ class PendingPackageTable extends React.Component {
       );
     } else {
       return (
-        <div className = "pendingPackageTable">
+        <div className="pendingPackageTable">
           <Table
             headings={this.headings}
             sortingOnlyList={this.sortingOnlyList}

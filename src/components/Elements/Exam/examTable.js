@@ -1,5 +1,10 @@
 import React from "react";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faEdit,
+  faInfo,
+  faInfoCircle
+} from "@fortawesome/free-solid-svg-icons";
 import Table from "../../Widgets/Tables/tables.js";
 class ExamTable extends React.Component {
   headings = [
@@ -45,6 +50,11 @@ class ExamTable extends React.Component {
       text: "Delete",
       icon: faTrash,
       link: "/"
+    },
+    {
+      text: "View Details",
+      icon: faInfoCircle,
+      link: "/exam-details/"
     }
   ];
 

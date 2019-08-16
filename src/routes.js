@@ -15,6 +15,7 @@ import Person from "./components/Elements/Person/person.js"
 import ReceivePackage from './components/Elements/Package/receivePackage.js'
 import Test from './components/Widgets/test.js'
 import Login from "./components/Elements/Login/login.js";
+import ExamDetails from "./components/Elements/Exam/examDetails.js";
 
 class Routes extends Component {
   render() {
@@ -35,6 +36,8 @@ class Routes extends Component {
             />
             <Route path="/add-new-exam" exact component={AddNewExam} />
             <Route path="/edit-exam/:examID" exact component={AddNewExam} />
+            <Route path="/exam-details/:examID" exact component={ExamDetails} />
+            
 
             <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack} {...props}/>)}/>
 
