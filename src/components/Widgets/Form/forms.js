@@ -1,4 +1,6 @@
 import React from "react";
+import Select from "react-dropdown-select";
+
 import "./forms.css";
 
 const formFields = props => {
@@ -70,7 +72,23 @@ const formFields = props => {
       return <div key={i}>{renderTemplates(item)}</div>;
     });
   };
+  const setValues = (values, id)=>{
+    console.log(values, id)
 
+    const newState = props.formData;
+    console.log(id);
+    var re = /^[0-9]+$/;
+    if (re.test(id)) {
+      newState.packages.childs[id].value = values.length!==0?values[0].val:null;
+    } else {
+      newState[id].value = values.length!==0?values[0].val:null;
+      let validateData = validate(newState[id]);
+      newState[id].valid = validateData[0];
+      newState[id].validationMessage = validateData[1];
+    }
+    props.change(newState, id);
+
+  }
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";
@@ -88,7 +106,7 @@ const formFields = props => {
                 value={values.value}
                 onChange={event => changeHandler(event, data.id)}
                 />
-                {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
+                {!values.valid? <p style= {{color:'red'}}>{values.validationText}</p>: null}
             </div>
           </div>
         );
@@ -99,7 +117,15 @@ const formFields = props => {
           <div className="form-group row">
             {showLabel(values.required, values.labelText)}
             <div className="col-sm-6">
-              <select
+              
+            <Select options={values.config.options}  clearable = {true} 
+              onChange={(values) => setValues(values, data.id)}
+              searchBy= 'text' labelField = "text"
+              className = "form-control"
+              />
+              
+              
+              {/* <select
                 value={values.value}
                 name={values.config.name}
                 onChange={event => changeHandler(event, data.id)}
@@ -111,7 +137,7 @@ const formFields = props => {
                     {item.text}
                   </option>
                 ))}
-              </select>
+              </select> */}
               {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
@@ -173,7 +199,16 @@ const formFields = props => {
           <div className="form-group row">
             {showLabel(values.required, values.labelText)}
             <div className="col-sm-6" style={{ display: "flex" }}>
-              <select
+              
+              
+            <Select options={values.config.options}  clearable = {true} 
+              onChange={(values) => setValues(values, data.id)}
+              searchBy= 'text' labelField = "text"
+              className = "form-control"
+              />
+              
+              
+              {/* <select
                 value={values.value}
                 name={values.config.name}
                 onChange={event => changeHandler(event, data.id)}
@@ -185,7 +220,7 @@ const formFields = props => {
                     {item.text}
                   </option>
                 ))}
-              </select>
+              </select> */}
 
               <button
                 className="btn btn-md btn-danger"

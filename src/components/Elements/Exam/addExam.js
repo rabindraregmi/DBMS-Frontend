@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-//import { Redirect } from "react-router-dom";
 import ExamTable from "./examTable.js";
-import { async } from "q";
+//import { async } from "q";
 class AddNewExam extends Component {
   constructor(props) {
     super(props);

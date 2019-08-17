@@ -41,7 +41,9 @@ class PendingPackageTable extends React.Component {
     {
       label: "Status",
       text: "Status",
+      field:'status',
       colspan: "2",
+      grouping: true,
       type: "Overdue"
     }
   ];
@@ -59,7 +61,8 @@ class PendingPackageTable extends React.Component {
     noResult: false,
     searchBy: "packageCode",
     items: [],
-    isLoaded: true
+    isLoaded: true,
+    categories:{}
   };
 
   parseDate(str) {
@@ -93,31 +96,39 @@ class PendingPackageTable extends React.Component {
           const myDate = this.parseDate(element["tobeSubmitted"]);
           const diff = this.findDateDifference(myDate);
           element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
-          element["clickEvent"] = this.handleRowClick;
+          element['package'] = diff<0?"Overdue":"Pending"
         });
+        console.log("Element after Overdue", json)
+        let categories = {}
+        categories ['package'] = ["Overdue"]
         this.setState({
           isLoaded: true,
-          tableData: json
+          tableData: json,
+          categories: categories
         });
       });
   };
 
   componentWillReceiveProps(props) {
-    if (props.initialData) {
-      console.log(this.headings);
-      let json = props.initialData;
-      json.forEach(element => {
-        console.log(element);
-        const myDate = this.parseDate(element["tobeSubmitted"]);
-        const diff = this.findDateDifference(myDate);
-        element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
-        element["clickEvent"] = this.handleRowClick;
-      });
-      this.setState({
-        isLoaded: true,
-        tableData: json
-      });
-    }
+
+      if (props.initialData) {
+        console.log(this.headings);
+        let json = props.initialData;
+        json.forEach(element => {
+          console.log(element);
+          const myDate = this.parseDate(element["tobeSubmitted"]);
+          const diff = this.findDateDifference(myDate);
+          element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
+          element['package'] = diff<0?"Overdue":"Pending"
+        });
+        let categories = {}
+        categories ['package'] = ["Overdue"]
+        this.setState({
+          isLoaded: true,
+          tableData: json,
+          categories: categories
+        });
+      }
   }
 
   componentDidMount = () => {
@@ -134,7 +145,7 @@ class PendingPackageTable extends React.Component {
     if (!isLoaded) {
       return (
         <div>
-          <h1>Loading......Start the damn Django Server you IDIOT</h1>
+          <h1>Loading......Start the damn  Server you IDIOT</h1>
         </div>
       );
     } else {
@@ -149,6 +160,7 @@ class PendingPackageTable extends React.Component {
             state={this.state}
             setState={states => this.statehandler(states)}
             actions={this.actions}
+            categories = {this.state.categories}
           />
         </div>
       );

@@ -114,7 +114,7 @@ class AssignPackage extends Component {
     let newChild = {
       id: this.id,
       element: "selectDynamic",
-      value: "1",
+      value: "0",
       label: true,
       labelText: "Package",
       config: {

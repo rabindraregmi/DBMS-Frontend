@@ -55,6 +55,7 @@ export class ExamGroupedTable extends Component {
           setState={states => this.statehandler(states)}
           actions={this.actions}
           detailParams ={this.props.detailData}
+          categories = {this.props.categories}
         />
       </div>
     );
