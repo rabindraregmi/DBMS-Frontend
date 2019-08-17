@@ -14,7 +14,17 @@ export class ExamGroupedTable extends Component {
       label: "Exam Title",
       sort: "asc",
       field: "value"
-    }
+    },
+    {
+        label: "Exam Type",
+        sort: "asc",
+        field: "value"
+      },
+      {
+        label: "Part",
+        sort: "asc",
+        field: "value"
+      }
   ];
 
   actions = [

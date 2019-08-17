@@ -201,7 +201,8 @@ class AddNewPackage extends Component {
         yearOptions.push(temp);
       }
     } else {
-      for (let yearChoice of yearChoices.slice(0, 2)) { //Masters Level has only 2 years
+      for (let yearChoice of yearChoices.slice(0, 2)) {
+        //Masters Level has only 2 years
         let temp = {};
         temp["val"] = yearChoice;
         temp["text"] = yearChoice;
@@ -284,7 +285,7 @@ class AddNewPackage extends Component {
     let { subjectID } = this.state.formData;
 
     let subjectValue = subjectID.value;
-    console.log("Subject Value", examData)
+    console.log("Subject Value", examData);
     let filteredExamData = examData.filter(item => {
       return item["subjectID"] === parseInt(subjectValue);
     });
@@ -299,7 +300,7 @@ class AddNewPackage extends Component {
       } ${exam.date}`;
       examOptions.push(temp);
     }
-    console.log(filteredExamData)
+    console.log(filteredExamData);
     this.setState({
       ...this.state,
       formData: {
@@ -347,24 +348,22 @@ class AddNewPackage extends Component {
       fetch("http://localhost:4000/API/query/getPackage/" + packageID)
         .then(res => res.json())
         .then(json => {
-        //   let { formData } = this.state;
-        //   console.log(json[0]);
-
-        //   formData.level.value = "Bachelors";
-        //   formData.programID.value = json[0].programName;
-        //   formData.year.value = json[0].year;
-        //   formData.subjectID.value = json[0].subjectID;
-        //   formData.date.value = json[0].date;
-        //   formData.examType.value = json[0].examType;
-        //   formData.part.value = json[0].part;
-
-        //   this.setState({
-        //     formData: formData
-        //   });
-        //   this.loadProgramOptions();
-        //   this.loadSubjectOptions();
-        //   console.log(this.state.formData);
-        //   console.log("Value set");
+          //   let { formData } = this.state;
+          //   console.log(json[0]);
+          //   formData.level.value = "Bachelors";
+          //   formData.programID.value = json[0].programName;
+          //   formData.year.value = json[0].year;
+          //   formData.subjectID.value = json[0].subjectID;
+          //   formData.date.value = json[0].date;
+          //   formData.examType.value = json[0].examType;
+          //   formData.part.value = json[0].part;
+          //   this.setState({
+          //     formData: formData
+          //   });
+          //   this.loadProgramOptions();
+          //   this.loadSubjectOptions();
+          //   console.log(this.state.formData);
+          //   console.log("Value set");
         });
     }
   };
@@ -388,14 +387,15 @@ class AddNewPackage extends Component {
     // let redirectLink = ''
 
     let dataToSubmit = {};
+    console.log(dataToSubmit);
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
+      console.log(dataToSubmit[key]);
       const state = this.state;
       //0 check for dropdown
       if (
-        dataToSubmit[key] === null ||
-        dataToSubmit[key].match(/^ *$/) !== null ||
-        dataToSubmit[key] == 0
+        dataToSubmit[key].toString() === null ||
+        dataToSubmit[key].toString().match(/^ *$/) !== null
       ) {
         console.log("Empty ");
         state.formData[key].validationText =
