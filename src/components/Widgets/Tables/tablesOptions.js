@@ -254,8 +254,6 @@ class   TableOptions extends Component{
         this.setState((prevState) => ({
          isAdvancedSearch: !prevState.isAdvancedSearch 
         }));
-        let filterBy = document.getElementById("filterBySelectBar")
-        console.log(filterBy)
       }
       tableOptions = ()=>{
        

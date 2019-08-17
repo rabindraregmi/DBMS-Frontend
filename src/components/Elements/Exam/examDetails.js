@@ -1,17 +1,23 @@
 import React, { Component } from "react";
 
 import PendingPackageTable from "../../Home/pendingPackageTable.js";
-import { MDBCard, MDBCardBody, MDBCardHeader, MDBContainer } from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCardHeader } from "mdbreact";
 import PackageTable from "../Package/packageTable.js";
 
 import ExamListingTable from "./examListingTable.js";
 
+import './exams.css';
 export class ExamDetails extends Component {
   state = {
     pending: [],
-    unassigned: []
+    unassigned: [],
+    examDetailExpand:false,
+    pendingPackageExpand:true,
+    unassignedPackageExpand: true
   };
+  
   groupDetails = {};
+
   componentDidMount() {
     const groupID = this.props.match.params.examID;
     this.groupDetails = this.props.location.state[parseInt(groupID)];
@@ -50,35 +56,68 @@ export class ExamDetails extends Component {
         });
       });
   }
+
+  expandClickHandler = (event)=>{
+    switch(event.target.id){
+      case "examDetail":
+          this.setState((prevState) => ({
+            examDetailExpand: !prevState.examDetailExpand 
+           }));
+        break;
+      case "pendingPackageStatus":
+        this.setState((prevState)=>({
+          pendingPackageExpand:!prevState.pendingPackageExpand
+        }),()=>{
+          
+          document.getElementById("pendingPackageStatusBody").hidden= this.state.pendingPackageExpand
+        });
+        
+        break;
+      case "unassignedPackageStatus":
+          this.setState((prevState) => ({
+            unassignedPackageExpand: !prevState.unassignedPackageExpand 
+           }), ()=>{
+            document.getElementById("unassignedPackageStatusBody").hidden= this.state.unassignedPackageExpand
+           });
+        break;
+    }
+  }
+
+
+
+
+
   render() {
     return (
       <div>
-        <MDBContainer>
           <MDBCard>
-            <MDBCardHeader>
+            <MDBCardHeader className= "expandableSection" id= "examDetail" onClick= {(event)=>this.expandClickHandler(event)} >
               <b>Exam Details</b>
             </MDBCardHeader>
             <MDBCardBody>
               {this.groupDetails.exams ? <ExamListingTable tableData={this.groupDetails.exams}/>: null}
             </MDBCardBody>
+            
           </MDBCard>
           <MDBCard>
-            <MDBCardHeader>
-              <b>Pending Package Status</b>
+            <MDBCardHeader className= "expandableSection"  id= "pendingPackageStatus" onClick= {(event)=>this.expandClickHandler(event)}>
+              <b>Pending Package Status </b>
             </MDBCardHeader>
-            <MDBCardBody>
+            
+            <MDBCardBody id= "pendingPackageStatusBody">
               <PendingPackageTable initialData={this.state.pending} />
             </MDBCardBody>
+            
           </MDBCard>
           <MDBCard>
-            <MDBCardHeader>
+            <MDBCardHeader className= "expandableSection"  id= "unassignedPackageStatus" onClick= {(event)=>this.expandClickHandler(event)}>
               <b>Unassigned Package Status</b>
             </MDBCardHeader>
-            <MDBCardBody>
+            <MDBCardBody id= "unassignedPackageStatusBody">
               <PackageTable initialData={this.state.unassigned} />
             </MDBCardBody>
+           
           </MDBCard>
-        </MDBContainer>
       </div>
     );
   }
