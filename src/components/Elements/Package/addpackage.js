@@ -284,7 +284,7 @@ class AddNewPackage extends Component {
     let { subjectID } = this.state.formData;
 
     let subjectValue = subjectID.value;
-    //console.log("Subject Value", examData)
+    console.log("Subject Value", examData)
     let filteredExamData = examData.filter(item => {
       return item["subjectID"] === parseInt(subjectValue);
     });
@@ -299,7 +299,7 @@ class AddNewPackage extends Component {
       } ${exam.date}`;
       examOptions.push(temp);
     }
-    //console.log(filteredExamData)
+    console.log(filteredExamData)
     this.setState({
       ...this.state,
       formData: {

@@ -178,8 +178,9 @@ const PendingPackageTable = props => {
             </button>
           );
         } else {
+            console.log(props.detailParams);
           templates = (
-            <Link to={`${action.link}${datas["id"]}`}>
+            <Link to={{ pathname:`${action.link}${datas["id"]}`, state: props.detailParams    }} >
               <FontAwesomeIcon icon={action.icon} />
             </Link>
           );

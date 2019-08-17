@@ -9,9 +9,19 @@ export class ExamDetails extends Component {
     pending: [],
     unassigned: []
   };
+  groupDetails = {};
   componentDidMount() {
-    const examID = this.props.match.params.examID;
-    fetch("http://localhost:4000/API/query/getPendingExamPackages/" + examID)
+    const groupID = this.props.match.params.examID;
+    this.groupDetails = this.props.location.state[parseInt(groupID)];
+    console.log(this.groupDetails);
+    const part = this.groupDetails.exams[0].part;
+    const yyDate = this.groupDetails.exams[0].date.split("-")[0];
+    fetch(
+      "http://localhost:4000/API/query/getPendingExamPackages/" +
+        yyDate +
+        "/" +
+        part
+    )
       .then(res => res.json())
       .then(json => {
         this.setState({
@@ -20,7 +30,10 @@ export class ExamDetails extends Component {
       });
 
     fetch(
-      "http://localhost:4000/API/query/getNotAssignedExamPackages/" + examID
+      "http://localhost:4000/API/query/getNotAssignedExamPackages/" +
+        yyDate +
+        "/" +
+        part
     )
       .then(res => res.json())
       .then(json => {
@@ -37,7 +50,9 @@ export class ExamDetails extends Component {
             <MDBCardHeader>
               <b>Exam Details</b>
             </MDBCardHeader>
-            <MDBCardBody />
+            <MDBCardBody>
+              {this.groupDetails.exams ? this.groupDetails.toString() : null}
+            </MDBCardBody>
           </MDBCard>
           <MDBCard>
             <MDBCardHeader>
