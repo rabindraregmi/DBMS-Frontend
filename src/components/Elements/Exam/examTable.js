@@ -6,12 +6,13 @@ class ExamTable extends React.Component {
     {
       label: "Date",
       sort: "asc",
-      field: "date"
+      field: "date", 
     },
     {
       label: "Exam Type",
       sort: "asc",
-      field: "examType"
+      field: "examType",
+      grouping: true, 
     },
     {
       label: "Course Code",
@@ -21,17 +22,20 @@ class ExamTable extends React.Component {
     {
       label: "Year",
       sort: "asc",
-      field: "year"
+      field: "year", 
+      grouping: true,
     },
     {
       label: "Part",
       sort: "asc",
-      field: "part"
+      field: "part",
+      grouping:true,
     },
     {
       label: "Program Name",
       sort: "asc",
-      field: "programName"
+      field: "programName",
+      grouping:true
     }
   ];
 
@@ -51,9 +55,9 @@ class ExamTable extends React.Component {
   state = {
     tableData: [],
     filtered: [],
-    searchBy: "",
     noResult: false,
-    isLoaded: false
+    isLoaded: false,
+    categories:{}
   };
 
   componentWillMount = () => {
@@ -67,9 +71,26 @@ class ExamTable extends React.Component {
       fetch("http://localhost:4000/API/query/getExams")
         .then(res => res.json())
         .then(json => {
+
+          let tableData = json;
+          let categories = {}
+          let groupBy = this.headings.filter((header)=>header.grouping)
+          for (let header of groupBy)
+          {
+            let groupByKeyWord = header.field;
+            categories[groupByKeyWord] = []
+            for (let item of tableData){
+                //console.log("efse", item)
+                if (!categories[groupByKeyWord].includes(item[groupByKeyWord]))
+                {
+                    categories[groupByKeyWord].push(item[groupByKeyWord])
+                }
+            }
+          }
           this.setState({
             isLoaded: true,
-            tableData: json
+            tableData: json,
+            categories:categories
           });
         });
     }
@@ -90,6 +111,7 @@ class ExamTable extends React.Component {
           state={this.state}
           setState={states => this.statehandler(states)}
           actions={this.actions}
+          categories= {this.state.categories}
         />
       </div>
     );

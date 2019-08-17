@@ -40,3 +40,14 @@ thead th,tbody tr td {
 {
     float: right;
 }
+.tableOptions{
+    background: white;
+}
+.dataTables_wrapper .row:first-of-type{
+    background: white !important;
+    margin-top:-10px;
+    margin-bottom: 10px;
+}
+.dataTables_filter{
+    float:right;
+}

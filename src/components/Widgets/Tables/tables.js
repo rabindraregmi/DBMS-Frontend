@@ -4,146 +4,22 @@ import { MDBDataTable } from "mdbreact";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBBtn } from "mdbreact";
+import TableOptions from './tablesOptions.js'
 
-const PendingPackageTable = props => {
-    
-  
-  //CHangeSelectHandler Function is for setting State for selected Value in FILTER BY: option in every table
-  //After the change in dropdown
-  const filterByFieldChangeHandler = event => {
-        let searchByKeyword = props.headings[event.target.value].field;
 
-    let states = {
-      searchBy: searchByKeyword
-    };
-    props.setState(states);
-  };
 
-//This function is used for Searching within Table and render only searched item
-  const searchFieldChangeHandler = event => {
-    let keyword = event.target.value;
-    let searchByKeyword = props.state.searchBy;
-    console.log("****", searchByKeyword);
-    let filteredData = props.state.tableData.filter(item => {
-      return item[String(searchByKeyword)].indexOf(keyword) > -1;
-    });
-    //SETSTATE is not setting state, it is calling function passed in props which is setting state
-    props.setState({
-      filtered: filteredData
-    });
-    //Case for No Result
-    if ((keyword !== "") & (props.state.filtered.length === 0)) {
-      props.setState({
-        noResult: true
-      });
-    }
-  };
-
-  //This method for showing options in Filter By:
-  const selections = () => {
-    return props.headings.map((header, i) => {
-      
-      if (
-        !props.sortingOnlyList ||
-        !props.sortingOnlyList.includes(header.label)
-      )
-        return (
-          <option key={i} value={i}>
-            {header.label}
-          </option>
-        );
-    });
-  };
-
-  const changeSortHandler = event => {
-    const field = event.target.value;
-    console.log(field);
-    if (field === "Overdue") {
-      console.log("Here");
-      let filteredData = props.state.tableData.filter(item => {
-        return item["Overdue"].isOverdue;
-      });
-      props.setState({
-        filtered: filteredData
-      });
-      if (props.state.filtered.length === 0)
-        props.setState({
-          noResult: true
-        });
-    } else if (field === "All") {
-      props.setState({
-        filtered: props.state.tableData
-      });
-    }
-  };
-
-  const sortings = () => {
-    return props.sortingOnlyList
-      ? [
-          <option key={0} value="All">
-            All
-          </option>,
-          ...props.headings.map((header, i) => {
-            if (props.sortingOnlyList.includes(header.label))
-              return (
-                <option key={i + 1} value={header.type}>
-                  {header.type}
-                </option>
-              );
-          })
-        ]
-      : null;
-  };
-
-  const SearchBar = () => {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="form-group col-md-1 col-lg-5">
-            <label for="selectbar">Filter By:</label>
-            <select
-              id="selectbar"
-              className="form-control "
-              onChange={event => filterByFieldChangeHandler(event)}
-            >
-              {selections()}
-            </select>
-          </div>
-          <div className="form-group col-md-1 col-lg-5">
-            <label>Show: </label>
-            <select
-              className="form-control"
-              onChange={event => changeSortHandler(event)}
-            >
-              {sortings()}
-            </select>
-          </div>
-
-          <div className="form-group col-md-1 col-lg-2">
-            <label>Search</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search..."
-              onChange={event => searchFieldChangeHandler(event)}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
-
+class PendingPackageTable extends React.Component {
   //MDBtable needs data in JSON format.Data methods is used for that.
   //Headings is looped and stored in columns
   //tableData is looped and stored in rows
-  const data = () => {
-    //headings is passed in props
-    let headings = props.headings;
+  data = () => {
+    //headings is passed in this.props
+    let headings = this.props.headings;
     //tableData are datas to be rendered in tabular format
-    let tableData = props.tableData;
-    let actions = props.actions;
+    let tableData = this.props.tableData;
+    let actions = this.props.actions;
     let data = {};
-    //Manually added first and Last column of Table which is absent in props.heading
+    //Manually added first and Last column of Table which is absent in this.props.heading
     let remainingColumns = [
       {
         label: "S.N",
@@ -163,7 +39,7 @@ const PendingPackageTable = props => {
       let tempData = {};
       tempData["sn"] = index + 1;
       for (let key in datas) {
-        if (key != "id") {
+        if (key !== "id" && key!== 'package' &&key!=='subjectID') {
           tempData[key] = datas[key];
 
         }
@@ -224,19 +100,36 @@ const PendingPackageTable = props => {
     data["rows"] = rows;
     return data;
   };
- 
+
+stateHandler = (states)=>{
+  this.props.setState(states)
+}
+
+render(){
+  
   return (
     <div>
-      {SearchBar()}
-      <MDBDataTable
-        className="xxx"
-        searching={false}
-        data={data()}
-        tBodyColor="white"
-        bordered
-        sortable
+    <div className = "tableOptions">
+      <TableOptions
+      state = {this.props.state}
+      setState={(states=>this.stateHandler(states))}
+      headings = {this.props.headings}
+      categories = {this.props.categories}
       />
+
+    </div>
+      <div className = "xxx">
+
+        <MDBDataTable
+        //searching={false}
+          data={this.data()}
+          tBodyColor="white"
+          bordered
+          sortable
+          />
+        </div>
     </div>
   );
+}
 };
 export default PendingPackageTable;

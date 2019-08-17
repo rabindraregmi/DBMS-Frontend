@@ -41,7 +41,9 @@ class PendingPackageTable extends React.Component {
     {
       label: "Status",
       text: "Status",
+      field:'status',
       colspan: "2",
+      grouping: true,
       type: "Overdue"
     }
   ];
@@ -59,7 +61,8 @@ class PendingPackageTable extends React.Component {
     noResult: false,
     searchBy: "packageCode",
     items: [],
-    isLoaded: true
+    isLoaded: true,
+    categories:{}
   };
   
   parseDate(str) {
@@ -88,16 +91,25 @@ class PendingPackageTable extends React.Component {
     .then(res => res.json())
     .then(json => {
       //Calculate if package is overdue
+
       json.forEach(element => {
         console.log(element);
         const myDate = this.parseDate(element["tobeSubmitted"]);
         const diff = this.findDateDifference(myDate);
+        element['package'] = diff<0?"Overdue":"Pending"
         element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
-        element["clickEvent"] = this.handleRowClick
       });
+      console.log("Element after Overdue", json)
+      let categories = {}
+      categories ['package'] = ["Overdue"]
+
+
+
+    
       this.setState({
         isLoaded: true,
-        tableData: json
+        tableData: json,
+        categories:categories
       });
     });
   }
@@ -105,6 +117,9 @@ class PendingPackageTable extends React.Component {
 
   componentDidMount = () => {
    this.getPendingPackageFromAPI()
+
+
+
   };
 
 
@@ -116,7 +131,7 @@ class PendingPackageTable extends React.Component {
     if (!isLoaded) {
       return (
         <div>
-          <h1>Loading......Start the damn Django Server you IDIOT</h1>
+          <h1>Loading......Start the damn  Server you IDIOT</h1>
         </div>
       );
     } else {
@@ -131,6 +146,7 @@ class PendingPackageTable extends React.Component {
             state={this.state}
             setState={states => this.statehandler(states)}
             actions={this.actions}
+            categories = {this.state.categories}
           />
         </div>
       );
