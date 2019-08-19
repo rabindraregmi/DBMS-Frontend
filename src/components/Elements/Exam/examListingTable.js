@@ -4,7 +4,7 @@ import {
   faTrash,
   faEdit,
   faInfo,
-  faInfoCircle
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 export class ExamListingTable extends Component {
@@ -12,7 +12,8 @@ export class ExamListingTable extends Component {
     tableData: [],
     filtered: [],
     noResult: false,
-    isLoaded: false
+    isLoaded: false, 
+    categories:{}
   };
   headings = [
     {
@@ -75,6 +76,27 @@ export class ExamListingTable extends Component {
       this.setState({
           tableData: props.tableData
       })
+          let tableData = props.tableData;
+          let categories = {};
+          let groupBy = this.headings.filter(header => header.grouping);
+          for (let header of groupBy) {
+            let groupByKeyWord = header.field;
+            categories[groupByKeyWord] = [];
+            for (let item of tableData) {
+              //console.log("efse", item)
+              if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
+                categories[groupByKeyWord].push(item[groupByKeyWord]);
+              }
+            }
+          }
+          this.setState({
+  
+            categories: categories
+          });
+
+  }
+  statehandler = (states) =>{
+    this.setState(states)
   }
 
   render() {
@@ -87,6 +109,7 @@ export class ExamListingTable extends Component {
         state={this.state}
         setState={states => this.statehandler(states)}
         actions={this.actions}
+        categories = {this.state.categories}
       />
     );
   }

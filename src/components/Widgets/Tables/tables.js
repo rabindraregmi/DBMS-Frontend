@@ -58,7 +58,7 @@ class PendingPackageTable extends React.Component {
         } else {
             console.log(this.props.detailParams);
           templates = (
-            <Link to={{ pathname:`${action.link}${datas["id"]}`, state: this.props.detailParams    }} >
+            <Link to={{ pathname:`${action.link}${datas["id"]}`, state: this.props.detailParams}} >
               <FontAwesomeIcon icon={action.icon} />
             </Link>
           );

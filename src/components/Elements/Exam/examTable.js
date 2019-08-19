@@ -1,7 +1,54 @@
 import React from "react";
-import ExamGroupedTable from "./examGroupedTable.js";
+//import ExamGroupedTable from "./examGroupedTable.js";
+
+import {
+  faTrash,
+  faEdit,
+  faInfo,
+  faInfoCircle
+} from "@fortawesome/free-solid-svg-icons";
+import Table from "../../Widgets/Tables/tables.js";
+
+
 class ExamTable extends React.Component {
+  
+
+  headings = [
+    {
+      label: "Exam Title",
+      sort: "asc",
+      field: "title"
+    },
+    {
+        label: "Exam Type",
+        sort: "asc",
+        field: "type",
+        grouping : true
+
+      },
+      {
+        label: "Part",
+        sort: "asc",
+        field: "semester",
+        grouping: true
+      }
+  ];
+
+  actions = [
+    {
+      text: "Details",
+      icon: faInfoCircle,
+      link: "/exam-details/"
+    }
+  ];
+  
+  
   state = {
+    tableData:[],
+    filtered: [],
+    searchBy: "",
+    noResult: false,
+    isLoaded: false,
     groupedData: [],
     detailedGroupedData: [],
     categories: {}
@@ -70,8 +117,7 @@ class ExamTable extends React.Component {
             }
           }
           this.setState({
-            isLoaded: true,
-            tableData: json,
+  
             categories: categories
           });
         });
@@ -84,10 +130,16 @@ class ExamTable extends React.Component {
   render() {
     return (
       <div>
-        <ExamGroupedTable
-          tableData={this.state.groupedData}
-          detailData={this.state.detailedGroupedData}
-          categories={this.state.categories}
+       <Table
+          headings={this.headings}
+          tableData={
+            this.state.noResult ? this.state.filtered : this.state.groupedData
+          }
+          state={this.state}
+          setState={states => this.statehandler(states)}
+          actions={this.actions}
+          detailParams ={this.state.detailedGroupedData}
+          categories = {this.state.categories}
         />
       </div>
     );
