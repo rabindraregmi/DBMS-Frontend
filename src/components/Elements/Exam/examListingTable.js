@@ -3,7 +3,6 @@ import Table from "../../Widgets/Tables/tables.js";
 import {
   faTrash,
   faEdit,
-  faInfo,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,7 +10,7 @@ export class ExamListingTable extends Component {
   state = {
     tableData: [],
     filtered: [],
-    noResult: false,
+    isFiltered: false,
     isLoaded: false, 
     categories:{}
   };
@@ -104,7 +103,7 @@ export class ExamListingTable extends Component {
       <Table
         headings={this.headings}
         tableData={
-          this.state.noResult ? this.state.filtered : this.state.tableData
+          this.state.isFiltered ? this.state.filtered : this.state.tableData
         }
         state={this.state}
         setState={states => this.statehandler(states)}

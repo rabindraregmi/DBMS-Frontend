@@ -1,37 +1,35 @@
 import React from 'react';
-import Chart from '../../Widgets/Charts/charts.js';
+
 import PackageTable from './packageTable.js'
-import Buttons from '../../Home/homebuttons.js'
-import { faPlus,faEdit} from '@fortawesome/free-solid-svg-icons'
 import './packages.css'
 import BreadCrumb from '../../Widgets/Breadcrumb/breadcrumb.js'
-import {MDBCard, MDBCardBody, MDBCardHeader,MDBContainer} from 'mdbreact';
 
 
-const buttons = [
-    {
-        text: 'Entry New Package',
-        className:'package-button',
-        color:'#3ec7c2',
-        icon: faPlus,
-        link: '/add-new-package'
-    },
-    {
-        text: 'Assign Packages',
-        className : 'package-button',
-        color:'#1cafec',
-        icon:faEdit,
-        link:'/assign-package'
-    },
-    {
-        text: 'Add New Exam',
-        className: 'package-button',
-        link: '/add-new-exam',
-        color:'#3ec7c2',
-        icon:faPlus,
-    },
 
-]
+// const buttons = [
+//     {
+//         text: 'Entry New Package',
+//         className:'package-button',
+//         color:'#3ec7c2',
+//         icon: faPlus,
+//         link: '/add-new-package'
+//     },
+//     {
+//         text: 'Assign Packages',
+//         className : 'package-button',
+//         color:'#1cafec',
+//         icon:faEdit,
+//         link:'/assign-package'
+//     },
+//     {
+//         text: 'Add New Exam',
+//         className: 'package-button',
+//         link: '/add-new-exam',
+//         color:'#3ec7c2',
+//         icon:faPlus,
+//     },
+
+// ]
 class PackageHome extends React.Component {
 
     state = {

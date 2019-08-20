@@ -1,12 +1,10 @@
-import React, { Component, createElement } from "react";
+import React, { Component } from "react";
 
 import PendingPackageTable from "../../Home/pendingPackageTable.js";
 import { MDBCard, MDBCardBody, MDBCardHeader } from "mdbreact";
 import PackageTable from "../Package/packageTable.js";
 
 import ExamListingTable from "./examListingTable.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons'
 
 import './exams.css';
 export class ExamDetails extends Component {
@@ -28,7 +26,7 @@ export class ExamDetails extends Component {
     // console.log()
     const part = this.groupDetails.exams[0].part;
     const yyDate = this.groupDetails.exams[0].date.split("-")[0];
-    const examType = this.groupDetails.exams[0].examType;
+    //const examType = this.groupDetails.exams[0].examType;
     fetch(
       "http://localhost:4000/API/query/getPendingExamPackages/" +
         yyDate +
@@ -63,22 +61,17 @@ export class ExamDetails extends Component {
   }
 
   expandClickHandler = (event)=>{
-    
-    switch(event.target.id){
-      case "examDetail":
-        document.getElementById("examDetailBody").hidden = !document.getElementById("examDetailBody").hidden;
+    try{
 
-        break;
-      case "pendingPackageStatus":
-          
-          document.getElementById("pendingPackageStatusBody").hidden = !document.getElementById("pendingPackageStatusBody").hidden
-                
-        
-        break;
-      case "unassignedPackageStatus":
-          
-            document.getElementById("unassignedPackageStatusBody").hidden= !document.getElementById("unassignedPackageStatusBody").hidden
-        break;
+      document.getElementById(`${event.target.id}Body`).hidden = !document.getElementById(`${event.target.id}Body`).hidden;
+      
+      
+      document.getElementById(`${event.target.id}Icon`).innerHTML = document.getElementById(`${event.target.id}Body`)
+      .hidden?'<i class = "chevronIcon fas fa-chevron-up"></i>':'<i class = "chevronIcon fas fa-chevron-down"></i>';
+    }
+    catch
+    {
+      console.error(event.target)
     }
   }
 
@@ -90,10 +83,14 @@ export class ExamDetails extends Component {
     return (
       <div>
           <MDBCard>
-            <MDBCardHeader className= "expandableSection" id= "examDetail" onClick= {(event)=>this.expandClickHandler(event)} >
+            
+
+            <div className="card-header expandableSection" id= "examDetail" onClick= {(event)=>this.expandClickHandler(event)}>
               <b>Exam Details</b>
-              <FontAwesomeIcon className = "chevronIcon" icon = {faChevronDown}/>
-            </MDBCardHeader>
+              <span id="examDetailIcon"><i class = "chevronIcon fas fa-chevron-down"/></span>
+              {/* <FontAwesomeIcon className = "chevronIcon" icon = {faChevronUp}/> */}
+            </div>
+            
             <MDBCardBody id = "examDetailBody">
               {this.groupDetails.exams ? <ExamListingTable tableData={this.groupDetails.exams}/>: null}
             </MDBCardBody>
@@ -102,7 +99,8 @@ export class ExamDetails extends Component {
           <MDBCard>
             <MDBCardHeader className= "expandableSection"  id= "pendingPackageStatus" onClick= {(event)=>this.expandClickHandler(event)}>
               <b>Pending Package Status </b>
-              <FontAwesomeIcon className = "chevronIcon" icon = {faChevronDown}/>
+              <span id="pendingPackageStatusIcon"><i class = "chevronIcon fas fa-chevron-down"/></span>
+              {/* <FontAwesomeIcon className = "chevronIcon" icon = {faChevronUp}/> */}
             </MDBCardHeader>
             
             <MDBCardBody id= "pendingPackageStatusBody">
@@ -113,7 +111,8 @@ export class ExamDetails extends Component {
           <MDBCard>
             <MDBCardHeader className= "expandableSection"  id= "unassignedPackageStatus" onClick= {(event)=>this.expandClickHandler(event)}>
               <b>Unassigned Package Status</b>
-              <FontAwesomeIcon className = "chevronIcon" icon = {faChevronDown}/>
+              <span id="unassignedPackageStatusIcon"><i class = "chevronIcon fas fa-chevron-down"/></span>
+              {/* <FontAwesomeIcon className = "chevronIcon" icon = {faChevronUp}/> */}
             </MDBCardHeader>
             <MDBCardBody id= "unassignedPackageStatusBody">
               <PackageTable initialData={this.state.unassigned} />

@@ -58,7 +58,7 @@ class PendingPackageTable extends React.Component {
   state = {
     tableData: [],
     filtered: [],
-    noResult: false,
+    isFiltered: false,
     searchBy: "packageCode",
     items: [],
     isLoaded: true,
@@ -100,7 +100,7 @@ class PendingPackageTable extends React.Component {
         });
         console.log("Element after Overdue", json)
         let categories = {}
-        categories ['package'] = ["Overdue"]
+        categories['package'] = ["Overdue"]
         this.setState({
           isLoaded: true,
           tableData: json,
@@ -122,7 +122,7 @@ class PendingPackageTable extends React.Component {
           element['package'] = diff<0?"Overdue":"Pending"
         });
         let categories = {}
-        categories ['package'] = ["Overdue"]
+        categories['package'] = ["Overdue"]
         this.setState({
           isLoaded: true,
           tableData: json,
@@ -155,7 +155,7 @@ class PendingPackageTable extends React.Component {
             headings={this.headings}
             sortingOnlyList={this.sortingOnlyList}
             tableData={
-              this.state.noResult ? this.state.filtered : this.state.tableData
+              this.state.isFiltered ? this.state.filtered : this.state.tableData
             }
             state={this.state}
             setState={states => this.statehandler(states)}

@@ -139,7 +139,6 @@ class AddNewExam extends Component {
       filteredSubjectData: [],
       posted: false,
       errorOnSubmission: false,
-      errorText: "",
       postedData: []
     };
   }
@@ -319,7 +318,7 @@ class AddNewExam extends Component {
         if (
           dataToSubmit[key] === null ||
           dataToSubmit[key].match(/^ *$/) !== null ||
-          dataToSubmit[key] == 0
+          dataToSubmit[key] === 0
         ) {
           console.log("Empty ");
           state.formData[key].validationText =
@@ -357,7 +356,7 @@ class AddNewExam extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (examID != undefined) {
+            if (examID !== undefined) {
               this.props.history.goBack();
               return;
             }

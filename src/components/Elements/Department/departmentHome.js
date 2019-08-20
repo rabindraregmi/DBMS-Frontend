@@ -1,6 +1,5 @@
 import React from 'react';
 import Breadcrumb from '../../Widgets/Breadcrumb/breadcrumb.js'
-import {MDBContainer} from 'mdbreact'
 import Table from '../../Widgets/Tables/tables.js'
 
 
@@ -21,7 +20,7 @@ class DepartmentHome extends React.Component {
         tableData:[],
         isLoaded:false,
         filtered:[],
-        noResult:false,
+        isFiltered:false,
         searchBy:'departmentName'
     }
     componentDidMount =()=> {
@@ -49,7 +48,7 @@ class DepartmentHome extends React.Component {
                 <Breadcrumb/>
                 <Table
             headings = {this.headings}
-            tableData = {this.state.noResult?this.state.filtered:this.state.tableData}
+            tableData = {this.state.isFiltered?this.state.filtered:this.state.tableData}
             state = {this.state}
             setState = {(states)=>this.statehandler(states)}
             actions = {this.actions}

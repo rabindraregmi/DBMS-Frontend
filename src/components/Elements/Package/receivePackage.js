@@ -188,7 +188,7 @@ class ReceivePackage extends Component {
       .then(json => {
         //This type of Destructing enable to use that state variable directly and it is better than setting state directly this.state = ....
         let {formData} = this.state;
-        for (let [key, value] of Object.entries(json[0])) {
+        for (let key of Object.keys(json[0])) {
             console.log(key, json[0][key])
             
             formData[key].value = json[0][key]; 
@@ -205,8 +205,8 @@ class ReceivePackage extends Component {
     handleReceive = () =>{
         let {params} = this.props.match;
         let dataToSubmit = {}
-        dataToSubmit ['id'] = params.assignmentID
-        dataToSubmit ['dateOfSubmission'] = this.state.formData.dateOfSubmission.value;
+        dataToSubmit['id'] = params.assignmentID
+        dataToSubmit['dateOfSubmission'] = this.state.formData.dateOfSubmission.value;
        // console.log(dataToSubmit)
 
        fetch("http://localhost:4000/API/query/receivePackage", {
