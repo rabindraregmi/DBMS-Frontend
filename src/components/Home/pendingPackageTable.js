@@ -72,7 +72,7 @@ class PendingPackageTable extends React.Component {
 
   findDateDifference(myDate) {
     const now = new Date();
-    console.log(now, myDate);
+    //console.log(now, myDate);
     return Math.round((myDate - now) / (1000 * 60 * 60 * 24));
   }
   formatDate(date) {
@@ -92,13 +92,13 @@ class PendingPackageTable extends React.Component {
       .then(json => {
         //Calculate if package is overdue
         json.forEach(element => {
-          console.log(element);
+          //console.log(element);
           const myDate = this.parseDate(element["tobeSubmitted"]);
           const diff = this.findDateDifference(myDate);
           element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
           element['package'] = diff<0?"Overdue":"Pending"
         });
-        console.log("Element after Overdue", json)
+        //console.log("Element after Overdue", json)
         let categories = {}
         categories['package'] = ["Overdue"]
         this.setState({

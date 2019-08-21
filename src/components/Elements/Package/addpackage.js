@@ -159,7 +159,7 @@ class AddNewPackage extends Component {
       },
 
       examID: {
-        element: "select",
+        element: "inputselect",
         value: "",
         required: true,
         labelText: "Exam",

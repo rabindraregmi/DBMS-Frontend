@@ -250,11 +250,13 @@ class   TableOptions extends Component{
 
 
 
-    advancedButtonClickHandler = ()=>{
-       document.getElementById('advancedSearchOptions').hidden = !document.getElementById('advancedSearchOptions').hidden
-       this.setState({
-           searchBy:document.getElementById('searchBySelectBar').children[0].value
-       })
+    advancedButtonClickHandler=(event)=>{
+       //document.getElementById('advancedSearchOptions').hidden = !document.getElementById('advancedSearchOptions').hidden
+        let el = event.target;
+        el.nextSibling.hidden = !el.nextSibling.hidden
+    //    this.setState((prevState) => ({
+    //     isAdvancedSearch: !prevState.isAdvancedSearch 
+    //    }));
      }
 
       tableOptions = ()=>{
@@ -262,8 +264,8 @@ class   TableOptions extends Component{
         if (!this.state.isAdvancedSearch){
          return (
            <Fragment>
-            <button className = "btn btn-sm btn-default" onClick = {()=>this.advancedButtonClickHandler()}> &#8810;Advanced Search</button>
-           <div className = "advanceSearchOptions" id="advancedSearchOptions" hidden>
+            <button className = "btn btn-sm btn-default" onClick = {(event)=>{this.advancedButtonClickHandler(event)}}> &#8810;Advanced Search</button>
+            <div className="advanceSearchOptions" id="advancedSearchOptions" hidden>
 
                 <div className = "row">
 
@@ -281,6 +283,11 @@ class   TableOptions extends Component{
             </div>
           </Fragment>
          )
+       }
+       else {
+           return(
+            <button className = "btn btn-sm btn-default" onClick = {(event)=>{this.advancedButtonClickHandler(event)}}> &#8810;Advanced Search</button>
+           )
        }
 
       }
