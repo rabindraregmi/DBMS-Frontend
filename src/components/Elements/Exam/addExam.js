@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 import ExamTable from "./examTable.js";
+let adbs = require("ad-bs-converter");
 //import { async } from "q";
 class AddNewExam extends Component {
   constructor(props) {
@@ -113,7 +114,7 @@ class AddNewExam extends Component {
           validationText: ""
         },
         date: {
-          element: "input",
+          element: "date-picker",
           value: "",
           required: true,
           labelText: "Date",
@@ -314,7 +315,22 @@ class AddNewExam extends Component {
 
     const state = this.state;
     for (let key in this.state.formData) {
-      if (key === "subjectID" || key === "examType" || key === "date") {
+      if (key === "date" && dataToSubmit[key] === "") {
+        //Set the default value to today
+        const today = new Date();
+        const dd = today.getDate();
+        const mm = today.getMonth() + 1; //Months are zero based
+        const yyyy = today.getFullYear();
+        const nepaliDate = adbs.ad2bs(yyyy + "/" + mm + "/" + dd).en;
+        //Year month day format with  0 padded if mm or dd < 10
+        dataToSubmit[key] =
+          nepaliDate.year.toString() +
+          "/" +
+          ("0" + nepaliDate.month.toString()).slice(-2) +
+          "/" +
+          ("0" + nepaliDate.day.toString()).slice(-2);
+      }
+      if (key === "subjectID" || key === "examType") {
         if (
           dataToSubmit[key] === null ||
           dataToSubmit[key].match(/^ *$/) !== null ||

@@ -76,7 +76,7 @@ class ExamTable extends React.Component {
         .then(json => {
           //Group by data and year to separate exams
           json.forEach(element => {
-            const examYear = element.date.split("-")[0];
+            const examYear = element.date.split("/")[0];
             const part = element.part === "I" ? "Odd" : "Even";
             const type = element.examType;
             element.examTitle = examYear + " - " + part + "(" + type + ")";
