@@ -348,22 +348,22 @@ class AddNewPackage extends Component {
       fetch("http://localhost:4000/API/query/getPackage/" + packageID)
         .then(res => res.json())
         .then(json => {
-          //   let { formData } = this.state;
-          //   console.log(json[0]);
-          //   formData.level.value = "Bachelors";
-          //   formData.programID.value = json[0].programName;
-          //   formData.year.value = json[0].year;
-          //   formData.subjectID.value = json[0].subjectID;
-          //   formData.date.value = json[0].date;
-          //   formData.examType.value = json[0].examType;
-          //   formData.part.value = json[0].part;
-          //   this.setState({
-          //     formData: formData
-          //   });
-          //   this.loadProgramOptions();
-          //   this.loadSubjectOptions();
-          //   console.log(this.state.formData);
-          //   console.log("Value set");
+            // let { formData } = this.state;
+            // console.log(json[0]);
+            // formData.level.value = "Bachelors";
+            // formData.programID.value = json[0].programName;
+            // formData.year.value = json[0].year;
+            // formData.subjectID.value = json[0].subjectID;
+            // formData.date.value = json[0].date;
+            // formData.examType.value = json[0].examType;
+            // formData.part.value = json[0].part;
+            // this.setState({
+            //   formData: formData
+            // });
+            // this.loadProgramOptions();
+            // this.loadSubjectOptions();
+            // console.log(this.state.formData);
+            // console.log("Value set");
         });
     }
   };
