@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +25,7 @@ const Header = props => {
           </Link>
         </div>
         <div className="text-area">
-          <div class="main-title">
+          <div className="main-title">
  
               <Link to="/" style={{textDecoration:"none", color:"white"}}>Exam Package Management System</Link>
           </div>

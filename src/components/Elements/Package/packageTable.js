@@ -26,8 +26,10 @@ class PackageTable extends React.Component {
     },
     {
       label: "Exam",
+      text:"Exam",
       sort: "asc",
-      field: "examID"
+      field: "examName  ",
+      grouping: true,
     },
     {
       label: "Status",
@@ -52,20 +54,39 @@ class PackageTable extends React.Component {
     tableData: [],
     isLoaded: false,
     filtered: [],
-    noResult: false,
-    searchBy: "sn"
+    isFiltered: false,
+    searchBy: "sn",
+    categories: {}
   };
 
   componentWillReceiveProps(props) {
     if (props.initialData) {
       console.log(this.headings);
       this.headings = this.headings.filter(el => {
-        return el.label !== "Exam" && el.label !== "Status";
+        return el.label !== "Status";
       });
       let json = props.initialData;
+      let tableData = json;
+      let categories = {};
+      let groupBy = this.headings.filter(header => header.grouping);
+      for (let header of groupBy) {
+        let groupByKeyWord = header.field;
+        categories[groupByKeyWord] = [];
+        for (let item of tableData) {
+          //console.log("efse", item)
+          if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
+            categories[groupByKeyWord].push(item[groupByKeyWord]);
+          }
+        }
+      }
+
+
+
+
       this.setState({
         isLoaded: true,
-        tableData: json
+        tableData: json,
+        categories:categories
       });
     }
   }
@@ -81,9 +102,26 @@ class PackageTable extends React.Component {
         fetch("http://localhost:4000/API/query/getAllPackages")
           .then(res => res.json())
           .then(json => {
+            let tableData = json;
+            let categories = {};
+            let groupBy = this.headings.filter(header => header.grouping);
+            for (let header of groupBy) {
+              let groupByKeyWord = header.field;
+              categories[groupByKeyWord] = [];
+              for (let item of tableData) {
+                //console.log("efse", item)
+                if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
+                  categories[groupByKeyWord].push(item[groupByKeyWord]);
+                }
+              }
+            }
+            
+            
+            
             this.setState({
               isLoaded: true,
-              tableData: json
+              tableData: json,
+              categories:categories
             });
           });
       }
@@ -101,12 +139,12 @@ class PackageTable extends React.Component {
         <Table
           headings={this.headings}
           tableData={
-            this.state.noResult ? this.state.filtered : this.state.tableData
+            this.state.isFiltered ? this.state.filtered : this.state.tableData
           }
           state={this.state}
           setState={states => this.statehandler(states)}
           actions={this.actions}
-          sortingOnlyList={this.sortingOnlyList}
+          categories = {this.state.categories}
         />
       </div>
     );

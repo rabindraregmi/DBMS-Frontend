@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './sideNav.css'
 import { faHome} from '@fortawesome/free-solid-svg-icons'
 //import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
@@ -63,7 +63,7 @@ const SideNavItems = () => {
             return (
                 <div key={i} className={item.className}>
                     {/* <a data-toggle = "collapse" href= "#collapseExample" role= "button" aria-expanded="false" aria-controls="collapseExample"> */}
-                        <FontAwesomeIcon icon= {item.icon}/>
+                        {/* <FontAwesomeIcon icon= {item.icon}/> */}
                         <Link to= {item.link}>
 
                         {item.text}

@@ -96,7 +96,7 @@ const formFields = props => {
     switch (values.element) {
       case "input":
         formTemplate = (
-          <div class="form-group row">
+          <div className="form-group row">
             {showLabel(values.required, values.labelText)}
             <div className="col-sm-6">
               <input
@@ -164,7 +164,7 @@ const formFields = props => {
               <div className="form-check form-check-inline">
                 <input
                   key={i}
-                  class="form-check-input"
+                  className="form-check-input"
                   type="radio"
                   name="status"
                   id={`for-${i}`}

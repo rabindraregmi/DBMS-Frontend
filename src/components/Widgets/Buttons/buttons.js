@@ -7,9 +7,9 @@ const Button = (props) => {
         case 'submit':
             template = (
                
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                    <div className="form-group row">
+                        <div className="col-sm-10">
+                            <button type="submit" className="btn btn-primary">Submit</button>
                         </div>
                     </div>
                

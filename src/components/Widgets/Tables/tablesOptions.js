@@ -4,13 +4,13 @@ class   TableOptions extends Component{
             state = {
                 isAdvancedSearch: false,
                 searchBy: '',
-                filterSelected:[], 
+                filterSelected:[],
             }
         //CHangeSelectHandler Function is for setting State for selected Value in FILTER BY: option in every table
         //After the change in dropdown
         searchByFieldChangeHandler = event => {
-            let searchByKeyword = this.props.headings[event.target.value].field;
-            
+            let searchByKeyword = event.target.value;
+
             let states = {
                 searchBy: searchByKeyword
                 };
@@ -31,7 +31,7 @@ class   TableOptions extends Component{
         //     this.setState({
         //         filterOption: filterSelection
         //     })
-            
+
         // }
 
         //This function is used for Searching within Table and render only searched item
@@ -43,23 +43,18 @@ class   TableOptions extends Component{
             });
             //SETSTATE is not setting state, it is calling function passed in this.props which is setting state
             this.props.setState({
-                filtered: filteredData
+                filtered: filteredData,
+                isFiltered:keyword === ""?false:true
             });
-            //Case for No Result
-            if ((keyword !== "") & (this.props.state.filtered.length === 0)) {
-                this.props.setState({
-                    noResult: true
-            });
-            }
         };
 
-    
+
 
 //This method for showing options in Filter By:
         searchBySelection = () => {
                 return this.props.headings.map((header, i) => {
                     return (
-                    <option key={i} value={i}>
+                    <option key={i} value={header.field}>
                         {header.label}
                     </option>
                     );
@@ -69,7 +64,7 @@ class   TableOptions extends Component{
         searchByBar = () =>{
             return(
                 <div className="form-group col-md-1 col-lg-2">
-                <label for="searchBySelectBar">Search By:</label>
+                <label htmlFor="searchBySelectBar">Search By:</label>
                 <select
                   id="searchBySelectBar"
                   className="form-control "
@@ -83,7 +78,7 @@ class   TableOptions extends Component{
     searchBar = ()=>{
             return (
                 <div className="form-group col-md-1 col-lg-2">
-                <label>Search</label>
+                <label htmlFor= "searchBar">Search</label>
                 <input
                   type="text"
                   className="form-control"
@@ -97,7 +92,7 @@ class   TableOptions extends Component{
 
     // filterBySelection = () => {
     //     return this.props.headings.map((header, i) => {
-            
+
     //         return header.grouping?(
     //             <option key={i} value={header.field}>
     //                 {header.label}
@@ -130,17 +125,15 @@ class   TableOptions extends Component{
         });
     }
 
-    filterSelectionChangeHandler = (event,id) => {
-        let categories = this.props.categories
-        let selectedCategory = {}
+    // filterSelectionChangeHandler = (event,id) => {
+    //     let categories = this.props.categories
+    //     let selectedCategory = {}
 
-        selectedCategory[id] = event.target.value
+    //     selectedCategory[id] = event.target.value
 
-        console.log(selectedCategory)
-        
-        
+    //     console.log(selectedCategory)
 
-    }
+    // }
     // filterOptionBar = ()=>{
     //     return(
     //         <div className="form-group col-md-1 col-lg-2">
@@ -168,20 +161,26 @@ class   TableOptions extends Component{
         return categoryArray.map((option, i) => {
             let id = option.field
             return(
-                <div className="form-group col-md-1 col-lg-2">
+                <div key = {i} className="form-group col-md-1 col-lg-2">
                 <label htmlFor="filterOptionSelectBar">{option.field.charAt(0).toUpperCase() + option.field.substring(1)}</label>
                 <select
                   id={`${option.field}-filterOptionSelectBar`}
                   className="form-control "
                   //onChange={event=> this.filterSelectionChangeHandler(event,id)}
                 >
-                    <option value ={0} selected>Show All {option.field}</option>
+                    <option value ={0} defaultValue>Show All {option.field}</option>
                   {this.filterOptionsSelection(id)}
                 </select>
-                
+                 {/* <Select options={values.config.options}  clearable = {true}
+                    onChange={(values) => setValues(values, data.id)}
+                    searchBy= 'text' labelField = "text"
+                    className = "form-control"
+                    id={`${option.field}-filterOptionSelectBar`}
+              /> */}
               </div>
             );
         });
+
 
     }
     handleFilterClick = ()=>{
@@ -204,7 +203,7 @@ class   TableOptions extends Component{
             selectedDOM.push(tempJSON);
         }
         console.log(selectedDOM)
-        
+
         let filteredData = []
         for(let tableData of this.props.state.tableData)
         {
@@ -212,9 +211,9 @@ class   TableOptions extends Component{
             //if one of the condition failed, that particular tableDATA is not pushed into filtered DATA
             for (let element of selectedDOM)
             {
-                
+
                 for (let key of Object.keys(element))
-                {   
+                {
                     if(element[key]==='0')
                     {
                         flag = flag && true // 0 means show all so condition is always true thats why anded with true
@@ -222,18 +221,18 @@ class   TableOptions extends Component{
                     else
                     {
 
-                        flag = flag && tableData[key]===element[key] 
+                        flag = flag && tableData[key]===element[key]
                     }
                 }
             }
             if (flag) filteredData.push(tableData);
         }
 
-        
+
             console.log(filteredData)
             this.props.setState({
                 filtered: filteredData,
-                noResult:true
+                isFiltered:true
             });
 
     }
@@ -244,51 +243,54 @@ class   TableOptions extends Component{
             element.selectedIndex= 0;
         }
         this.props.setState({
-            filtered: this.props.state.tableData
+            filtered: this.props.state.tableData,
+            isFiltered:false
         });
     }
 
 
 
     advancedButtonClickHandler = ()=>{
-        this.setState((prevState) => ({
-         isAdvancedSearch: !prevState.isAdvancedSearch 
-        }));
-      }
+       document.getElementById('advancedSearchOptions').hidden = !document.getElementById('advancedSearchOptions').hidden
+       this.setState({
+           searchBy:document.getElementById('searchBySelectBar').children[0].value
+       })
+     }
+
       tableOptions = ()=>{
-       
-        if (this.state.isAdvancedSearch){
+
+        if (!this.state.isAdvancedSearch){
          return (
            <Fragment>
             <button className = "btn btn-sm btn-default" onClick = {()=>this.advancedButtonClickHandler()}> &#8810;Advanced Search</button>
-            <div className = "row">
+           <div className = "advanceSearchOptions" id="advancedSearchOptions" hidden>
 
-            {this.searchByBar()}
-            {this.searchBar()}
-            </div>
-            <div className = "row">
-            {this.filterOptionsBar()}
-            <div>
+                <div className = "row">
 
-            <button onClick = {()=>this.handleFilterClick()}class = "btn btn-md btn-secondary" style = {{marginTop: '30px'}}>Filter</button>
-            <button onClick = {()=>this.handleClearFilterClick()}class = "btn btn-md btn-danger" style = {{marginTop: '30px'}}>Clear Filter</button>
-            </div>
+                {this.searchByBar()}
+                {this.searchBar()}
+                </div>
+                <div className = "row">
+                {this.filterOptionsBar()}
+                <div>
+
+                <button onClick = {()=>this.handleFilterClick()}className = "btn btn-md btn-secondary" style = {{marginTop: '30px'}}>Filter</button>
+                <button onClick = {()=>this.handleClearFilterClick()}className = "btn btn-md btn-danger" style = {{marginTop: '30px'}}>Clear Filter</button>
+                </div>
+           </div>
             </div>
           </Fragment>
          )
        }
-       else
-        return (
-          <button className = "btn btn-sm btn-default" onClick = {()=>this.advancedButtonClickHandler()}> &#8810;Advanced Search</button>
-        )
+
       }
-    
+
     render(){
         return (
             <div className = "container-fluid">
                     {this.tableOptions()}
-                
-                
+
+
             </div>
         )
     }

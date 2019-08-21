@@ -11,6 +11,13 @@ class PendingPackageTable extends React.Component {
   //MDBtable needs data in JSON format.Data methods is used for that.
   //Headings is looped and stored in columns
   //tableData is looped and stored in rows
+  static defaultProps = {
+    headings:[],
+    categories:{},
+    tableData:[],
+
+  }
+
   data = () => {
     //headings is passed in this.props
     let headings = this.props.headings;
@@ -49,16 +56,16 @@ class PendingPackageTable extends React.Component {
         if (action.hasOwnProperty("onClick")) {
           templates = (
             <button
-              className="btn-xs btn-primary"
+            key = {index}  
+            className="btn-xs btn-primary"
               onClick={() => action.onClick(datas["id"])}
             >
               Receive Package
             </button>
           );
         } else {
-            console.log(this.props.detailParams);
           templates = (
-            <Link to={{ pathname:`${action.link}${datas["id"]}`, state: this.props.detailParams    }} >
+            <Link key = {index} to={{ pathname:`${action.link}${datas["id"]}`, state: this.props.detailParams}} >
               <FontAwesomeIcon icon={action.icon} />
             </Link>
           );
@@ -124,7 +131,6 @@ render(){
         <MDBDataTable
         //searching={false}
           data={this.data()}
-          tBodyColor="white"
           bordered
           sortable
           />

@@ -281,7 +281,7 @@ class AddNewPackage extends Component {
     });
   };
   loadExamOptions = () => {
-    let { examData, formData } = this.state;
+    let { examData} = this.state;
     let { subjectID } = this.state.formData;
 
     let subjectValue = subjectID.value;
@@ -318,7 +318,7 @@ class AddNewPackage extends Component {
 
   componentDidMount = () => {
     let { examID } = this.state.formData;
-    let examOptions = examID.config.options;
+    //let examOptions = examID.config.options;
     fetch("http://localhost:4000/API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
@@ -341,7 +341,7 @@ class AddNewPackage extends Component {
           examData: json
         });
       });
-    console.log(examOptions);
+    //console.log(examOptions);
 
     const packageID = this.props.match.params.packageID;
     if (packageID !== undefined) {

@@ -261,7 +261,7 @@ class Person extends React.Component {
       if (
         dataToSubmit[key] === null ||
         dataToSubmit[key].match(/^ *$/) !== null ||
-        dataToSubmit[key] == 0
+        dataToSubmit[key] ===0
       ) {
         console.log("Empty ");
         state.formData[key].validationText =

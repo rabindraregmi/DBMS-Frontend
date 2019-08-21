@@ -108,8 +108,6 @@ class AssignPackage extends Component {
 
   increaseDynamicForm = noOfPacket => {
     noOfPacket = 1;
-
-    let key = "Package-";
     //  newChild
     let newChild = {
       id: this.id,
@@ -150,7 +148,7 @@ class AssignPackage extends Component {
         packages: {
           ...prevState.formData.packages,
           childs: prevState.formData.packages.childs.filter((value, index) => {
-            return value.id != targetIndex;
+            return value.id !==targetIndex;
           })
         }
       }
@@ -221,7 +219,7 @@ class AssignPackage extends Component {
         if (
           dataToSubmit[key] === null ||
           dataToSubmit[key].match(/^ *$/) !== null ||
-          dataToSubmit[key] == 0
+          dataToSubmit[key] ===0
         ) {
           console.log("Empty ");
           state.formData[key].validationText =

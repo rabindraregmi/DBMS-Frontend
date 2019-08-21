@@ -3,16 +3,16 @@ import Table from "../../Widgets/Tables/tables.js";
 import {
   faTrash,
   faEdit,
-  faInfo,
-  faInfoCircle
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 export class ExamListingTable extends Component {
   state = {
     tableData: [],
     filtered: [],
-    noResult: false,
-    isLoaded: false
+    isFiltered: false,
+    isLoaded: false, 
+    categories:{}
   };
   headings = [
     {
@@ -75,6 +75,27 @@ export class ExamListingTable extends Component {
       this.setState({
           tableData: props.tableData
       })
+          let tableData = props.tableData;
+          let categories = {};
+          let groupBy = this.headings.filter(header => header.grouping);
+          for (let header of groupBy) {
+            let groupByKeyWord = header.field;
+            categories[groupByKeyWord] = [];
+            for (let item of tableData) {
+              //console.log("efse", item)
+              if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
+                categories[groupByKeyWord].push(item[groupByKeyWord]);
+              }
+            }
+          }
+          this.setState({
+  
+            categories: categories
+          });
+
+  }
+  statehandler = (states) =>{
+    this.setState(states)
   }
 
   render() {
@@ -82,11 +103,12 @@ export class ExamListingTable extends Component {
       <Table
         headings={this.headings}
         tableData={
-          this.state.noResult ? this.state.filtered : this.state.tableData
+          this.state.isFiltered ? this.state.filtered : this.state.tableData
         }
         state={this.state}
         setState={states => this.statehandler(states)}
-        actions={this.actions}  
+        actions={this.actions}
+        categories = {this.state.categories}
       />
     );
   }

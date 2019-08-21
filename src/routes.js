@@ -14,7 +14,7 @@ import ExamTable from "./components/Elements/Exam/examTable.js";
 import Person from "./components/Elements/Person/person.js"
 import ReceivePackage from './components/Elements/Package/receivePackage.js'
 import Test from './components/Widgets/test.js'
-import Login from "./components/Elements/Login/login.js";
+//import Login from "./components/Elements/Login/login.js";
 import ExamDetails from "./components/Elements/Exam/examDetails.js";
 
 class Routes extends Component {

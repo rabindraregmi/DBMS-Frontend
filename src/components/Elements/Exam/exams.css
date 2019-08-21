@@ -1,3 +1,7 @@
 .expandableSection {
     cursor: pointer;
 }
+.chevronIcon
+{
+    float: right;
+}

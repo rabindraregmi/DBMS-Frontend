@@ -10,11 +10,14 @@ class Example extends PureComponent {
   barItem = (dataKeys)=>
   {
     return dataKeys.map((key,index)=>{
-      if (index!=0){
+      if (index!==0){
 
         return (
           <Bar key = {index} fill= {this.chartColor[index]} dataKey = {dataKeys[index]}/>
           )
+        }
+        else{
+          return null
         }  
     })
   }

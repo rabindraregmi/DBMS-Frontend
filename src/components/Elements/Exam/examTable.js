@@ -1,72 +1,54 @@
 import React from "react";
+//import ExamGroupedTable from "./examGroupedTable.js";
+
 import {
-  faTrash,
-  faEdit,
-  faInfo,
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import Table from "../../Widgets/Tables/tables.js";
-import ExamGroupedTable from "./examGroupedTable.js";
+
+
 class ExamTable extends React.Component {
+  
+
   headings = [
     {
-      label: "Date",
+      label: "Exam Title",
       sort: "asc",
-      field: "date"
+      field: "title",
+      grouping:true
     },
     {
-      label: "Exam Type",
-      sort: "asc",
-      field: "examType",
-      grouping: true
-    },
-    {
-      label: "Course Code",
-      sort: "asc",
-      field: "courseCode"
-    },
-    {
-      label: "Year",
-      sort: "asc",
-      field: "year",
-      grouping: true
-    },
-    {
-      label: "Part",
-      sort: "asc",
-      field: "part",
-      grouping: true
-    },
-    {
-      label: "Program Name",
-      sort: "asc",
-      field: "programName",
-      grouping: true
-    }
+        label: "Exam Type",
+        text: "Exam Type",
+        sort: "asc",
+        field: "type",
+        grouping : true
+
+      },
+      {
+
+        label: "Part",
+        text: "Part",
+        sort: "asc",
+        field: "semester",
+        grouping: true
+      }
   ];
 
   actions = [
     {
-      text: "Edit",
-      icon: faEdit,
-      link: "/edit-exam/"
-    },
-    {
-      text: "Delete",
-      icon: faTrash,
-      link: "/"
-    },
-    {
-      text: "View Details",
+      text: "Details",
       icon: faInfoCircle,
       link: "/exam-details/"
     }
   ];
-
+  
+  
   state = {
-    tableData: [],
+    tableData:[],
     filtered: [],
-    noResult: false,
+    searchBy: "",
+    isFiltered: false,
     isLoaded: false,
     groupedData: [],
     detailedGroupedData: [],
@@ -99,6 +81,7 @@ class ExamTable extends React.Component {
             const type = element.examType;
             element.examTitle = examYear + " - " + part + "(" + type + ")";
           });
+          
           const groups = this.groupBy(json, "examTitle");
           let groupsArr = [];
           let detailsArr = [];
@@ -113,16 +96,9 @@ class ExamTable extends React.Component {
             detailsArr.push({ id: index, title: key, exams: value });
           });
           console.log(groupsArr);
-          console.log(json);
+          console.log("This is ",json);
 
-          this.setState({
-            isLoaded: true,
-            tableData: json,
-            groupedData: groupsArr,
-            detailedGroupedData: detailsArr
-          });
-
-          let tableData = json;
+          let tableData = groupsArr;
           let categories = {};
           let groupBy = this.headings.filter(header => header.grouping);
           for (let header of groupBy) {
@@ -137,7 +113,9 @@ class ExamTable extends React.Component {
           }
           this.setState({
             isLoaded: true,
-            tableData: json,
+            tableData: groupsArr,
+            groupedData: groupsArr,
+            detailedGroupedData: detailsArr,
             categories: categories
           });
         });
@@ -162,10 +140,16 @@ class ExamTable extends React.Component {
       //     />
       //   </div>
       <div>
-        <ExamGroupedTable
-          tableData={this.state.groupedData}
-          detailData={this.state.detailedGroupedData}
-          categories={this.state.categories}
+       <Table
+          headings={this.headings}
+          tableData={
+            this.state.isFiltered ? this.state.filtered : this.state.groupedData
+          }
+          state={this.state}
+          setState={states => this.statehandler(states)}
+          actions={this.actions}
+          detailParams ={this.state.detailedGroupedData}
+          categories = {this.state.categories}
         />
       </div>
     );
