@@ -115,7 +115,7 @@ const formFields = props => {
                     dateChangeHandler(date, data.id);
                   }}
                 />
-              ) : (
+              ) :(
                 <DatePicker
                   date={props.formData[data.id].value}
                   onChange={date => {
