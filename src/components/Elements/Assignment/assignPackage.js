@@ -5,6 +5,7 @@ let adbs = require("ad-bs-converter");
 class AssignPackage extends Component {
   id = 0;
   options = [];
+
   state = {
     personID: "",
     personData: {},
@@ -112,7 +113,8 @@ class AssignPackage extends Component {
     //  newChild
     let newChild = {
       id: this.id,
-      element: "selectDynamic",
+      element: "inputselect",
+      removeButton: true, 
       value: "0",
       label: true,
       labelText: "Package",
@@ -155,27 +157,43 @@ class AssignPackage extends Component {
       }
     }));
   };
+  formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   componentDidMount = () => {
     let { params } = this.props.match;
     console.log(params);
-
+    Date.prototype.addDays=function(d){return new Date(this.valueOf()+864E5*d);};
     fetch(`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
       .then(res => res.json())
       .then(json => {
+        // this.setState({
+        //   personID: params.personID,
+        //   isLoaded: true,
+        //   personData: json
+        // });
+        let { formData} = this.state;
+        let assignmentDate = this.formatDate(new Date())
+        let date= new Date()
+        let deadlineDate = this.formatDate(date.addDays(20));
+        formData.name.value = json[0].name;
+        formData.contact.value = json[0].contact;
+        formData.address.value = json[0].campus;
+        formData.dateOfAssignment.value = assignmentDate;
+        formData.dateOfDeadline.value = deadlineDate
         this.setState({
-          personID: params.personID,
-          isLoaded: true,
-          personData: json
-        });
-        let { formData, personData } = this.state;
-        console.log(personData);
-
-        formData.name.value = personData[0].name;
-        formData.contact.value = personData[0].contact;
-        formData.address.value = personData[0].campus;
-        this.setState({
-          formData: formData
+          formData: formData,
+          isLoaded:true,
+          personData:json,
+          personID:params.personID
         });
       });
 

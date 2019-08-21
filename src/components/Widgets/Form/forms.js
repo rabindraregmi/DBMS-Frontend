@@ -87,7 +87,6 @@ const formFields = props => {
     console.log(values, id);
 
     const newState = props.formData;
-    console.log(id);
     var re = /^[0-9]+$/;
     if (re.test(id)) {
       newState.packages.childs[id].value =
@@ -103,7 +102,7 @@ const formFields = props => {
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";
-
+   // console.log("This is data", data)
     switch (values.element) {
       case "date-picker":
         formTemplate = (
@@ -152,37 +151,53 @@ const formFields = props => {
 
         break;
       case "select":
-        formTemplate = (
-          <div className="form-group row">
-            {showLabel(values.required, values.labelText)}
-            <div className="col-sm-6">
-              <Select
-                options={values.config.options}
-                clearable={true}
-                onChange={values => setValues(values, data.id)}
-                searchBy="text"
-                labelField="text"
-                className="form-control"
-              />
-
-              {/* <select
+          formTemplate = (
+            <div className="form-group row">
+              {showLabel(values.required, values.labelText)}
+              <div className="col-sm-6">
+              <select
                 value={values.value}
                 name={values.config.name}
                 onChange={event => changeHandler(event, data.id)}
                 className="form-control"
               >
-                <option value="0">Select {values.config.name}</option>
-                {values.config.options.map((item, i) => (
-                  <option key={i} value={item.val}>
-                    {item.text}
-                  </option>
-                ))}
-              </select> */}
-              {!values.valid ? (
-                <div autoFocus className="alert alert-danger">
-                  {values.validationText}
-                </div>
-              ) : null}
+          <option value="0">Select {values.config.name}</option>
+          {values.config.options.map((item, i) => (
+            <option key={i} value={item.val}>
+              {item.text}
+            </option>
+          ))}
+        </select>  
+            
+                {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
+              </div>
+            </div>
+          );
+        
+      break
+      case "inputselect":
+        formTemplate = (
+          <div className="form-group row">
+            {showLabel(values.required, values.labelText)}
+            <div className="col-sm-6"  style={{ display: "flex" }}>
+              
+            <Select options={values.config.options}  clearable = {true} 
+              onChange={(values) => setValues(values, data.id)}
+              searchBy= 'text' labelField = "text"
+              className = "form-control"
+              />
+              {values.removeButton?<button
+                className="btn btn-md btn-danger"
+                style={{ marginTop: "-1.8px", marginLeft: "10px" }}
+                onClick={() => {
+                  // console.log(props);
+                  props.dynamicDecrease(values.id);
+                }}
+              >
+                Delete
+              </button>:null}
+          
+              {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
             </div>
           </div>
         );
@@ -238,49 +253,6 @@ const formFields = props => {
           </div>
         );
         break;
-      case "selectDynamic":
-        formTemplate = (
-          <div className="form-group row">
-            {showLabel(values.required, values.labelText)}
-            <div className="col-sm-6" style={{ display: "flex" }}>
-              <Select
-                options={values.config.options}
-                clearable={true}
-                onChange={values => setValues(values, data.id)}
-                searchBy="text"
-                labelField="text"
-                className="form-control"
-              />
-
-              {/* <select
-                value={values.value}
-                name={values.config.name}
-                onChange={event => changeHandler(event, data.id)}
-                className="form-control"
-              >
-                <option value="0">Select {values.config.name}</option>
-                {values.config.options.map((item, i) => (
-                  <option key={i} value={item.val}>
-                    {item.text}
-                  </option>
-                ))}
-              </select> */}
-
-              <button
-                className="btn btn-md btn-danger"
-                style={{ marginTop: "-1.8px", marginLeft: "10px" }}
-                onClick={() => {
-                  // console.log(props);
-                  props.dynamicDecrease(values.id);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        );
-        break;
-
       default:
         formTemplate = null;
     }
