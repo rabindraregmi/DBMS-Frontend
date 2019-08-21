@@ -86,7 +86,7 @@ export class ExamListingTable extends Component {
         }
         state={this.state}
         setState={states => this.statehandler(states)}
-        actions={this.actions}
+        actions={this.actions}  
       />
     );
   }
