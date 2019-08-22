@@ -159,7 +159,8 @@ class AddNewPackage extends Component {
       },
 
       examID: {
-        element: "inputselect",
+        // element: "inputselect",
+        element: "select",
         value: "",
         required: true,
         labelText: "Exam",
@@ -281,7 +282,7 @@ class AddNewPackage extends Component {
     });
   };
   loadExamOptions = () => {
-    let { examData} = this.state;
+    let { examData } = this.state;
     let { subjectID } = this.state.formData;
 
     let subjectValue = subjectID.value;
@@ -348,22 +349,33 @@ class AddNewPackage extends Component {
       fetch("http://localhost:4000/API/query/getPackage/" + packageID)
         .then(res => res.json())
         .then(json => {
-          //   let { formData } = this.state;
-          //   console.log(json[0]);
-          //   formData.level.value = "Bachelors";
-          //   formData.programID.value = json[0].programName;
-          //   formData.year.value = json[0].year;
-          //   formData.subjectID.value = json[0].subjectID;
-          //   formData.date.value = json[0].date;
-          //   formData.examType.value = json[0].examType;
-          //   formData.part.value = json[0].part;
-          //   this.setState({
-          //     formData: formData
-          //   });
-          //   this.loadProgramOptions();
-          //   this.loadSubjectOptions();
-          //   console.log(this.state.formData);
-          //   console.log("Value set");
+          let { formData } = this.state;
+          console.log(json);
+          console.log(json[0]);
+          formData.packageCode.value = json[0].packageCode;
+          formData.noOfCopies.value = json[0].noOfCopies;
+          formData.codeStart.value = json[0].codeStart;
+          formData.codeEnd.value = json[0].codeEnd;
+
+          formData.level.value = json[0].academicDegree;
+          formData.programID.value = json[0].programName;
+          formData.year.value = json[0].year;
+          formData.part.value = json[0].part;
+          formData.subjectID.value = json[0].subjectID;
+          formData.examID.value = json[0].examID;
+
+          this.setState(
+            {
+              formData: formData
+            },
+            async () => {
+              await this.loadProgramOptions();
+              await this.loadSubjectOptions();
+              await this.loadExamOptions();
+              console.log(this.state.formData);
+              console.log("Value set");
+            }
+          );
         });
     }
   };
@@ -411,8 +423,17 @@ class AddNewPackage extends Component {
     }
 
     console.log(dataToSubmit);
-    fetch("http://localhost:4000/API/query/addPackage", {
-      method: "POST",
+
+    let url = "http://localhost:4000/API/query/addPackage";
+    let methodType = "POST";
+    //URL for update route
+    const packageID = this.props.match.params.packageID;
+    if (packageID !== undefined) {
+      url = `http://localhost:4000/API/query/editPackage/${packageID}`;
+      methodType = "PUT";
+    }
+    fetch(url, {
+      method: methodType,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
@@ -424,6 +445,10 @@ class AddNewPackage extends Component {
           let { postedData } = this.state;
           console.log(body);
           if (res.status === 200) {
+            if (packageID !== undefined) {
+              this.props.history.goBack();
+              return;
+            }
             body["status"] = "Not Assigned";
             postedData.push(body);
             this.setState({

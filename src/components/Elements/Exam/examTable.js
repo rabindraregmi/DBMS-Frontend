@@ -69,7 +69,7 @@ class ExamTable extends React.Component {
         .then(json => {
           //Group by data and year to separate exams
           json.forEach(element => {
-            const examYear = element.date.split("-")[0];
+            const examYear = element.date.split("/")[0];
             const part = element.part === "I" ? "Odd" : "Even";
             const type = element.examType;
             element.examTitle = examYear + " - " + part + "(" + type + ")";
@@ -119,7 +119,19 @@ class ExamTable extends React.Component {
     this.setState(states);
   };
   render() {
+    //let { isLoaded } = this.state;
     return (
+      //   <div className="container-fluid">
+      //     <Table
+      //       headings={this.headings}
+      //       tableData={
+      //         this.state.noResult ? this.state.filtered : this.state.tableData
+      //       }
+      //       state={this.state}
+      //       setState={states => this.statehandler(states)}
+      //       actions={this.actions}
+      //     />
+      //   </div>
       <div>
        <Table
           headings={this.headings}

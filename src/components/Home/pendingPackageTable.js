@@ -1,6 +1,7 @@
 import React from "react";
 import Table from "../Widgets/Tables/tables.js";
 import { faReceipt } from "@fortawesome/free-solid-svg-icons";
+let adbs = require("ad-bs-converter");
 
 //import { confirmAlert } from 'react-confirm-alert'; // Import
 //import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
@@ -41,7 +42,7 @@ class PendingPackageTable extends React.Component {
     {
       label: "Status",
       text: "Status",
-      field:'status',
+      field: "status",
       colspan: "2",
       grouping: true,
       type: "Overdue"
@@ -62,12 +63,17 @@ class PendingPackageTable extends React.Component {
     searchBy: "packageCode",
     items: [],
     isLoaded: true,
-    categories:{}
+    categories: {}
   };
 
   parseDate(str) {
-    const mdy = str.split("-");
-    return new Date(mdy[0], mdy[1] - 1, parseInt(mdy[2]) + 1);
+    //Convert to english
+    const englishDate = adbs.bs2ad(str);
+    return new Date(
+      englishDate.year,
+      englishDate.month - 1,
+      englishDate.day + 1
+    );
   }
 
   findDateDifference(myDate) {
@@ -76,15 +82,13 @@ class PendingPackageTable extends React.Component {
     return Math.round((myDate - now) / (1000 * 60 * 60 * 24));
   }
   formatDate(date) {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
+    let d = new Date(date);
+    //Convert back to nepali
+    const nepaliDate = adbs.ad2bs(d);
+    const year = nepaliDate.en.year;
+    const month = ("0" + nepaliDate.en.month).slice(-2);
+    const day = ("0" + nepaliDate.en.day).slice(-2);
+    return [year, month, day].join("/");
   }
   getPendingPackageFromAPI = () => {
     fetch("http://localhost:4000/API/query/getPendingPackages")
@@ -96,11 +100,11 @@ class PendingPackageTable extends React.Component {
           const myDate = this.parseDate(element["tobeSubmitted"]);
           const diff = this.findDateDifference(myDate);
           element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
-          element['package'] = diff<0?"Overdue":"Pending"
+          element["package"] = diff < 0 ? "Overdue" : "Pending";
         });
-        //console.log("Element after Overdue", json)
-        let categories = {}
-        categories['package'] = ["Overdue"]
+        console.log("Element after Overdue", json);
+        let categories = {};
+        categories["package"] = ["Overdue"];
         this.setState({
           isLoaded: true,
           tableData: json,
@@ -110,25 +114,24 @@ class PendingPackageTable extends React.Component {
   };
 
   componentWillReceiveProps(props) {
-
-      if (props.initialData) {
-        console.log(this.headings);
-        let json = props.initialData;
-        json.forEach(element => {
-          console.log(element);
-          const myDate = this.parseDate(element["tobeSubmitted"]);
-          const diff = this.findDateDifference(myDate);
-          element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
-          element['package'] = diff<0?"Overdue":"Pending"
-        });
-        let categories = {}
-        categories['package'] = ["Overdue"]
-        this.setState({
-          isLoaded: true,
-          tableData: json,
-          categories: categories
-        });
-      }
+    if (props.initialData) {
+      console.log(this.headings);
+      let json = props.initialData;
+      json.forEach(element => {
+        console.log(element);
+        const myDate = this.parseDate(element["tobeSubmitted"]);
+        const diff = this.findDateDifference(myDate);
+        element["Overdue"] = { isOverdue: diff < 0, days: Math.abs(diff) };
+        element["package"] = diff < 0 ? "Overdue" : "Pending";
+      });
+      let categories = {};
+      categories["package"] = ["Overdue"];
+      this.setState({
+        isLoaded: true,
+        tableData: json,
+        categories: categories
+      });
+    }
   }
 
   componentDidMount = () => {
@@ -145,7 +148,7 @@ class PendingPackageTable extends React.Component {
     if (!isLoaded) {
       return (
         <div>
-          <h1>Loading......Start the damn  Server you IDIOT</h1>
+          <h1>Loading......Start the damn Server you IDIOT</h1>
         </div>
       );
     } else {
@@ -160,7 +163,7 @@ class PendingPackageTable extends React.Component {
             state={this.state}
             setState={states => this.statehandler(states)}
             actions={this.actions}
-            categories = {this.state.categories}
+            categories={this.state.categories}
           />
         </div>
       );

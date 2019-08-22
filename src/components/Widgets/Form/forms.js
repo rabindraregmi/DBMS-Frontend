@@ -2,6 +2,7 @@ import React from "react";
 import Select from "react-dropdown-select";
 
 import "./forms.css";
+import DatePicker from "react-datepicker-nepali";
 
 const formFields = props => {
   const renderFields = () => {
@@ -72,26 +73,67 @@ const formFields = props => {
       return <div key={i}>{renderTemplates(item)}</div>;
     });
   };
-  const setValues = (values, id)=>{
-    console.log(values, id)
+
+//This method is used for React Nepali Date picker to store selected date value in formData
+  const dateChangeHandler = (date, id) => {
+    console.log(date, id);
+    const newState = props.formData;
+    newState[id].value = date;
+    let validateData = validate(newState[id]);
+    newState[id].valid = validateData[0];
+    newState[id].validationMessage = validateData[1];
+    props.change(newState, id);
+  };
+
+  const setValues = (values, id) => {
+    console.log(values, id);
+
     const newState = props.formData;
     var re = /^[0-9]+$/;
     if (re.test(id)) {
-      newState.packages.childs[id].value = values.length!==0?values[0].val:null;
+      newState.packages.childs[id].value =
+        values.length !== 0 ? values[0].val : null;
     } else {
-      newState[id].value = values.length!==0?values[0].val:null;
+      newState[id].value = values.length !== 0 ? values[0].val : null;
       let validateData = validate(newState[id]);
       newState[id].valid = validateData[0];
       newState[id].validationMessage = validateData[1];
     }
     props.change(newState, id);
+  };
 
-  }
+
+
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";
-   // console.log("This is data", data)
     switch (values.element) {
+      case "date-picker":
+        formTemplate = (
+          <div className="form-group row">
+            {showLabel(values.required, values.labelText)}
+            <div className="col-sm-6">
+              {props.formData[data.id].value === "" ? (
+                <DatePicker
+                  onChange={date => {
+                    dateChangeHandler(date, data.id);
+                  }}
+                />
+              ) :(
+                <DatePicker
+                  date={props.formData[data.id].value}
+                  onChange={date => {
+                    dateChangeHandler(date, data.id);
+                  }}
+                />
+              )}
+              {!values.valid ? (
+                <p style={{ color: "red" }}>{values.validationText}</p>
+              ) : null}
+            </div>
+          </div>
+        );
+        break;
       case "input":
         formTemplate = (
           <div className="form-group row">
@@ -103,8 +145,10 @@ const formFields = props => {
                 {...values.config}
                 value={values.value}
                 onChange={event => changeHandler(event, data.id)}
-                />
-                {!values.valid? <p style= {{color:'red'}}>{values.validationText}</p>: null}
+              />
+              {!values.valid ? (
+                <p style={{ color: "red" }}>{values.validationText}</p>
+              ) : null}
             </div>
           </div>
         );
@@ -219,32 +263,31 @@ const formFields = props => {
     return formTemplate;
   };
   return (
-    <form 
-        className="main-form"
-        onSubmit={event => {
+    <form
+      className="main-form"
+      onSubmit={event => {
         event.preventDefault();
-        }}
-    
+      }}
     >
       {renderFields()}
 
       <button
-          className="btn btn-primary"
-          id="save"
-          onClick={event => props.submitForm(event)}
-          type="submit"
-          >
-          Save
-        </button>
+        className="btn btn-primary"
+        id="save"
+        onClick={event => props.submitForm(event)}
+        type="submit"
+      >
+        Save
+      </button>
 
-        <button
-          className="btn btn-secondary"
-          type="reset"
-          id="snc"
-          onClick={event => this.submitForm(event)}
-          >
-          Save and Continue
-        </button>
+      <button
+        className="btn btn-secondary"
+        type="reset"
+        id="snc"
+        onClick={event => this.submitForm(event)}
+      >
+        Save and Continue
+      </button>
     </form>
   );
 };

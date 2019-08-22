@@ -1,37 +1,35 @@
-import React from 'react';
-import Buttons from './homebuttons.js'
-import PendingPackageTable from './pendingPackageTable.js'
-import './buttons.css'
-import { faPlus,faEdit} from '@fortawesome/free-solid-svg-icons'
-import BreadCrumb from '../Widgets/Breadcrumb/breadcrumb.js'
-import Chart from '../Widgets/Charts/charts.js'
-import {MDBCard, MDBCardBody, MDBCardHeader,MDBContainer} from 'mdbreact';
-
+import React from "react";
+import Buttons from "./homebuttons.js";
+import PendingPackageTable from "./pendingPackageTable.js";
+import "./buttons.css";
+import { faPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
+import BreadCrumb from "../Widgets/Breadcrumb/breadcrumb.js";
+import Chart from "../Widgets/Charts/charts.js";
+import { MDBCard, MDBCardBody, MDBCardHeader, MDBContainer } from "mdbreact";
 
 const buttons = [
-    {
-        text: 'Entry New Package',
-        className: 'home-button',
-        color:'#3ec7c2',
-        icon: faPlus,
-        link: '/add-new-package'
-    },
-    {
-        text: 'Assign Packages',
-        className: 'home-button',
-        color:'#1cafec',
-        icon:faEdit,
-        link:'/intermediate'
-    },
-    {
-        text: 'Add New Exam',
-        className: 'home-button',
-        link: '/add-new-exam',
-        color:'#3ec7c2',
-        icon:faPlus,
-    },
-
-]
+  {
+    text: "Entry New Package",
+    className: "home-button",
+    color: "#3ec7c2",
+    icon: faPlus,
+    link: "/add-new-package"
+  },
+  {
+    text: "Assign Packages",
+    className: "home-button",
+    color: "#1cafec",
+    icon: faEdit,
+    link: "/intermediate"
+  },
+  {
+    text: "Add New Exam",
+    className: "home-button",
+    link: "/add-new-exam",
+    color: "#3ec7c2",
+    icon: faPlus
+  }
+];
 class Home extends React.Component {
     
     
@@ -110,7 +108,7 @@ class Home extends React.Component {
                </div>
                <MDBCard style = {{marginTop:'20px'}}>
               <MDBCardHeader>
-                PENDING PACKAGES
+                Pending Packages
               </MDBCardHeader>
               <MDBCardBody>
                     <PendingPackageTable/>

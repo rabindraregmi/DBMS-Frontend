@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
+let adbs = require("ad-bs-converter");
 
 class AssignPackage extends Component {
   id = 0;
@@ -61,7 +62,7 @@ class AssignPackage extends Component {
         validationText: ""
       },
       dateOfAssignment: {
-        element: "input",
+        element: "date-picker",
         value: "",
         label: true,
         labelText: "Date of Assignment",
@@ -78,7 +79,7 @@ class AssignPackage extends Component {
         validationText: ""
       },
       dateOfDeadline: {
-        element: "input",
+        element: "date-picker",
         value: "",
         label: true,
         labelText: "Date of Deadline",
@@ -150,7 +151,7 @@ class AssignPackage extends Component {
         packages: {
           ...prevState.formData.packages,
           childs: prevState.formData.packages.childs.filter((value, index) => {
-            return value.id !==targetIndex;
+            return value.id !== targetIndex;
           })
         }
       }
@@ -214,13 +215,24 @@ class AssignPackage extends Component {
     let dataToSubmit = {};
     dataToSubmit["personID"] = this.state.personID;
     for (let key in this.state.formData) {
-      if (
-        key === "name" ||
-        key === "contact" ||
-        key === "address" ||
-        key === "noOfPacket"
-      ) {
-        continue;
+      if (key === "dateOfAssignment" || key === "dateOfDeadline") {
+        dataToSubmit[key] = this.state.formData[key].value;
+        if (dataToSubmit[key] === "") {
+          console.log("Insert today");
+          //Set the default value to today
+          const today = new Date();
+          const dd = today.getDate();
+          const mm = today.getMonth() + 1; //Months are zero based
+          const yyyy = today.getFullYear();
+          const nepaliDate = adbs.ad2bs(yyyy + "/" + mm + "/" + dd).en;
+          //Year month day format with  0 padded if mm or dd < 10
+          dataToSubmit[key] =
+            nepaliDate.year.toString() +
+            "/" +
+            ("0" + nepaliDate.month.toString()).slice(-2) +
+            "/" +
+            ("0" + nepaliDate.day.toString()).slice(-2);
+        }
       } else if (key === "packages") {
         const childs = this.state.formData[key].childs;
         const packages = [];
@@ -237,7 +249,7 @@ class AssignPackage extends Component {
         if (
           dataToSubmit[key] === null ||
           dataToSubmit[key].match(/^ *$/) !== null ||
-          dataToSubmit[key] ===0
+          dataToSubmit[key] === 0
         ) {
           console.log("Empty ");
           state.formData[key].validationText =
@@ -263,6 +275,7 @@ class AssignPackage extends Component {
     })
       .then(res => {
         console.log(res);
+        this.props.history.goBack();
       })
       .catch(err => {
         console.log(err);
@@ -270,16 +283,15 @@ class AssignPackage extends Component {
   };
   render() {
     return (
-
-          <FormFields
-            formData={this.state.formData}
-            change={newState => this.updateForm(newState)}
-            createNewForm={noOfPacket => this.increaseDynamicForm(noOfPacket)}
-            dynamicIncrease={this.increaseDynamicForm}
-            dynamicDecrease={this.decreaseDynamic}
-            submitForm = {event => this.submitForm(event)}          
-          />
-          );
+      <FormFields
+        formData={this.state.formData}
+        change={newState => this.updateForm(newState)}
+        createNewForm={noOfPacket => this.increaseDynamicForm(noOfPacket)}
+        dynamicIncrease={this.increaseDynamicForm}
+        dynamicDecrease={this.decreaseDynamic}
+        submitForm={event => this.submitForm(event)}
+      />
+    );
   }
 }
 
