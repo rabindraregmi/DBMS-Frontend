@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import PersonTable from "../Person/personTable.js";
 import PersonForm from "../Person/person.js";
+import {MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
+
+
 import "./assignment.css";
 class Intermediate extends Component {
   state = {
@@ -10,34 +13,32 @@ class Intermediate extends Component {
   };
 
   onChangeHandler = () => {
-    let { isRegistered } = this.state;
-    if (isRegistered) {
-      this.setState({
-        isRegistered: false
-      });
-    } else {
-      this.setState({
-        isRegistered: true
-      });
-    }
+    this.setState((prevState)=>({
+      isRegistered:!prevState.isRegistered
+    }))
   };
 
   render() {
     let { isRegistered } = this.state;
     if (isRegistered) {
       return (
-        <div>
-          <button
-            className="btn btn-danger notRegisteredButton"
+        <MDBCard>
+          <MDBCardHeader>
+          <span>Choose Person to Assign</span>
+          <span
+            className="notRegisteredButton"
             onClick={this.onChangeHandler}
           >
             Not Registered Yet?
-          </button>
-          <div className="col-sm-2 pointer">
-            <span className="pointer-text">Choose person to Assign</span>
-          </div>
+          </span>
+          </MDBCardHeader>
+          <MDBCardBody>
           <PersonTable />
-        </div>
+
+          </MDBCardBody>
+         
+          
+        </MDBCard>
       );
     } else {
       return (

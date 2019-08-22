@@ -16,6 +16,9 @@
 .notRegisteredButton
 {
     float: right;
+    background: red;
+    padding:5px;
+    cursor: pointer;
 }
 
   .pointer:after {
