@@ -1,6 +1,6 @@
 import React from "react";
 import "./tables.css";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBCardBody, MDBCard, MDBCardHeader} from "mdbreact";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBBtn } from "mdbreact";
@@ -15,6 +15,7 @@ class PendingPackageTable extends React.Component {
     headings:[],
     categories:{},
     tableData:[],
+    postedTable:false,
 
   }
 
@@ -39,7 +40,6 @@ class PendingPackageTable extends React.Component {
     ];
     //to make SN first column and Action Last column
     let columns = [remainingColumns[0], ...headings, remainingColumns[1]];
-    console.log(tableData);
     let rows = tableData.map((datas, index) => {
       //   console.log(datas);
       let tempData = {};
@@ -116,26 +116,32 @@ stateHandler = (states)=>{
 render(){
   
   return (
-    <div>
-    <div className = "tableOptions">
-      <TableOptions
+    
+
+   <div>
+
+      {this.props.postedTable?null:<TableOptions
       state = {this.props.state}
       setState={(states=>this.stateHandler(states))}
       headings = {this.props.headings}
       categories = {this.props.categories}
-      />
+      />}
+     
 
-    </div>
-      <div className = "xxx">
+    
+ 
+
+      <div className = "mainTable">
 
         <MDBDataTable
         //searching={false}
-          data={this.data()}
-          bordered
-          sortable
-          />
+        data={this.data()}
+        bordered
+        sortable
+        />
         </div>
-    </div>
+        </div>
+        
   );
 }
 };

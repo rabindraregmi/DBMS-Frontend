@@ -16,6 +16,7 @@ import ReceivePackage from './components/Elements/Package/receivePackage.js'
 import Test from './components/Widgets/test.js'
 //import Login from "./components/Elements/Login/login.js";
 import ExamDetails from "./components/Elements/Exam/examDetails.js";
+import PackageHistory from "./components/Elements/Package/History/packageHistory.js";
 
 class Routes extends Component {
   render() {
@@ -48,6 +49,7 @@ class Routes extends Component {
             <Route path="/intermediate" exact component={Intermediate} />
             <Route path="/exams" exact component={ExamTable} />
             <Route path = "/receivePackage/:assignmentID" exact component = {ReceivePackage}/>
+            <Route path = "/packageHistory" exact component = {PackageHistory}/>
             <Route path = '/test' exact component = {Test}/>
           </Switch>
         </Layout>

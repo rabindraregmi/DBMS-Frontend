@@ -43,3 +43,14 @@
     margin-left:0% !important;
     width:90%;
 }
+dt
+{
+    padding-right: 20px;
+}
+.packageHistoryTable tr,.packageHistoryTable td{
+    border: 0.5px black solid;
+}
+.packageHistoryTable tbody tr td:first-of-type
+{
+    font-weight: bold;
+}

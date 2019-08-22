@@ -1,21 +1,23 @@
 import React, {Component,Fragment} from 'react'
 
+
 class   TableOptions extends Component{
             state = {
                 isAdvancedSearch: false,
-                searchBy: '',
+                searchBy: 0,
                 filterSelected:[],
             }
         //CHangeSelectHandler Function is for setting State for selected Value in FILTER BY: option in every table
         //After the change in dropdown
         searchByFieldChangeHandler = event => {
             let searchByKeyword = event.target.value;
-
-            let states = {
-                searchBy: searchByKeyword
-                };
-            this.setState(states);
-            };
+            console.log(searchByKeyword)
+                this.setState({
+                    searchBy: searchByKeyword
+                })
+            }
+          
+            
 
 
         // filterByFieldChangeHandler = event=> {
@@ -38,6 +40,10 @@ class   TableOptions extends Component{
         searchFieldChangeHandler = event => {
             let keyword = event.target.value;
             let searchByKeyword = this.state.searchBy;
+            
+            if (searchByKeyword!==0 && searchByKeyword!=='0')
+            {
+                
             let filteredData = this.props.state.tableData.filter(item => {
             return item[String(searchByKeyword)].indexOf(keyword) > -1;
             });
@@ -46,6 +52,7 @@ class   TableOptions extends Component{
                 filtered: filteredData,
                 isFiltered:keyword === ""?false:true
             });
+        }
         };
 
 
@@ -70,6 +77,7 @@ class   TableOptions extends Component{
                   className="form-control "
                   onChange={event => this.searchByFieldChangeHandler(event)}
                 >
+                <option value = {0}>Select Option to Filter</option>
                   {this.searchBySelection()}
                 </select>
               </div>
@@ -77,15 +85,18 @@ class   TableOptions extends Component{
 
     searchBar = ()=>{
             return (
-                <div className="form-group col-md-1 col-lg-2">
-                <label htmlFor= "searchBar">Search</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                  onChange={event => this.searchFieldChangeHandler(event)}
-                />
-              </div>
+
+                    <div className="form-group col-md-1 col-lg-2">
+                        <label htmlFor= "searchBar">Search</label>
+                        <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search..."
+                        onChange={event => this.searchFieldChangeHandler(event)}
+                        />
+                        {this.state.searchBy===0?<div id= "searhBarErrorField" style= {{color:'red'}}></div>:null}
+                    </div>
+                        
             )
         }
 

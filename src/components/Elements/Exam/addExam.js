@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-import ExamTable from "./examTable.js";
+import ExamTable from "./examListingTable.js";
 //import { async } from "q";
 class AddNewExam extends Component {
   constructor(props) {
@@ -172,7 +172,7 @@ class AddNewExam extends Component {
 
     let options1 = [];
     for (let program of filteredProgramData) {
-      console.log(program);
+      //console.log(program);
       let temp = {};
       temp["val"] = program.programName;
       temp["text"] = program.programName;
@@ -220,7 +220,7 @@ class AddNewExam extends Component {
     //Only those filtered Subjects are added to subject options for Subject Select field
     let subjectOptions = [];
     for (let subject of filteredSubjectData) {
-      console.log(subject);
+     // console.log(subject);
       let temp = {};
       temp["val"] = subject.id;
       temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
@@ -282,8 +282,8 @@ class AddNewExam extends Component {
             async () => {
               await this.loadProgramOptions();
               await this.loadSubjectOptions();
-              console.log(this.state.formData);
-              console.log("Value set");
+              // console.log(this.state.formData);
+              // console.log("Value set");
             }
           );
         });
@@ -413,7 +413,7 @@ class AddNewExam extends Component {
         <div className="p">
           <div className="left-floated-form">{this.loadForm()}</div>
           <div>
-            <ExamTable postedData={postedData} />
+            <ExamTable postedData={postedData} postedTable={true}/>
           </div>
         </div>
       );

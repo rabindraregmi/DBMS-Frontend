@@ -51,3 +51,7 @@ thead th,tbody tr td {
 .dataTables_filter{
     float:right;
 }
+.dataTables_length label
+{
+    margin-left:15px;
+}

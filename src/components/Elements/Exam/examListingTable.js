@@ -48,7 +48,8 @@ export class ExamListingTable extends Component {
       sort: "asc",
       field: "programName",
       grouping: true
-    }
+    },
+
   ];
 
   actions = [
@@ -68,14 +69,23 @@ export class ExamListingTable extends Component {
       link: "/exam-details/"
     }
   ];
-
-
-  componentWillReceiveProps(props){
-
+UNSAFE_componentWillReceiveProps=(props)=>{
+    if (props.hasOwnProperty("postedData")) {
+      props.postedData.forEach(element => {
+        delete element.academicDegree
+        delete element.programID
+      });
       this.setState({
-          tableData: props.tableData
-      })
-          let tableData = props.tableData;
+        isLoaded: true,
+        tableData:this.props.postedData
+      });
+    }
+    else
+    {
+          let tableData =props.tableData;
+          tableData.forEach(element => {
+            delete element.examTitle
+          });
           let categories = {};
           let groupBy = this.headings.filter(header => header.grouping);
           for (let header of groupBy) {
@@ -89,11 +99,25 @@ export class ExamListingTable extends Component {
             }
           }
           this.setState({
-  
+            tableData:tableData,
             categories: categories
           });
+        }
+      
+}
 
-  }
+  componentDidMount=()=>{
+    if (this.props.hasOwnProperty("postedData")) {
+      this.props.postedData.forEach(element => {
+        delete element.academicDegree
+        delete element.programID
+      });
+      this.setState({
+        isLoaded: true,
+        tableData:this.props.postedData
+      });
+    }
+}
   statehandler = (states) =>{
     this.setState(states)
   }

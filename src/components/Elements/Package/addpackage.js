@@ -473,7 +473,7 @@ class AddNewPackage extends Component {
         <div className="p">
           <div className="left-floated-form">{this.loadForm()}</div>
           <div>
-            <PackageTable postedData={postedData} />
+            <PackageTable postedData={postedData} postedTable={true}/>
           </div>
         </div>
       );
