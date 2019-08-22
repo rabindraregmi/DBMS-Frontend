@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-import ExamTable from "./examTable.js";
+//import ExamTable from "./examTable.js";
+import ExamTable from "./examListingTable.js";
 let adbs = require("ad-bs-converter");
-// import ExamTable from "./examListingTable.js";
 //import { async } from "q";
 class AddNewExam extends Component {
   constructor(props) {

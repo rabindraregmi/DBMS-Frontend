@@ -74,6 +74,7 @@ const formFields = props => {
     });
   };
 
+//This method is used for React Nepali Date picker to store selected date value in formData
   const dateChangeHandler = (date, id) => {
     console.log(date, id);
     const newState = props.formData;
@@ -83,6 +84,7 @@ const formFields = props => {
     newState[id].validationMessage = validateData[1];
     props.change(newState, id);
   };
+
   const setValues = (values, id) => {
     console.log(values, id);
 
@@ -99,10 +101,12 @@ const formFields = props => {
     }
     props.change(newState, id);
   };
+
+
+
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";
-   // console.log("This is data", data)
     switch (values.element) {
       case "date-picker":
         formTemplate = (
