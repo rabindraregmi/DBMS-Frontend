@@ -108,7 +108,7 @@ class Home extends React.Component {
                </div>
                <MDBCard style = {{marginTop:'20px'}}>
               <MDBCardHeader>
-                PENDING PACKAGES
+                Pending Packages
               </MDBCardHeader>
               <MDBCardBody>
                     <PendingPackageTable/>
