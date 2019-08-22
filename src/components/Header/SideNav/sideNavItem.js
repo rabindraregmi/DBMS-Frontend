@@ -42,7 +42,14 @@ const SideNavItems = () => {
             icon: 'sign-out',
             text: 'Assignment',
             link: '/assignments',
-           children: [{texts:'Hellox'}]
+            children: [{texts:'Hellox'}]
+        },
+        {
+            className: 'option',
+            text: 'Package History',
+            link:'/packageHistory'
+
+
         }
     ]
 

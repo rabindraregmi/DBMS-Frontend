@@ -58,8 +58,23 @@ class PackageTable extends React.Component {
     searchBy: "sn",
     categories: {}
   };
-
-  componentWillReceiveProps(props) {
+  deleteUnnecessaryTableData = (props)=>{
+    let receivedProps = props;
+      if (receivedProps.hasOwnProperty("postedData")) {
+        receivedProps.postedData.forEach(element => {
+          delete element.level
+          delete element.part
+          delete element.year
+          delete element.programID
+        });
+        this.setState({
+          isLoaded: true,
+          tableData: receivedProps.postedData
+        });
+  }
+}
+  UNSAFE_componentWillReceiveProps = (props)=>{
+    this.deleteUnnecessaryTableData(props);
     if (props.initialData) {
       console.log(this.headings);
       this.headings = this.headings.filter(el => {
@@ -79,10 +94,6 @@ class PackageTable extends React.Component {
           }
         }
       }
-
-
-
-
       this.setState({
         isLoaded: true,
         tableData: json,
@@ -90,14 +101,9 @@ class PackageTable extends React.Component {
       });
     }
   }
-  componentDidMount = () => {
+  componentDidMount=()=>{
     if (!this.props.initialData) {
-      let receivedProps = this.props;
-      if (receivedProps.hasOwnProperty("postedData")) {
-        this.setState({
-          isLoaded: true,
-          tableData: this.props.postedData
-        });
+      this.deleteUnnecessaryTableData(this.props);
       } else {
         fetch("http://localhost:4000/API/query/getAllPackages")
           .then(res => res.json())
@@ -114,10 +120,7 @@ class PackageTable extends React.Component {
                   categories[groupByKeyWord].push(item[groupByKeyWord]);
                 }
               }
-            }
-            
-            
-            
+            } 
             this.setState({
               isLoaded: true,
               tableData: json,
@@ -125,8 +128,7 @@ class PackageTable extends React.Component {
             });
           });
       }
-    }
-  };
+    };
 
   statehandler = states => {
     this.setState(states);

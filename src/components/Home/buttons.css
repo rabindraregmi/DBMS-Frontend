@@ -28,7 +28,7 @@
   margin-left: 5px;
   font-size: 20px;
 }
-.xxx {
+.mainTable {
   margin-top: 10px;
 }
 .col-form-label {
@@ -71,4 +71,9 @@ g.recharts-cartesian-axis-ticks {
 {
   cursor: pointer;  
   color:blue;
+}
+.card-header
+{
+  background:rgb(23, 100, 131);
+  color:white;
 }
