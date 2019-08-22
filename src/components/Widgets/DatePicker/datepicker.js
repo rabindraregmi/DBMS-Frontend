@@ -12,6 +12,7 @@ class DatePicker extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.$el.on('dateChange', this.handleChange);
+    let calendarFunctions;
     }
     handleChange(e) {
      // console.log(e.datePickerData.adDate)
@@ -19,7 +20,7 @@ class DatePicker extends Component {
     }
     render () {
       return (<div>
-       <input className= "date-picker" onChange = {(e)=>this.handleClick(e)}ref={el => this.el = el}>
+       <input className= "date-picker" onChange = {(e)=>this.handleClick(e)} ref={el => this.el = el}>
        
        </input>
        

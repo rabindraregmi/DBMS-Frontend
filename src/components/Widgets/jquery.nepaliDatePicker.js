@@ -6,7 +6,7 @@
  * @see https://github.com/sanishmaharjan/
  */
 import jQuery from 'jquery'
-var calendarFunctions = {};
+export var calendarFunctions = {};
 (function ($) {
     var calendarData = {
         bsMonths: ["बैशाख", "जेठ", "असार", "सावन", "भदौ", "असोज", "कार्तिक", "मंसिर", "पौष", "माघ", "फागुन", "चैत"],

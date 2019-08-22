@@ -46,7 +46,10 @@ class PendingPackageTable extends React.Component {
       tempData["sn"] = index + 1;
       for (let key in datas) {
         if (key !== "id" && key!== 'package' &&key!=='subjectID') {
-          tempData[key] = datas[key];
+          let link = `/packageHistory/${datas[key]}`;
+          key==='packageCode'?
+            tempData[key] = <Link to={link}>{datas[key]}</Link>
+            :tempData[key]=datas[key];
         }
       }
       //Adding Icon/Button in Action Column in every row
