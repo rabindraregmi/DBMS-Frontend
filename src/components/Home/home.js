@@ -18,7 +18,7 @@ const buttons = [
   {
     text: "Assign Packages",
     className: "home-button",
-    color: "#1cafec",
+    color: "rgb(23,100,131)",
     icon: faEdit,
     link: "/intermediate"
   },

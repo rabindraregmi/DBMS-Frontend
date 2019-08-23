@@ -16,7 +16,7 @@ import ReceivePackage from './components/Elements/Package/receivePackage.js'
 import Test from './components/Widgets/test.js'
 import ExamDetails from "./components/Elements/Exam/examDetails.js";
 import PackageHistory from "./components/Elements/Package/History/packageModal.js";
-
+import Auth from './hoc/protectedLayout.js'
 class Routes extends Component {
   render() {
     return (
@@ -26,23 +26,14 @@ class Routes extends Component {
           <Switch>
             {/*exact is used to match path of component exactly. Otherwise, if there are two path home and homes, path home is rendered */}
             <Route path="/home" exact component={Home}/>
-            <Route path="/add-new-package" exact component={AddPackage} />
-            <Route path="/edit-package/:packageID" exact component={AddPackage} />
-
-            <Route
-              path="/assign-package/:personID"
-              exact
-              component={AssignPackage}
-            />
+            <Route path="/add-new-package" exact component={AddPackage}/>
+            <Route path="/edit-package/:packageID" exact component={AddPackage}/>
+            <Route path="/assign-package/:personID" exact component={AssignPackage}/>
             <Route path="/add-new-exam" exact component={AddNewExam} />
             <Route path="/edit-exam/:examID" exact component={AddNewExam} />
             <Route path="/exam-details/:examID" exact component={ExamDetails} />
-            
-
             <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack} {...props}/>)}/>
-
             <Route path="/packages" exact component={PackageHome} />
-
             <Route path="/departments" exact component={Department} />
             <Route path="/subjects" exact component={Subject} />
             <Route path="/intermediate" exact component={Intermediate} />
@@ -52,6 +43,7 @@ class Routes extends Component {
             <Route path = '/test' exact component = {Test}/>
           </Switch>
         </Layout>
+      
       </div>
     );
   }

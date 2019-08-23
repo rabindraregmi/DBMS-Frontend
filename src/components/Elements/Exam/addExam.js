@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 //import ExamTable from "./examTable.js";
 import ExamTable from "./examListingTable.js";
+import { calendarFunctions } from "../../Widgets/jquery.nepaliDatePicker";
 let adbs = require("ad-bs-converter");
 //import { async } from "q";
 class AddNewExam extends Component {
@@ -115,7 +116,7 @@ class AddNewExam extends Component {
           validationText: ""
         },
         date: {
-          element: "date-picker",
+          element: "date-picker-jq",
           value: "",
           required: true,
           labelText: "Date",
@@ -222,7 +223,7 @@ class AddNewExam extends Component {
     //Only those filtered Subjects are added to subject options for Subject Select field
     let subjectOptions = [];
     for (let subject of filteredSubjectData) {
-     // console.log(subject);
+      // console.log(subject);
       let temp = {};
       temp["val"] = subject.id;
       temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
@@ -305,13 +306,24 @@ class AddNewExam extends Component {
     }
   };
 
+  formatNepaliDateToEng = nepaliDate => {
+    if (nepaliDate !== "") {
+      const date = nepaliDate.split("/");
+      const year = calendarFunctions.getNumberByNepaliNumber(date[0]);
+      const month = calendarFunctions.getNumberByNepaliNumber(date[1]);
+      const day = calendarFunctions.getNumberByNepaliNumber(date[2]);
+      return [year, month, day].join("/");
+    }
+    return "";
+  };
+
   submitForm = event => {
     let dataToSubmit = {};
     let formData = this.state.formData;
     console.log(formData);
     dataToSubmit["subjectID"] = formData["subjectID"].value.toString();
     dataToSubmit["examType"] = formData["examType"].value;
-    dataToSubmit["date"] = formData["date"].value;
+    dataToSubmit["date"] = this.formatNepaliDateToEng(formData["date"].value);
     console.log(dataToSubmit);
 
     const state = this.state;
@@ -430,7 +442,7 @@ class AddNewExam extends Component {
         <div className="p">
           <div className="left-floated-form">{this.loadForm()}</div>
           <div>
-            <ExamTable postedData={postedData} postedTable={true}/>
+            <ExamTable postedData={postedData} postedTable={true} />
           </div>
         </div>
       );

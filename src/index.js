@@ -11,14 +11,12 @@ class App extends React.Component {
         return (
             <div>
                 {/* first time this app is get rendered and all other component are inside Routes*/}
-               <BrowserRouter>
                 <LoginRoutes/>
                 <Routes/>
-                </BrowserRouter>
             </div>
         )
     }
 }
 
 
-ReactDOM.render (<App/>, document.querySelector ('#root'))
+ReactDOM.render (<BrowserRouter><App/></BrowserRouter>, document.querySelector ('#root'))

@@ -1,5 +1,5 @@
 import React, {Component,Fragment} from 'react'
-
+import Select from 'react-dropdown-select';
 
 class   TableOptions extends Component{
             state = {
@@ -160,8 +160,21 @@ class   TableOptions extends Component{
     //     )
     // }
 
-
-
+    setValues=(value, id)=>{
+      
+    }
+    selectOptions = (id)=>{
+        let temp= []
+        console.log(this.props.categories[id])
+        this.props.categories[id].forEach(element=>{
+             let tempD= {}
+             console.log(element)
+             tempD['text'] = element
+             tempD['val'] = element
+             temp.push (tempD)
+        });
+        return temp
+    }
     filterOptionsBar = ()=>{
         let categories = this.props.categories;
         let categoryArray = []
@@ -171,9 +184,20 @@ class   TableOptions extends Component{
         }
         return categoryArray.map((option, i) => {
             let id = option.field
+            //console.log(this.props.categories)
             return(
                 <div key = {i} className="form-group col-md-1 col-lg-2">
                 <label htmlFor="filterOptionSelectBar">{option.field.charAt(0).toUpperCase() + option.field.substring(1)}</label>
+                
+                {/* <Select
+                options={this.selectOptions(id)}
+                clearable={true}
+                onChange={values => this.setValues(values,id)}
+                searchBy='text'
+                labelField='text'
+                className="form-control"
+              /> */}
+                
                 <select
                   id={`${option.field}-filterOptionSelectBar`}
                   className="form-control "

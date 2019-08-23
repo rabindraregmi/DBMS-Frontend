@@ -3,6 +3,7 @@ import Select from "react-dropdown-select";
 
 import "./forms.css";
 import DatePicker from "react-datepicker-nepali";
+import NepaliDatePicker from "./datePicker";
 
 const formFields = props => {
   const renderFields = () => {
@@ -74,7 +75,7 @@ const formFields = props => {
     });
   };
 
-//This method is used for React Nepali Date picker to store selected date value in formData
+  //This method is used for React Nepali Date picker to store selected date value in formData
   const dateChangeHandler = (date, id) => {
     console.log(date, id);
     const newState = props.formData;
@@ -102,12 +103,27 @@ const formFields = props => {
     props.change(newState, id);
   };
 
-
-
   const renderTemplates = data => {
     let values = data.settings;
     let formTemplate = "";
     switch (values.element) {
+      case "date-picker-jq":
+        formTemplate = (
+          <div className="form-group row">
+            {showLabel(values.required, values.labelText)}
+            <div className="col-sm-6">
+              <NepaliDatePicker
+                date={props.formData[data.id].value}
+                dateChangeHandler={dateChangeHandler}
+                id = {data.id}
+              />
+              {!values.valid ? (
+                <p style={{ color: "red" }}>{values.validationText}</p>
+              ) : null}
+            </div>
+          </div>
+        );
+        break;
       case "date-picker":
         formTemplate = (
           <div className="form-group row">
@@ -119,7 +135,7 @@ const formFields = props => {
                     dateChangeHandler(date, data.id);
                   }}
                 />
-              ) :(
+              ) : (
                 <DatePicker
                   date={props.formData[data.id].value}
                   onChange={date => {
@@ -155,53 +171,65 @@ const formFields = props => {
 
         break;
       case "select":
-          formTemplate = (
-            <div className="form-group row">
-              {showLabel(values.required, values.labelText)}
-              <div className="col-sm-6">
+        formTemplate = (
+          <div className="form-group row">
+            {showLabel(values.required, values.labelText)}
+            <div className="col-sm-6">
               <select
                 value={values.value}
                 name={values.config.name}
                 onChange={event => changeHandler(event, data.id)}
                 className="form-control"
               >
-          <option value="0">Select {values.config.name}</option>
-          {values.config.options.map((item, i) => (
-            <option key={i} value={item.val}>
-              {item.text}
-            </option>
-          ))}
-        </select>  
-            
-                {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
-              </div>
+                <option value="0">Select {values.config.name}</option>
+                {values.config.options.map((item, i) => (
+                  <option key={i} value={item.val}>
+                    {item.text}
+                  </option>
+                ))}
+              </select>
+
+              {!values.valid ? (
+                <div autoFocus className="alert alert-danger">
+                  {values.validationText}
+                </div>
+              ) : null}
             </div>
-          );
-        
-      break
+          </div>
+        );
+
+        break;
       case "inputselect":
         formTemplate = (
           <div className="form-group row">
             {showLabel(values.required, values.labelText)}
-            <div className="col-sm-6"  style={{ display: "flex" }}>
-              
-            <Select options={values.config.options}  clearable = {true} 
-              onChange={(values) => setValues(values, data.id)}
-              searchBy= 'text' labelField = "text"
-              className = "form-control"
+            <div className="col-sm-6" style={{ display: "flex" }}>
+              <Select
+                options={values.config.options}
+                clearable={true}
+                onChange={values => setValues(values, data.id)}
+                searchBy="text"
+                labelField="text"
+                className="form-control"
               />
-              {values.removeButton?<button
-                className="btn btn-md btn-danger"
-                style={{ marginTop: "-1.8px", marginLeft: "10px" }}
-                onClick={() => {
-                  // console.log(props);
-                  props.dynamicDecrease(values.id);
-                }}
-              >
-                Delete
-              </button>:null}
-          
-              {!values.valid? <div autoFocus className="alert alert-danger">{values.validationText}</div>: null}
+              {values.removeButton ? (
+                <button
+                  className="btn btn-md btn-danger"
+                  style={{ marginTop: "-1.8px", marginLeft: "10px" }}
+                  onClick={() => {
+                    // console.log(props);
+                    props.dynamicDecrease(values.id);
+                  }}
+                >
+                  Delete
+                </button>
+              ) : null}
+
+              {!values.valid ? (
+                <div autoFocus className="alert alert-danger">
+                  {values.validationText}
+                </div>
+              ) : null}
             </div>
           </div>
         );

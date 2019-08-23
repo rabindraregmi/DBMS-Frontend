@@ -22,7 +22,7 @@ const Chart = (props)=>{
 export default Chart;
 // class Example extends Component {
 
-//   chartColor =  ['','#1cafec','#ffc107',"#1cafec",'#6f42c1']
+//   chartColor =  ['','rgb(23,100,131)','#ffc107',"rgb(23,100,131)",'#6f42c1']
 //   barItem = (dataKeys)=>
 //   {
 //     return dataKeys.map((key,index)=>{

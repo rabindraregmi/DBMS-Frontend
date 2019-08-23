@@ -49,7 +49,7 @@ render() {
                     <br/><br/><br/>
                     <div>
                          {this.state.tableData.length===0?null:
-                        <table className = "packageHistoryTable" style= {{width:'50%'}}>       
+                        <table className = "packageHistoryTable" style= {{width:'100%'}}>       
                             <thead hidden>
                                 <tr>
                                     <th></th>
@@ -80,6 +80,10 @@ render() {
                                 <tr>
                                     <td>Submission Date</td>
                                     <td>{this.state.tableData[0].dateOfSubmission}</td>
+                                </tr>
+                                <tr>
+                                    <td>Subject Name</td>
+                                    <td>{this.state.tableData[0].subjectName}</td>
                                 </tr>
 
 

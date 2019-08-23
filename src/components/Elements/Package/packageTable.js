@@ -26,7 +26,7 @@ class PackageTable extends React.Component {
     },
     {
       label: "Exam",
-      text:"Exam",
+      text: "Exam",
       sort: "asc",
       field: "examName",
      
@@ -81,20 +81,20 @@ class PackageTable extends React.Component {
 
   deleteUnnecessaryTableData = (props)=>{
     let receivedProps = props;
-      if (receivedProps.hasOwnProperty("postedData")) {
-        receivedProps.postedData.forEach(element => {
-          delete element.level
-          delete element.part
-          delete element.year
-          delete element.programID
-        });
-        this.setState({
-          isLoaded: true,
-          tableData: receivedProps.postedData
-        });
-  }
-}
-  UNSAFE_componentWillReceiveProps = (props)=>{
+    if (receivedProps.hasOwnProperty("postedData")) {
+      receivedProps.postedData.forEach(element => {
+        delete element.level;
+        delete element.part;
+        delete element.year;
+        delete element.programID;
+      });
+      this.setState({
+        isLoaded: true,
+        tableData: receivedProps.postedData
+      });
+    }
+  };
+  UNSAFE_componentWillReceiveProps = props => {
     this.deleteUnnecessaryTableData(props);
     
     if (props.initialData) {
@@ -119,38 +119,41 @@ class PackageTable extends React.Component {
       this.setState({
         isLoaded: true,
         tableData: json,
-        categories:categories
+        categories: categories
       });
     }
-  }
-  componentDidMount=()=>{
+  };
+
+  componentDidMount() {
+    console.log(this.props.initialData);
     if (this.props.initialData) {
       this.deleteUnnecessaryTableData(this.props);
-      } else {
-        fetch("http://localhost:4000/API/query/getAllPackages")
-          .then(res => res.json())
-          .then(json => {
-            let tableData = json;
-            let categories = {};
-            let groupBy = this.headings.filter(header => header.grouping);
-            for (let header of groupBy) {
-              let groupByKeyWord = header.field;
-              categories[groupByKeyWord] = [];
-              for (let item of tableData) {
-                //console.log("efse", item)
-                if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
-                  categories[groupByKeyWord].push(item[groupByKeyWord]);
-                }
+    } else {
+      fetch("http://localhost:4000/API/query/getAllPackages")
+        .then(res => res.json())
+        .then(json => {
+          let tableData = json;
+          let categories = {};
+          let groupBy = this.headings.filter(header => header.grouping);
+          for (let header of groupBy) {
+            let groupByKeyWord = header.field;
+            categories[groupByKeyWord] = [];
+            for (let item of tableData) {
+              //console.log("efse", item)
+              if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
+                categories[groupByKeyWord].push(item[groupByKeyWord]);
               }
-            } 
-            this.setState({
-              isLoaded: true,
-              tableData: json,
-              categories:categories
-            });
+            }
+          }
+          console.log(json);
+          this.setState({
+            isLoaded: true,
+            tableData: json,
+            categories: categories
           });
-      }
-    };
+        });
+    }
+  }
 
   statehandler = states => {
     this.setState(states);
@@ -168,7 +171,7 @@ class PackageTable extends React.Component {
           state={this.state}
           setState={states => this.statehandler(states)}
           actions={this.actions}
-          categories = {this.state.categories}
+          categories={this.state.categories}
         />
       </div>
     );

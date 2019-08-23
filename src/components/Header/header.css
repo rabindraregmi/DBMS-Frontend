@@ -18,7 +18,7 @@ body {
     position: fixed;
     height:120px;
     width: 100%;
-    background: #1cafec;
+    background: rgb(23,100,131);
     color:#fff;
     z-index: 4;
 }
