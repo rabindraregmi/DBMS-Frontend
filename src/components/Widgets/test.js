@@ -1,10 +1,13 @@
-import React, { Component } from "react";
-import $ from "jquery";
-import "./jquery.nepaliDatePicker";
-import { calendarFunctions } from "./jquery.nepaliDatePicker";
-// const nepali = require("./jquery.nepaliDatePicker");
+import React, { Component } from 'react';
+import $ from 'jquery';
+import {calendarFunctions} from "./jquery.nepaliDatePicker";
+import Modal from '../Elements/Package/History/packageModal.js'
+
 
 class Example extends Component {
+  state = {
+    isModal: true
+  }
   componentDidMount() {
     console.log(calendarFunctions.getNepaliNumber(125));
     this.$el = $(this.el);
@@ -16,20 +19,24 @@ class Example extends Component {
     this.$el.on("dateChange", this.handleChange);
   }
   handleChange(e) {
-    //    console.log(calendarFunctions.getNepaliNumber(125));
-    console.log(e.datePickerData.adDate);
+    console.log(calendarFunctions.getNepaliNumber(125))
+    console.log(e.datePickerData.adDate)
   }
-  render() {
-    return (
-      <div>
-        <input
-          value="सोम, भदौ ३०, २०७६"
-          className="date-picker"
-          onChange={e => this.handleClick(e)}
-          ref={el => (this.el = el)}
-        />
-      </div>
-    );
+  handleClick=()=>{
+   this.setState({
+     isModal:true
+   })
+  }
+  render () {
+    return (<div>
+      {this.state.isModal?<Modal packageCode = {'PUL-SH401-I'} open= {true}/>:null}
+     <input value = "सोम, भदौ ३०, २०७६" className= "date-picker" onChange = {(e)=>this.handleClick(e)}ref={el => this.el = el}>
+     
+     </input>
+     <button onClick = {()=>this.handleClick()}>Hey</button>
+     
+     </div> 
+      );
   }
 }
 export default Example;

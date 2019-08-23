@@ -28,14 +28,34 @@ class PackageTable extends React.Component {
       label: "Exam",
       text: "Exam",
       sort: "asc",
-      field: "examName  ",
-      grouping: true
+      field: "examName",
+     
+    },
+    {
+      label: "Year",
+      sort: "asc",
+      field: "year",
+      grouping:true
+    },
+    {
+      label: "Part",
+      sort: "asc",
+      field: "part",
+      grouping:true
+    },
+    {
+      label: "Subject Name",
+      sort: "asc",
+      field: "subjectName",
+      grouping:true
     },
     {
       label: "Status",
       sort: "asc",
-      field: "status"
-    }
+      field: "status",
+      grouping:true
+    },
+
   ];
   actions = [
     {
@@ -75,6 +95,7 @@ class PackageTable extends React.Component {
   };
   UNSAFE_componentWillReceiveProps = props => {
     this.deleteUnnecessaryTableData(props);
+    
     if (props.initialData) {
       console.log(this.headings);
       this.headings = this.headings.filter(el => {
@@ -100,10 +121,8 @@ class PackageTable extends React.Component {
         categories: categories
       });
     }
-  };
-
-  componentDidMount() {
-    console.log(this.props.initialData);
+  }
+  componentDidMount=()=>{
     if (this.props.initialData) {
       this.deleteUnnecessaryTableData(this.props);
     } else {
