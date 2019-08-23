@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
+import { calendarFunctions } from "../../Widgets/jquery.nepaliDatePicker";
+import { assignmentExpression } from "@babel/types";
 let adbs = require("ad-bs-converter");
 
 class AssignPackage extends Component {
@@ -62,7 +64,7 @@ class AssignPackage extends Component {
         validationText: ""
       },
       dateOfAssignment: {
-        element: "date-picker",
+        element: "date-picker-jq",
         value: "",
         label: true,
         labelText: "Date of Assignment",
@@ -79,7 +81,7 @@ class AssignPackage extends Component {
         validationText: ""
       },
       dateOfDeadline: {
-        element: "date-picker",
+        element: "date-picker-jq",
         value: "",
         label: true,
         labelText: "Date of Deadline",
@@ -114,7 +116,7 @@ class AssignPackage extends Component {
     let newChild = {
       id: this.id,
       element: "inputselect",
-      removeButton: true, 
+      removeButton: true,
       value: "0",
       label: true,
       labelText: "Package",
@@ -163,15 +165,22 @@ class AssignPackage extends Component {
       day = "" + d.getDate(),
       year = d.getFullYear();
 
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
+    const nepaliDate = adbs.ad2bs(year + "/" + month + "/" + day).en;
+    year = nepaliDate.year;
+    month = nepaliDate.month;
+    day = nepaliDate.day;
 
-    return [year, month, day].join("-");
+    if (nepaliDate.month.length < 2) month = "0" + nepaliDate.month;
+    if (nepaliDate.day.length < 2) day = "0" + nepaliDate.day;
+
+    return [year, month, day].join("/");
   }
   componentDidMount = () => {
     let { params } = this.props.match;
     console.log(params);
-    Date.prototype.addDays=function(d){return new Date(this.valueOf()+864E5*d);};
+    Date.prototype.addDays = function(d) {
+      return new Date(this.valueOf() + 864e5 * d);
+    };
     fetch(`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
       .then(res => res.json())
       .then(json => {
@@ -180,20 +189,26 @@ class AssignPackage extends Component {
         //   isLoaded: true,
         //   personData: json
         // });
-        let { formData} = this.state;
-        let assignmentDate = this.formatDate(new Date())
-        let date= new Date()
-        let deadlineDate = this.formatDate(date.addDays(20));
+        let { formData } = this.state;
+        console.log(this.formatDate(new Date()));
+        let assignmentDate = this.formatEnglishDateToNep(
+          this.formatDate(new Date())
+        );
+        let date = new Date();
+        let deadlineDate = this.formatEnglishDateToNep(
+          this.formatDate(date.addDays(20))
+        );
+        console.log(assignmentDate);
         formData.name.value = json[0].name;
         formData.contact.value = json[0].contact;
         formData.address.value = json[0].campus;
         formData.dateOfAssignment.value = assignmentDate;
-        formData.dateOfDeadline.value = deadlineDate
+        formData.dateOfDeadline.value = deadlineDate;
         this.setState({
           formData: formData,
-          isLoaded:true,
-          personData:json,
-          personID:params.personID
+          isLoaded: true,
+          personData: json,
+          personID: params.personID
         });
       });
 
@@ -210,13 +225,37 @@ class AssignPackage extends Component {
       });
   };
 
+  formatNepaliDateToEng = nepaliDate => {
+    if (nepaliDate !== "") {
+      const date = nepaliDate.split("/");
+      const year = calendarFunctions.getNumberByNepaliNumber(date[0]);
+      const month = calendarFunctions.getNumberByNepaliNumber(date[1]);
+      const day = calendarFunctions.getNumberByNepaliNumber(date[2]);
+      return [year, month, day].join("/");
+    }
+    return "";
+  };
+
+  formatEnglishDateToNep = englishDate => {
+    if (englishDate !== "") {
+      const date = englishDate.split("/");
+      const year = calendarFunctions.getNepaliNumber(parseInt(date[0]));
+      const month = calendarFunctions.getNepaliNumber(parseInt(date[1]));
+      const day = calendarFunctions.getNepaliNumber(parseInt(date[2]));
+      return [year, month, day].join("/");
+    }
+    return "";
+  };
+
   submitForm = event => {
     event.preventDefault();
     let dataToSubmit = {};
     dataToSubmit["personID"] = this.state.personID;
     for (let key in this.state.formData) {
       if (key === "dateOfAssignment" || key === "dateOfDeadline") {
-        dataToSubmit[key] = this.state.formData[key].value;
+        dataToSubmit[key] = this.formatNepaliDateToEng(
+          this.state.formData[key].value
+        );
         if (dataToSubmit[key] === "") {
           console.log("Insert today");
           //Set the default value to today
