@@ -280,11 +280,23 @@ class AssignPackage extends Component {
           packages.push(childs[child].value);
         }
         dataToSubmit[key] = packages;
+        //No packages added
+        if (packages.length === 0) {
+          const state = this.state;
+          state.formData["dateOfDeadline"].validationText =
+            "Please add at least one package";
+          state.formData["dateOfDeadline"].valid = false;
+          this.setState(state);
+          return;
+        }
+
+
       } else {
         dataToSubmit[key] = this.state.formData[key].value;
 
         //Validation
         const state = this.state;
+
         if (
           dataToSubmit[key] === null ||
           dataToSubmit[key].match(/^ *$/) !== null ||
