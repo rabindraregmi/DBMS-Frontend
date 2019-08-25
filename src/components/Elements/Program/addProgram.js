@@ -155,8 +155,8 @@ class AddNewProgram extends Component {
               this.props.history.goBack();
               return;
             }
-            console.log(body.exams[0]);
-            let dataToDisplay = body.exams[0];
+            console.log(body);
+            let dataToDisplay = body;
             postedData.push(dataToDisplay);
             this.setState({
               posted: true,

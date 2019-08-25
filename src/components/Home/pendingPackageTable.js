@@ -1,6 +1,7 @@
 import React from "react";
 import Table from "../Widgets/Tables/tables.js";
 import { faReceipt } from "@fortawesome/free-solid-svg-icons";
+import utils from '../../utils/utils.js';
 let adbs = require("ad-bs-converter");
 
 //import { confirmAlert } from 'react-confirm-alert'; // Import
@@ -9,11 +10,33 @@ let adbs = require("ad-bs-converter");
 class PendingPackageTable extends React.Component {
   sortingOnlyList = ["Status"];
   headings = [
+  
+    
     {
       label: "Package Code",
       text: "Package ID",
       colspan: "2",
       field: "packageCode"
+    },
+    {
+      label: "Year",
+      text: "Year",
+      colspan: "2",
+      field: "year",
+      grouping:true,
+    },
+    {
+      label: "Part",
+      text: "Part",
+      colspan: "2",
+      field: "part",
+      grouping:true,
+    },
+    {
+      label: "Program Name",
+      colspan: "2",
+      field: "programName",
+      grouping:true,
     },
     {
       label: "Assigned Date",
@@ -44,7 +67,6 @@ class PendingPackageTable extends React.Component {
       text: "Status",
       field: "status",
       colspan: "2",
-      grouping: true,
       type: "Overdue"
     }
   ];
@@ -104,7 +126,9 @@ class PendingPackageTable extends React.Component {
         });
         console.log("Element after Overdue", json);
         let categories = {};
+        categories = utils.createCategories(json,this.headings)
         categories["package"] = ["Overdue"];
+
         this.setState({
           isLoaded: true,
           tableData: json,
@@ -125,6 +149,7 @@ class PendingPackageTable extends React.Component {
         element["package"] = diff < 0 ? "Overdue" : "Pending";
       });
       let categories = {};
+      categories = utils.createCategories(json,this.headings)
       categories["package"] = ["Overdue"];
       this.setState({
         isLoaded: true,
@@ -144,14 +169,7 @@ class PendingPackageTable extends React.Component {
     this.setState(states);
   };
   render() {
-    var { isLoaded } = this.state;
-    if (!isLoaded) {
-      return (
-        <div>
-          <h1>Loading......Start the damn Server you IDIOT</h1>
-        </div>
-      );
-    } else {
+  
       return (
         <div className="pendingPackageTable">
           <Table
@@ -168,6 +186,6 @@ class PendingPackageTable extends React.Component {
         </div>
       );
     }
-  }
+  
 }
 export default PendingPackageTable;

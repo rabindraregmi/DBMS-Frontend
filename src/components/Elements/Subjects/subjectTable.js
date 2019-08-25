@@ -5,15 +5,12 @@ import utils from '../../../utils/utils.js'
 class SubjectTable extends Component {
     headings = 
     [
+        
         {
-            label: 'Subject Name',
-            sort: 'asc',
-            field:'subjectName',
-        },
-        {
-            label: "Course Code",
+            label: "Program",
             sort:"asc",
-            field:"courseCode",
+            field:"programName",
+            grouping:true,
         },
         {
             label: "Year",
@@ -28,11 +25,18 @@ class SubjectTable extends Component {
             grouping:true,
         },
         {
-            label: "Program",
+            label: "Course Code",
             sort:"asc",
-            field:"programName",
-            grouping:true,
+            field:"courseCode",
         },
+        {
+            label: 'Subject Name',
+            sort: 'asc',
+            field:'subjectName',
+        },
+        
+       
+        
 
         
     ]
@@ -58,17 +62,30 @@ class SubjectTable extends Component {
         categories:{}
     }
     componentDidMount =()=> {
-        fetch ('http://localhost:4000/API/query/getSubjectList')
-        .then (res=>res.json())
-        .then (json=>{
+        if(this.props.hasOwnProperty("postedData"))
+        {
+            this.props.postedData.forEach(element => {
+                delete element.level
+            });
+            this.setState({
+                tableData:this.props.postedData
+            })
+        }
+        else
+        {
 
-        let categories = utils.createCategories(json,this.headings) 
-          this.setState({
-            isLoaded:true,
-            tableData:json,
-            categories:categories
-          })  
-        })
+            fetch ('http://localhost:4000/API/query/getSubjectList')
+            .then (res=>res.json())
+            .then (json=>{
+                
+                let categories = utils.createCategories(json,this.headings) 
+                this.setState({
+                    isLoaded:true,
+                    tableData:json,
+                    categories:categories
+                })  
+            })
+        }
     }
 
     statehandler=(states)=>{

@@ -322,11 +322,11 @@ class Person extends React.Component {
       selectedFile:event.target.files[0]
     })
   }
-  uploadFile = ()=>{
+  uploadFile = async()=>{
    const data = new FormData()
    data.append('file',this.state.selectedFile)
   
-   axios.post("http://localhost:4000/API/query/upload", data, {
+   await axios.post("http://localhost:4000/API/query/upload", data, {
        onUploadProgress: ProgressEvent => {
          this.setState({
            loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
@@ -335,6 +335,16 @@ class Person extends React.Component {
 }).then(res=>{
   console.log(res)
 })
+  this.setState({
+    loaded:0
+  })
+    axios.post ("http://localhost:4000/API/query/postExcel",{
+      onUploadProgress: ProgressEvent => {
+        this.setState({
+          loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
+      })
+  },
+    })
   
   
   

@@ -1,9 +1,20 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 import { calendarFunctions } from "../../Widgets/jquery.nepaliDatePicker";
-import { assignmentExpression } from "@babel/types";
+import BreadCrumbs from '../../Widgets/Breadcrumb/breadcrumb.js'
 let adbs = require("ad-bs-converter");
 
+
+const breadCrumbItem = [
+{
+  text:"Person Table",
+  link:"/intermediate"
+},
+{
+  text:"Assign Package",
+  link:"#"
+}
+]
 class AssignPackage extends Component {
   id = 0;
   options = [];
@@ -336,6 +347,9 @@ class AssignPackage extends Component {
   };
   render() {
     return (
+      <div>
+
+      <BreadCrumbs breadcrumbItems = {breadCrumbItem}/>
       <FormFields
         formData={this.state.formData}
         change={newState => this.updateForm(newState)}
@@ -343,7 +357,8 @@ class AssignPackage extends Component {
         dynamicIncrease={this.increaseDynamicForm}
         dynamicDecrease={this.decreaseDynamic}
         submitForm={event => this.submitForm(event)}
-      />
+        />
+      </div>
     );
   }
 }
