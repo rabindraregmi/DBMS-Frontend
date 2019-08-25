@@ -149,7 +149,7 @@ class AddNewSubject extends Component {
     for (let program of filteredProgramData) {
       //console.log(program);
       let temp = {};
-      temp["val"] = program.programName;
+      temp["val"] = program.id;
       temp["text"] = program.programName;
       programOptions.push(temp);
     }
@@ -175,13 +175,12 @@ class AddNewSubject extends Component {
     });
   };
 
-  componentDidMount = () => {
-    fetch("http://localhost:4000/API/query/getProgramList")
+  componentDidMount = async() => {
+    let programData = []
+    await fetch("http://localhost:4000/API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          programData: json
-        });
+        programData = json
       });
 
     //Edit route
@@ -189,36 +188,40 @@ class AddNewSubject extends Component {
     if (subjectID !== undefined) {
       fetch("http://localhost:4000/API/query/getSubject/" + subjectID)
         .then(res => res.json())
-        .then(json => {
+        .then(async json => {
           let { formData } = this.state;
-          console.log(json[0]);
 
-          formData.level.value = "Bachelors";
+          formData.level.value = json[0].academicDegree;
           formData.programID.value = json[0].programName;
           formData.year.value = json[0].year;
-          formData.subjectID.value = json[0].subjectID;
           formData.date.value = json[0].date;
           formData.examType.value = json[0].examType;
           formData.part.value = json[0].part;
+          formData.subjectName.value = json[0].subjectName;
 
-          this.setState(
+          await this.setState(
             {
-              formData: formData
+              formData: formData,
+              programData:programData
             },
             async () => {
               await this.loadProgramOptions();
-              await this.loadSubjectOptions();
-              // console.log(this.state.formData);
-              // console.log("Value set");
+              
             }
           );
         });
+    }
+    else 
+    {
+      this.setState({
+        programData:programData
+      })
     }
   };
 
   updateForm = (newState, id) => {
       this.setState({ formData: newState });
-      if (id === "level") this.loadProgramOptions(); 
+      if (id === "level") this.loadProgramOptions();
     
     //If Change in Level Options Occur, Load Programs List and year list for that Level
   };
@@ -274,15 +277,16 @@ class AddNewSubject extends Component {
               this.props.history.goBack();
               return;
             }
-            console.log(body.exams[0]);
-            let dataToDisplay = body.exams[0];
+            console.log(body);
+            let dataToDisplay =body;
             postedData.push(dataToDisplay);
             this.setState({
               posted: true,
               errorOnSubmission: false,
               postedData: postedData
             });
-          } else {
+          } 
+          else {
             this.setState({
               errorOnSubmission: true,
               errorText: "Error in submission",
@@ -322,13 +326,13 @@ class AddNewSubject extends Component {
 
   mainContent = () => {
     let { postedData, posted } = this.state;
-
+    console.log("Posted Data", postedData)
     if (posted) {
       return (
         <div className="p">
           <div className="left-floated-form">{this.loadForm()}</div>
           <div>
-            <SubjectTable postedData={postedData} postedTable={true} />
+            <SubjectTable postedData={postedData}  postedTable={true} />
           </div>
         </div>
       );

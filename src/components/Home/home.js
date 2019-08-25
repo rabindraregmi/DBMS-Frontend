@@ -10,7 +10,7 @@ const buttons = [
   {
     text: "Entry New Package",
     className: "home-button",
-    color: "#3ec7c2",
+    color: "orange",
     icon: faPlus,
     link: "/add-new-package"
   },
@@ -25,7 +25,7 @@ const buttons = [
     text: "Add New Exam",
     className: "home-button",
     link: "/add-new-exam",
-    color: "#3ec7c2",
+    color: "orange",
     icon: faPlus
   }
 ];

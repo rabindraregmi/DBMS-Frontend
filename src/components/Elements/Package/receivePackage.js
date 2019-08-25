@@ -306,7 +306,7 @@ class ReceivePackage extends Component {
   };
   render() {
     if (this.state.packageReceived) {
-      return <Redirect to="/home" />;
+      return <Redirect to="/" />;
     }
     return (
       <div>

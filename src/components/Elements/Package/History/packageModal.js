@@ -48,7 +48,9 @@ render() {
                     <button className = "btn btn-sm btn-secondary" onClick= {(event)=>this.handleSearchClick(event)}>Search</button>
                     <br/><br/><br/>
                     <div>
-                         {this.state.tableData.length===0?null:
+                         {this.state.tableData.length===0?
+                         <p style = {{color:'red'}}>Not Found</p>
+                         :
                         <table className = "packageHistoryTable" style= {{width:'100%'}}>       
                             <thead hidden>
                                 <tr>

@@ -6,24 +6,25 @@ class ProgramTable extends Component {
     headings = 
     [
         {
-            label: 'Program Name',
-            sort: 'asc',
-            field:'programName',
+            label:"Level",
+            sort:"asc",
+            field: "academicDegree",
+            grouping: true
         },
+
         {
             label: "Department Name",
             sort:"asc",
             field:"departmentName",
             grouping:true,
         },
-
         {
-            label:"Level",
-            sort:"asc",
-            field: "academicDegree",
-            grouping: true
-        }
+            label: 'Program Name',
+            sort: 'asc',
+            field:'programName',
+        },
 
+       
         
         
     ]
@@ -49,6 +50,30 @@ class ProgramTable extends Component {
         categories:{}
     }
     componentDidMount =()=> {
+        if(this.props.hasOwnProperty("postedData"))
+        {
+            // let {tableData} = this.state;
+            // let postedData = this.props.postedData
+            // for (let index in postedData)
+            // {
+            //     console.log(index)
+            //     let temptableData = {}
+            //     temptableData["programName"] = postedData[index].programName;
+            //     temptableData["departmentName"] = postedData[index].departmentID;
+            //     temptableData["level"] = postedData[index].level;
+            //     tableData.push(temptableData)
+            // }
+            // this.setState({
+            //     tableData
+            // })
+            this.setState({
+                tableData:this.props.postedData
+            })
+            
+            
+        }
+        else
+        {
         fetch ('http://localhost:4000/API/query/getProgramList')
         .then (res=>res.json())
         .then (json=>{
@@ -60,6 +85,7 @@ class ProgramTable extends Component {
             categories:categories
           })  
         })
+    }
     }
 
     statehandler=(states)=>{

@@ -105,6 +105,7 @@ class PersonTable extends React.Component {
         json.map((element,index)=>{
           let id = element.id
           for (let key in element)
+            if(key!=='id')
             element[key] = <Link key = {index} to={`/assign-package/${id}`}>{element[key]}</Link>
         })
         console.log(json)
