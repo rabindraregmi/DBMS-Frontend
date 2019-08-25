@@ -278,7 +278,7 @@ class AddNewExam extends Component {
           formData.programID.value = json[0].programName;
           formData.year.value = json[0].year;
           formData.subjectID.value = json[0].subjectID;
-          formData.date.value = json[0].date;
+          formData.date.value = this.formatEnglishDateToNep(json[0].date);
           formData.examType.value = json[0].examType;
           formData.part.value = json[0].part;
 
@@ -301,6 +301,17 @@ class AddNewExam extends Component {
         subjectData:subjectData
       })
     }
+  };
+
+  formatEnglishDateToNep = englishDate => {
+    if (englishDate !== "") {
+      const date = englishDate.split("/");
+      const year = calendarFunctions.getNepaliNumber(parseInt(date[0]));
+      const month = calendarFunctions.getNepaliNumber(parseInt(date[1]));
+      const day = calendarFunctions.getNepaliNumber(parseInt(date[2]));
+      return [year, month, day].join("/");
+    }
+    return "";
   };
 
   updateForm = (newState, id) => {

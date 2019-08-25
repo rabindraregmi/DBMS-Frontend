@@ -89,8 +89,7 @@ class PackageTable extends React.Component {
     isFiltered: false,
     categories: {}
   };
-
-  deleteUnnecessaryTableData = (props)=>{
+  deleteUnnecessaryTableData = props => {
     let receivedProps = props;
     if (receivedProps.hasOwnProperty("postedData")) {
       receivedProps.postedData.forEach(element => {
