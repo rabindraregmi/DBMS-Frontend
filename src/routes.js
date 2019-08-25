@@ -19,6 +19,7 @@ import ExamTable from "./components/Elements/Exam/examTable.js";
 import ExamDetails from "./components/Elements/Exam/examDetails.js";
 
 import Department from "./components/Elements/Department/departmentHome.js";
+import AddDepartment from "./components/Elements/Department/addDepartment.js";
 
 import Subject from "./components/Elements/Subjects/subjectTable.js";
 import AddNewSubject from "./components/Elements/Subjects/addSubject.js"
@@ -56,12 +57,16 @@ class Routes extends Component {
             {/* Subject Route */}
             <Route path="/subjects" exact component={Subject} />
             <Route path="/add-new-subject" exact component= {AddNewSubject}/>
+            <Route path="/edit-subject/:subjectID" exact component= {AddNewSubject}/>
 
             {/* Department Route */}
             <Route path="/departments" exact component={Department} />
+            <Route path="/add-new-department" exact component={AddDepartment} />
+            <Route path="/edit-department/:departmentID" exact component={AddDepartment}/>
 
             {/* Program Route */}
             <Route path= '/add-new-program' exact component= {AddNewProgram}/>
+            <Route path= '/edit-program/:programID' exact component= {AddNewProgram}/>
             <Route path= "/programs" exact component = {Program}/>
             {/* Exam Route */}
             <Route path="/exams" exact component={ExamTable} />

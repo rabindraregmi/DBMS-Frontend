@@ -28,7 +28,12 @@ class ProgramTable extends Component {
         
         
     ]
-    
+    quickLinks = [
+        {
+            text: "Add New Program",
+            link: "/add-new-program"
+        }
+    ]
     actions = [
         {
             text: "Edit",
@@ -102,6 +107,7 @@ class ProgramTable extends Component {
                     setState = {(states)=>this.statehandler(states)}
                     actions = {this.actions}
                     categories = {this.state.categories}
+                    quickLinks = {this.quickLinks}
                 />
             </Fragment>
         )

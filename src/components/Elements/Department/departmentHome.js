@@ -15,6 +15,12 @@ class DepartmentHome extends React.Component {
         
         
     ]
+    quickLinks = [
+        {
+            text: "Add New Department",
+            link: "/add-new-department"
+        }
+    ]
     actions = [
         {
             text: "Edit",
@@ -63,6 +69,7 @@ class DepartmentHome extends React.Component {
             state = {this.state}
             setState = {(states)=>this.statehandler(states)}
             actions = {this.actions}
+            quickLinks = {this.quickLinks}
         />
             </div>
         )

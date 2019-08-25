@@ -53,6 +53,12 @@ class SubjectTable extends Component {
             link: "/delete-subject/"
         }
         ];
+        quickLinks = [
+            {
+                text: "Add New Subject",
+                link: "/add-new-subject"
+            }
+        ]
     
     state= {
         tableData:[],
@@ -102,6 +108,7 @@ class SubjectTable extends Component {
                     setState = {(states)=>this.statehandler(states)}
                     actions = {this.actions}
                     categories = {this.state.categories}
+                    quickLinks = {this.quickLinks}
                 />
             </Fragment>
         )

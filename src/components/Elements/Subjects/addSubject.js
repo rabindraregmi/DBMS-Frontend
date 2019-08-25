@@ -186,16 +186,15 @@ class AddNewSubject extends Component {
     //Edit route
     const subjectID = this.props.match.params.subjectID;
     if (subjectID !== undefined) {
-      fetch("http://localhost:4000/API/query/getSubject/" + subjectID)
+      fetch("http://localhost:4000/API/query/getOneSubject/" + subjectID)
         .then(res => res.json())
         .then(async json => {
           let { formData } = this.state;
-
+          console.log(json)
           formData.level.value = json[0].academicDegree;
-          formData.programID.value = json[0].programName;
+          formData.programID.value = json[0].programID;
           formData.year.value = json[0].year;
-          formData.date.value = json[0].date;
-          formData.examType.value = json[0].examType;
+          formData.courseCode.value = json[0].courseCode;
           formData.part.value = json[0].part;
           formData.subjectName.value = json[0].subjectName;
 
@@ -211,6 +210,7 @@ class AddNewSubject extends Component {
           );
         });
     }
+
     else 
     {
       this.setState({
@@ -257,7 +257,7 @@ class AddNewSubject extends Component {
 
     //URL for update route
     const subjectID = this.props.match.params.subjectID;
-    if (subjectID !== undefined) {
+    if (subjectID!== undefined) {
       url = `http://localhost:4000/API/query/editSubject/${subjectID}`;
       methodType = "PUT";
     }

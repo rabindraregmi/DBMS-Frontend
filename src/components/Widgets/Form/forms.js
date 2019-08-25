@@ -317,14 +317,14 @@ const formFields = props => {
         Save
       </button>
 
-      <button
+      {/* <button
         className="btn btn-secondary"
         type="reset"
         id="saveandcontinue"
         onClick={event => props.submitForm(event)}
       >
         Save and Continue
-      </button>
+      </button> */}
     </form>
   );
 };
