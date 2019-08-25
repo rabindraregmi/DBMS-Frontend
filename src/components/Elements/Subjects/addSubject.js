@@ -1,22 +1,10 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-import BreadCrumb from '../../Widgets/Breadcrumb/breadcrumb.js';
-import ExamTable from "./examListingTable.js";
-import { calendarFunctions } from "../../Widgets/jquery.nepaliDatePicker";
-let adbs = require("ad-bs-converter");
+import SubjectTable from "./subjectTable.js";
 
-
-const breadCrumbItems = [
-  {
-    text: "Add New Exam",
-    link:"/add-new-exam"
-  }
-]
-//import { async } from "q";
-class AddNewExam extends Component {
+class AddNewSubject extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       formData: {
         level: {
@@ -86,68 +74,45 @@ class AddNewExam extends Component {
           touched: false,
           validationText: ""
         },
-
-        subjectID: {
-          element: "select",
-          value: "",
-          required: true,
-          labelText: "Subject",
-          config: {
-            name: "Subject",
-            options: []
+        courseCode: {
+            element: "input",
+            value: "",
+            required: true,
+            labelText: "Course Code",
+            config: {
+              name: "courseCode_input",
+              type: "text",
+              placeholder: "Example: SH401,CT502 ... etc"
+            },
+            validation: {
+              required: false
+            },
+            valid: true,
+            touched: false,
+            validationText: ""
           },
-          validation: {
-            required: false
-          },
-          valid: true,
-          touched: false,
-          validationText: ""
-        },
-
-        examType: {
-          element: "select",
-          value: "Regular",
-          required: true,
-          labelText: "Exam Type",
-          config: {
-            name: "examType",
-            options: [
-              { val: "Regular", text: "Regular" },
-              { val: "Back", text: "Back" }
-            ]
-          },
-          validation: {
-            required: false
-          },
-          valid: true,
-          touched: false,
-          validationText: ""
-        },
-        date: {
-          element: "date-picker-jq",
-          value: "",
-          required: true,
-          labelText: "Date",
-          config: {
-            name: "date_input",
-            type: "date",
-            placeholder: "Enter the date of Exam"
-          },
-          validation: {
-            required: false
-          },
-          valid: true,
-          touched: false,
-          validationText: ""
-        }
+          subjectName: {
+            element: "input",
+            value: "",
+            required: true,
+            labelText: "Subject Name",
+            config: {
+              name: "programName_input",
+              type: "text",
+              placeholder: "Eg:Engineering Mathematics"
+            },
+            validation: {
+              required: false
+            },
+            valid: true,
+            touched: false,
+            validationText: ""
+          }
       },
       error: false,
       errorText: "",
       redirect: false,
       programData: [],
-      subjectData: [],
-      filteredProgramData: [],
-      filteredSubjectData: [],
       posted: false,
       errorOnSubmission: false,
       postedData: []
@@ -180,14 +145,13 @@ class AddNewExam extends Component {
         yearOptions.push(temp);
       }
     }
-
-    let options1 = [];
+    let programOptions = [];
     for (let program of filteredProgramData) {
       //console.log(program);
       let temp = {};
       temp["val"] = program.programName;
       temp["text"] = program.programName;
-      options1.push(temp);
+      programOptions.push(temp);
     }
     await this.setState({
       ...this.state,
@@ -204,77 +168,32 @@ class AddNewExam extends Component {
           ...this.state.formData.programID,
           config: {
             ...this.state.formData.programID.config,
-            options: options1
+            options: programOptions
           }
         }
       }
-    },()=>{});
-  };
-
-  loadSubjectOptions = async () => {
-    let { subjectData, formData } = this.state;
-    let { programID } = this.state.formData;
-
-    let programValue = programID.value;
-    let yearValue = formData.year.value;
-    let partValue = formData.part.value;
-
-    //Acoording to Value in Program Year and Part value, filter Subjects
-    let filteredSubjectData = subjectData.filter(item => {
-      return (
-        item["programName"] === programValue &&
-        item["year"] === yearValue &&
-        item["part"] === partValue
-      );
     });
-
-    //Only those filtered Subjects are added to subject options for Subject Select field
-    let subjectOptions = [];
-    for (let subject of filteredSubjectData) {
-      // console.log(subject);
-      let temp = {};
-      temp["val"] = subject.id;
-      temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
-      subjectOptions.push(temp);
-    }
-    await this.setState({
-      ...this.state,
-      formData: {
-        ...this.state.formData,
-        subjectID: {
-          ...this.state.formData.subjectID,
-          config: {
-            ...this.state.formData.subjectID.config,
-            options: subjectOptions
-          }
-        }
-      }
-    },()=>{});
   };
 
-  componentDidMount = async() => {
-    let programData = []
-    let subjectData= []
-    await fetch("http://localhost:4000/API/query/getProgramList")
+  componentDidMount = () => {
+    fetch("http://localhost:4000/API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
-        programData =json
+        this.setState({
+          programData: json
+        });
       });
 
-    await fetch("http://localhost:4000/API/query/getSubjectList")
-      .then(res => res.json())
-      .then(json => {
-        subjectData = json
-      });
-      
     //Edit route
-    const examID = this.props.match.params.examID;
-    if (examID !== undefined) {
-      await fetch("http://localhost:4000/API/query/getExams/" + examID)
+    const subjectID = this.props.match.params.subjectID;
+    if (subjectID !== undefined) {
+      fetch("http://localhost:4000/API/query/getSubject/" + subjectID)
         .then(res => res.json())
         .then(json => {
           let { formData } = this.state;
-          formData.level.value = json[0].academicDegree;
+          console.log(json[0]);
+
+          formData.level.value = "Bachelors";
           formData.programID.value = json[0].programName;
           formData.year.value = json[0].year;
           formData.subjectID.value = json[0].subjectID;
@@ -284,84 +203,41 @@ class AddNewExam extends Component {
 
           this.setState(
             {
-              programData:programData,
-              subjectData:subjectData,
               formData: formData
             },
             async () => {
               await this.loadProgramOptions();
               await this.loadSubjectOptions();
+              // console.log(this.state.formData);
+              // console.log("Value set");
             }
           );
         });
     }
-    else {
-      this.setState({
-        programData:programData,
-        subjectData:subjectData
-      })
-    }
   };
 
   updateForm = (newState, id) => {
-    this.setState({ formData: newState });
-
+      this.setState({ formData: newState });
+      if (id === "level") this.loadProgramOptions(); 
+    
     //If Change in Level Options Occur, Load Programs List and year list for that Level
-    if (id === "level") {
-      this.loadProgramOptions();
-    }
-    //If change in these fields occur, load subject list according to those changed values
-    else if (id === "programID" || id === "year" || id === "part") {
-      this.loadSubjectOptions();
-    }
-  };
-
-  formatNepaliDateToEng = nepaliDate => {
-    if (nepaliDate !== "") {
-      const date = nepaliDate.split("/");
-      const year = calendarFunctions.getNumberByNepaliNumber(date[0]);
-      const month = calendarFunctions.getNumberByNepaliNumber(date[1]);
-      const day = calendarFunctions.getNumberByNepaliNumber(date[2]);
-      return [year, month, day].join("/");
-    }
-    return "";
   };
 
   submitForm = event => {
     let dataToSubmit = {};
-    let formData = this.state.formData;
+    let {formData} = this.state;
     console.log(formData);
-    dataToSubmit["subjectID"] = formData["subjectID"].value.toString();
-    dataToSubmit["examType"] = formData["examType"].value;
-    dataToSubmit["date"] = this.formatNepaliDateToEng(formData["date"].value);
-    console.log(dataToSubmit);
-
-    const state = this.state;
     for (let key in this.state.formData) {
-      if (key === "date" && dataToSubmit[key] === "") {
-        //Set the default value to today
-        const today = new Date();
-        const dd = today.getDate();
-        const mm = today.getMonth() + 1; //Months are zero based
-        const yyyy = today.getFullYear();
-        const nepaliDate = adbs.ad2bs(yyyy + "/" + mm + "/" + dd).en;
-        //Year month day format with  0 padded if mm or dd < 10
-        dataToSubmit[key] =
-          nepaliDate.year.toString() +
-          "/" +
-          ("0" + nepaliDate.month.toString()).slice(-2) +
-          "/" +
-          ("0" + nepaliDate.day.toString()).slice(-2);
-      }
-      if (key === "subjectID" || key === "examType") {
+        dataToSubmit[key] = this.state.formData[key].value;
+        const state = this.state;
+        //0 check for dropdown
         if (
-          dataToSubmit[key] === null ||
-          dataToSubmit[key].match(/^ *$/) !== null ||
-          dataToSubmit[key] === 0
+          dataToSubmit[key].toString() === null ||
+          dataToSubmit[key].toString().match(/^ *$/) !== null
         ) {
           console.log("Empty ");
           state.formData[key].validationText =
-            state.formData[key].labelText + " cannot be empty";
+          state.formData[key].labelText + " cannot be empty";
           state.formData[key].valid = false;
           this.setState(state);
           return;
@@ -371,16 +247,15 @@ class AddNewExam extends Component {
           this.setState(state);
         }
       }
-    }
 
     console.log(dataToSubmit);
-    let url = "http://localhost:4000/API/query/addExam";
+    let url = "http://localhost:4000/API/query/addSubject";
     let methodType = "POST";
 
     //URL for update route
-    const examID = this.props.match.params.examID;
-    if (examID !== undefined) {
-      url = `http://localhost:4000/API/query/editExam/${examID}`;
+    const subjectID = this.props.match.params.subjectID;
+    if (subjectID !== undefined) {
+      url = `http://localhost:4000/API/query/editSubject/${subjectID}`;
       methodType = "PUT";
     }
     fetch(url, {
@@ -395,7 +270,7 @@ class AddNewExam extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (examID !== undefined) {
+            if (subjectID !== undefined) {
               this.props.history.goBack();
               return;
             }
@@ -424,6 +299,7 @@ class AddNewExam extends Component {
         console.log(err);
       });
   };
+
   errorCheck = () => {
     const { errorOnSubmission, errorText } = this.state;
     if (errorOnSubmission) {
@@ -434,7 +310,6 @@ class AddNewExam extends Component {
   loadForm = () => {
     return (
       <div>
-        
         {this.errorCheck()}
         <FormFields
           formData={this.state.formData}
@@ -453,7 +328,7 @@ class AddNewExam extends Component {
         <div className="p">
           <div className="left-floated-form">{this.loadForm()}</div>
           <div>
-            <ExamTable postedData={postedData} postedTable={true} />
+            <SubjectTable postedData={postedData} postedTable={true} />
           </div>
         </div>
       );
@@ -463,11 +338,8 @@ class AddNewExam extends Component {
   };
 
   render() {
-    return <div className="container-fluid">
-      <BreadCrumb breadcrumbItems= {breadCrumbItems}/>
-      {this.mainContent()}
-    </div>;
+    return <div className="container-fluid">{this.mainContent()}</div>;
   }
 }
 
-export default AddNewExam;
+export default AddNewSubject;

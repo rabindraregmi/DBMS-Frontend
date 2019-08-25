@@ -46,6 +46,23 @@ class AssignPackage extends Component {
         touched: false,
         validationText: ""
       },
+      courseCode: {
+        element: "input",
+        value: "",
+        label: true,
+        labelText: "Course Code",
+        config: {
+          name: "courseCode_input",
+          type: "text",
+          placeholder: "Eg. SH401"
+        },
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationText: ""
+      },
       contact: {
         element: "input",
         value: "",
@@ -184,11 +201,7 @@ class AssignPackage extends Component {
     fetch(`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
       .then(res => res.json())
       .then(json => {
-        // this.setState({
-        //   personID: params.personID,
-        //   isLoaded: true,
-        //   personData: json
-        // });
+        
         let { formData } = this.state;
         console.log(this.formatDate(new Date()));
         let assignmentDate = this.formatEnglishDateToNep(
@@ -202,6 +215,7 @@ class AssignPackage extends Component {
         formData.name.value = json[0].name;
         formData.contact.value = json[0].contact;
         formData.address.value = json[0].campus;
+        formData.courseCode.value = json[0].courseCode.toString().replace(" ","");
         formData.dateOfAssignment.value = assignmentDate;
         formData.dateOfDeadline.value = deadlineDate;
         this.setState({

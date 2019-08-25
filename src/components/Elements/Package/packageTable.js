@@ -1,6 +1,7 @@
 import React from "react";
 import Table from "../../Widgets/Tables/tables.js";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import utils from '../../../utils/utils.js';
 class PackageTable extends React.Component {
   sortingOnlyList = ["Status"];
   headings = [
@@ -69,13 +70,23 @@ class PackageTable extends React.Component {
       link: "/"
     }
   ];
+  quickLinks = [
+    {
+      text:"Add New Package",
+      link:"/add-new-package"
+    },
+    {
+      text:"Add New Exam",
+      link:"/add-new-Exam"
+    },
+
+  ]
 
   state = {
     tableData: [],
     isLoaded: false,
     filtered: [],
     isFiltered: false,
-    searchBy: "sn",
     categories: {}
   };
 
@@ -94,6 +105,7 @@ class PackageTable extends React.Component {
       });
     }
   };
+
   UNSAFE_componentWillReceiveProps = props => {
     this.deleteUnnecessaryTableData(props);
     
@@ -103,19 +115,7 @@ class PackageTable extends React.Component {
         return el.label !== "Status";
       });
       let json = props.initialData;
-      let tableData = json;
-      let categories = {};
-      let groupBy = this.headings.filter(header => header.grouping);
-      for (let header of groupBy) {
-        let groupByKeyWord = header.field;
-        categories[groupByKeyWord] = [];
-        for (let item of tableData) {
-          //console.log("efse", item)
-          if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
-            categories[groupByKeyWord].push(item[groupByKeyWord]);
-          }
-        }
-      }
+      let categories = utils.createCategories(json,this.headings);
       this.setState({
         isLoaded: true,
         tableData: json,
@@ -132,20 +132,7 @@ class PackageTable extends React.Component {
       fetch("http://localhost:4000/API/query/getAllPackages")
         .then(res => res.json())
         .then(json => {
-          let tableData = json;
-          let categories = {};
-          let groupBy = this.headings.filter(header => header.grouping);
-          for (let header of groupBy) {
-            let groupByKeyWord = header.field;
-            categories[groupByKeyWord] = [];
-            for (let item of tableData) {
-              //console.log("efse", item)
-              if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
-                categories[groupByKeyWord].push(item[groupByKeyWord]);
-              }
-            }
-          }
-          console.log(json);
+          let categories =utils.createCategories(json,this.headings);
           this.setState({
             isLoaded: true,
             tableData: json,

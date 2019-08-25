@@ -1,6 +1,8 @@
 import React , {Component}  from 'react';
 import Header from '../components/Header/header.js'
 import './layout.css'
+import {Breadcrumbs} from 'react-breadcrumbs-dynamic';
+import {NavLink} from 'react-router-dom';
 class Layout extends Component {
 
     state = {
@@ -18,6 +20,8 @@ class Layout extends Component {
     render (){
         return(
             <div className = 'layout'>
+                
+                
                 <div className = "header">
 
                 <Header
@@ -27,6 +31,14 @@ class Layout extends Component {
                 />
             </div>
             <div className = "main-content">
+            {/* <Breadcrumbs
+                separator={<b> / </b>}
+                item={NavLink}
+                finalItem={'b'}
+                finalProps={{
+                style: {color: 'red'}
+                }}
+                /> */}
                 {/* EVery other component is rendered here as a child of HOC */}
                 {this.props.children}
             </div>
