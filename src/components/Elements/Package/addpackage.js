@@ -1,6 +1,27 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
 import PackageTable from "./packageTable.js";
+import BreadCrumb from "../../Widgets/Breadcrumb/breadcrumb.js";
+
+
+const breadCrumbItems = [
+  {
+    text: "Add New Package",
+    link:"/add-new-package"
+  }
+]
+const quickLinks = [
+  {
+    text:"Add New Program",
+    link:"/add-new-program",
+    button: 'primary',
+  },
+  {
+    text:"Add New Exam",
+    link:"/add-new-Exam",
+    button: 'secondary'
+  },
+]
 //import { Redirect } from "react-router-dom";
 class AddNewPackage extends Component {
   state = {
@@ -106,7 +127,10 @@ class AddNewPackage extends Component {
         },
         valid: true,
         touched: false,
-        validationText: ""
+        validationText: "",
+        quickLink:{
+          link:'/add-new-program',
+        }
       },
       year: {
         element: "select",
@@ -155,7 +179,10 @@ class AddNewPackage extends Component {
         },
         valid: true,
         touched: false,
-        validationText: ""
+        validationText: "",
+        quickLink:{
+          link:'/add-new-subject',
+        }
       },
 
       examID: {
@@ -173,7 +200,10 @@ class AddNewPackage extends Component {
         },
         valid: true,
         touched: false,
-        validationText: ""
+        validationText: "",
+        quickLink:{
+          link:'/add-new-exam',
+        }
       }
     },
     posted: false,
@@ -184,7 +214,8 @@ class AddNewPackage extends Component {
     programData: [],
     subjectData: []
   };
-  loadProgramOptions = () => {
+
+  loadProgramOptions = async () => {
     let { programData } = this.state;
     let { level } = this.state.formData;
 
@@ -219,7 +250,7 @@ class AddNewPackage extends Component {
       temp["text"] = program.programName;
       options1.push(temp);
     }
-    this.setState({
+    await this.setState({
       ...this.state,
       formData: {
         ...this.state.formData,
@@ -241,7 +272,7 @@ class AddNewPackage extends Component {
     });
   };
 
-  loadSubjectOptions = () => {
+  loadSubjectOptions = async () => {
     let { subjectData, formData } = this.state;
     let { programID } = this.state.formData;
 
@@ -267,7 +298,7 @@ class AddNewPackage extends Component {
       temp["text"] = `${subject.subjectName}  (${subject.courseCode})`;
       subjectOptions.push(temp);
     }
-    this.setState({
+    await this.setState({
       ...this.state,
       formData: {
         ...this.state.formData,
@@ -281,7 +312,7 @@ class AddNewPackage extends Component {
       }
     });
   };
-  loadExamOptions = () => {
+  loadExamOptions = async () => {
     let { examData } = this.state;
     let { subjectID } = this.state.formData;
 
@@ -302,7 +333,7 @@ class AddNewPackage extends Component {
       examOptions.push(temp);
     }
     console.log(filteredExamData);
-    this.setState({
+    await this.setState({
       ...this.state,
       formData: {
         ...this.state.formData,
@@ -317,30 +348,28 @@ class AddNewPackage extends Component {
     });
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     let { examID } = this.state.formData;
-    //let examOptions = examID.config.options;
-    fetch("http://localhost:4000/API/query/getProgramList")
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          programData: json
-        });
-      });
 
-    fetch("http://localhost:4000/API/query/getSubjectList")
+    //let examOptions = examID.config.options;
+    let programData = []
+    let subjectData= []
+    let examData = []
+    await fetch("http://localhost:4000/API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          subjectData: json
-        });
+        programData =json
       });
-    fetch("http://localhost:4000/API/query/getExams")
+          
+    await fetch("http://localhost:4000/API/query/getSubjectList")
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          examData: json
-        });
+        subjectData=json
+      });
+    await fetch("http://localhost:4000/API/query/getExams")
+      .then(res => res.json())
+      .then(json => {
+        examData = json
       });
     //console.log(examOptions);
 
@@ -348,9 +377,8 @@ class AddNewPackage extends Component {
     if (packageID !== undefined) {
       fetch("http://localhost:4000/API/query/getPackage/" + packageID)
         .then(res => res.json())
-        .then(json => {
+        .then(async json => {
           let { formData } = this.state;
-          console.log(json);
           console.log(json[0]);
           formData.packageCode.value = json[0].packageCode;
           formData.noOfCopies.value = json[0].noOfCopies;
@@ -364,9 +392,12 @@ class AddNewPackage extends Component {
           formData.subjectID.value = json[0].subjectID;
           formData.examID.value = json[0].examID;
 
-          this.setState(
+          await this.setState(
             {
-              formData: formData
+              formData: formData,
+              programData:programData,
+              subjectData:subjectData,
+              examData:examData
             },
             async () => {
               await this.loadProgramOptions();
@@ -377,6 +408,14 @@ class AddNewPackage extends Component {
             }
           );
         });
+    }
+    else 
+    {
+      await this.setState({
+        programData,
+        subjectData,
+        examData
+      })
     }
   };
 
@@ -400,6 +439,7 @@ class AddNewPackage extends Component {
 
     let dataToSubmit = {};
     console.log(dataToSubmit);
+
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
       console.log(dataToSubmit[key]);
@@ -411,7 +451,7 @@ class AddNewPackage extends Component {
       ) {
         console.log("Empty ");
         state.formData[key].validationText =
-          state.formData[key].labelText + " cannot be empty";
+        state.formData[key].labelText + " cannot be empty";
         state.formData[key].valid = false;
         this.setState(state);
         return;
@@ -508,7 +548,10 @@ class AddNewPackage extends Component {
   };
 
   render() {
-    return <div className="container-fluid">{this.mainContent()}</div>;
+    return <div className="container-fluid">
+    <BreadCrumb props = {this.props} breadcrumbItems = {breadCrumbItems}/>
+    {this.mainContent()}
+    </div>;
   }
 }
 

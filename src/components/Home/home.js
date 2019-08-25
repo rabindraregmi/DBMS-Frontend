@@ -6,7 +6,6 @@ import { faPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import BreadCrumb from "../Widgets/Breadcrumb/breadcrumb.js";
 import Chart from "../Widgets/Charts/charts.js";
 import { MDBCard, MDBCardBody, MDBCardHeader, MDBContainer } from "mdbreact";
-
 const buttons = [
   {
     text: "Entry New Package",
@@ -18,7 +17,7 @@ const buttons = [
   {
     text: "Assign Packages",
     className: "home-button",
-    color: "#1cafec",
+    color: "rgb(23,100,131)",
     icon: faEdit,
     link: "/intermediate"
   },
@@ -30,6 +29,12 @@ const buttons = [
     icon: faPlus
   }
 ];
+const breadcrumbItems = [
+  {
+    text:"Dashboard",
+    link:'/'
+  }
+]
 class Home extends React.Component {
     
     
@@ -82,7 +87,8 @@ class Home extends React.Component {
    render() {
        return(
            <div>
-             <BreadCrumb className ="breadcrumb"/>
+             <BreadCrumb breadcrumbItems = {breadcrumbItems} className ="breadcrumb"/>
+           
                <div className="chart-buttons">
                    <MDBContainer>
                       <MDBCard>

@@ -1,7 +1,9 @@
 import React from "react";
 import Table from "../../Widgets/Tables/tables.js";
 import { faEdit, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
-
+import utils from '../../../utils/utils.js';
+import {Link} from 'react-router-dom';
+import './persons.css'
 class PersonTable extends React.Component {
   headings = [
     // name,contact,courseCode,programme,year_part,subject,campus,teachingExperience,experienceinthisSubj,academicQualification,jobType,email
@@ -82,11 +84,6 @@ class PersonTable extends React.Component {
       icon: faTrash,
       link: "/deletePerson/"
     },
-    {
-      text: "Assign",
-      icon: faUser,
-      link: "/assign-package/"
-    }
   ];
 
   state = {
@@ -103,19 +100,14 @@ class PersonTable extends React.Component {
       .then(res => res.json())
       .then(json => {
 
-        let tableData = json;
-        let categories = {};
-        let groupBy = this.headings.filter(header => header.grouping);
-        for (let header of groupBy) {
-          let groupByKeyWord = header.field;
-          categories[groupByKeyWord] = [];
-          for (let item of tableData) {
-            //console.log("efse", item)
-            if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
-              categories[groupByKeyWord].push(item[groupByKeyWord]);
-            }
-          }
-        }
+        
+        let categories = utils.createCategories(json,this.headings);
+        json.map((element,index)=>{
+          let id = element.id
+          for (let key in element)
+            element[key] = <Link key = {index} to={`/assign-package/${id}`}>{element[key]}</Link>
+        })
+        console.log(json)
         this.setState({
           isLoaded: true,
           tableData: json,
@@ -130,7 +122,7 @@ class PersonTable extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="personTable container-fluid">
         <Table
           headings={this.headings}
           tableData={

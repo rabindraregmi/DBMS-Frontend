@@ -2,7 +2,7 @@
     width: 250px;
     height: 40px;
     position: relative;
-    background:#1cafec;
+    background:rgb(23,100,131);
     color:white;
     margin-left:0px;
     margin-top:10px;
@@ -39,7 +39,7 @@
     bottom: 0;
     width: 0;
     height: 0;
-    border-left: 20px solid #1cafec;
+    border-left: 20px solid rgb(23,100,131);
     border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
   }

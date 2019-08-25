@@ -4,7 +4,9 @@ import Select from "react-dropdown-select";
 import "./forms.css";
 import DatePicker from "react-datepicker-nepali";
 import NepaliDatePicker from "./datePicker";
-
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {Link} from 'react-router-dom';
 const formFields = props => {
   const renderFields = () => {
     const formArray = [];
@@ -175,26 +177,33 @@ const formFields = props => {
           <div className="form-group row">
             {showLabel(values.required, values.labelText)}
             <div className="col-sm-6">
+              <div>
+
               <select
                 value={values.value}
                 name={values.config.name}
                 onChange={event => changeHandler(event, data.id)}
                 className="form-control"
-              >
+                >
                 <option value="0">Select {values.config.name}</option>
                 {values.config.options.map((item, i) => (
                   <option key={i} value={item.val}>
                     {item.text}
                   </option>
                 ))}
-              </select>
-
+                </select>
+              </div>
               {!values.valid ? (
                 <div autoFocus className="alert alert-danger">
                   {values.validationText}
                 </div>
               ) : null}
             </div>
+               {values.quickLink?
+               <Link target= "_blank" to= {values.quickLink.link}>
+                <FontAwesomeIcon icon= {faPlus}/>
+               </Link>
+                :null} 
           </div>
         );
 
@@ -311,8 +320,8 @@ const formFields = props => {
       <button
         className="btn btn-secondary"
         type="reset"
-        id="snc"
-        onClick={event => this.submitForm(event)}
+        id="saveandcontinue"
+        onClick={event => props.submitForm(event)}
       >
         Save and Continue
       </button>

@@ -1,22 +1,36 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Home from "./components/Home/home.js";
-import AddPackage from "./components/Elements/Package/addpackage.js";
-import AssignPackage from "./components/Elements/Assignment/assignPackage.js";
-import AddNewExam from "./components/Elements/Exam/addExam.js";
-import PackageHome from "./components/Elements/Package/packageHome.js";
+//HOC
 import Layout from "./hoc/layout.js";
-import Department from "./components/Elements/Department/departmentHome.js";
-import Subject from "./components/Elements/Subjects/subjects.js";
-import Intermediate from "./components/Elements/Assignment/intermediate.js";
-import ExamTable from "./components/Elements/Exam/examTable.js";
-import Person from "./components/Elements/Person/person.js"
-import ReceivePackage from './components/Elements/Package/receivePackage.js'
-import Test from './components/Widgets/test.js'
-import ExamDetails from "./components/Elements/Exam/examDetails.js";
-import PackageHistory from "./components/Elements/Package/History/packageModal.js";
+// Components
+import Home from "./components/Home/home.js";
 
+import AddPackage from "./components/Elements/Package/addpackage.js";
+import Intermediate from "./components/Elements/Assignment/intermediate.js";
+import AssignPackage from "./components/Elements/Assignment/assignPackage.js";
+import PackageHome from "./components/Elements/Package/packageHome.js";
+import PackageHistory from "./components/Elements/Package/History/packageModal.js";
+import ReceivePackage from './components/Elements/Package/receivePackage.js'
+
+
+import AddNewExam from "./components/Elements/Exam/addExam.js";
+import ExamTable from "./components/Elements/Exam/examTable.js";
+import ExamDetails from "./components/Elements/Exam/examDetails.js";
+
+import Department from "./components/Elements/Department/departmentHome.js";
+
+import Subject from "./components/Elements/Subjects/subjectTable.js";
+import AddNewSubject from "./components/Elements/Subjects/addSubject.js"
+
+import Person from "./components/Elements/Person/person.js";
+
+import Program from "./components/Elements/Program/programTable.js";
+import AddNewProgram from "./components/Elements/Program/addProgram.js"
+
+
+import Test from './components/Widgets/test.js'
+// import Auth from './hoc/protectedLayout.js'
 class Routes extends Component {
   render() {
     return (
@@ -25,33 +39,41 @@ class Routes extends Component {
         <Layout>
           <Switch>
             {/*exact is used to match path of component exactly. Otherwise, if there are two path home and homes, path home is rendered */}
-            <Route path="/home" exact component={Home}/>
-            <Route path="/add-new-package" exact component={AddPackage} />
-            <Route path="/edit-package/:packageID" exact component={AddPackage} />
-
-            <Route
-              path="/assign-package/:personID"
-              exact
-              component={AssignPackage}
-            />
+            <Route path="/" exact component={Home}/>
+            {/* Package Route */}
+            <Route path="/packages" exact component={PackageHome} />
+            <Route path="/add-new-package" exact component={AddPackage}/>
+            <Route path="/edit-package/:packageID" exact component={AddPackage}/>
+            <Route path="/assign-package/:personID" exact component={AssignPackage}/>
+            <Route path="/intermediate" exact component={Intermediate} />
+            <Route path = "/receivePackage/:assignmentID" exact component = {ReceivePackage}/>
+            <Route path = "/packageHistory/:packageCode?" exact component = {PackageHistory}/>
+            {/* Exam ROutes */}
             <Route path="/add-new-exam" exact component={AddNewExam} />
             <Route path="/edit-exam/:examID" exact component={AddNewExam} />
             <Route path="/exam-details/:examID" exact component={ExamDetails} />
-            
-
             <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack} {...props}/>)}/>
-
-            <Route path="/packages" exact component={PackageHome} />
-
-            <Route path="/departments" exact component={Department} />
+            {/* Subject Route */}
             <Route path="/subjects" exact component={Subject} />
-            <Route path="/intermediate" exact component={Intermediate} />
+            <Route path="/add-new-subject" exact component= {AddNewSubject}/>
+
+            {/* Department Route */}
+            <Route path="/departments" exact component={Department} />
+
+            {/* Program Route */}
+            <Route path= '/add-new-program' exact component= {AddNewProgram}/>
+            <Route path= "/programs" exact component = {Program}/>
+            {/* Exam Route */}
             <Route path="/exams" exact component={ExamTable} />
-            <Route path = "/receivePackage/:assignmentID" exact component = {ReceivePackage}/>
-            <Route path = "/packageHistory/:packageCode?" exact component = {PackageHistory}/>
+
             <Route path = '/test' exact component = {Test}/>
+            
+            <Route path= '*' exact render = {()=>{
+                return (<h1>404 Not Found</h1>)
+            }}/>
           </Switch>
         </Layout>
+      
       </div>
     );
   }

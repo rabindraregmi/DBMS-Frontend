@@ -1,6 +1,7 @@
 import React from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-
+import {MDBCard, MDBCardHeader, MDBCardBody,MDBProgress} from 'mdbreact'
+import axios from 'axios';
 class Person extends React.Component {
   state = {
     formData: {
@@ -211,7 +212,10 @@ class Person extends React.Component {
     },
     error: false,
     errorText: "",
-    redirect: false
+    redirect: false,
+    selectedFile:null,
+    loaded:0,
+    isImport:false
   };
   updateForm = newState => {
     this.setState({
@@ -313,19 +317,76 @@ class Person extends React.Component {
       return <p>{errorText}</p>;
     }
   };
+  onChangeHandler =event=>{
+    this.setState({
+      selectedFile:event.target.files[0]
+    })
+  }
+  uploadFile = ()=>{
+   const data = new FormData()
+   data.append('file',this.state.selectedFile)
+  
+   axios.post("http://localhost:4000/API/query/upload", data, {
+       onUploadProgress: ProgressEvent => {
+         this.setState({
+           loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
+       })
+   },
+}).then(res=>{
+  console.log(res)
+})
+  
+  
+  
+   //  fetch("http://localhost:4000/API/query/upload", {
+  //    method: "POST",
+  //   //  headers: {
+  //   //   Accept: "application/json",
+  //   // },
+  //   body: data
+  // }).then(res=>{
+  //   console.log(res)
+  // })
+
+  }
   render() {
     return (
       <div clasName="container">
-        <form className="main-form" onSubmit={this.submitForm}>
+        
           {this.errorCheck()}
-          <FormFields
-            formData={this.state.formData}
-            change={newState => this.updateForm(newState)}
-          />
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
-        </form>
+          <MDBCard>
+            <MDBCardHeader>
+                Add New Person
+                <button className = "btn btn-xl btn-secondary" style= {{float:'right'}}
+                onClick= {()=>{
+                  this.setState(prevState=>({
+                    isImport:!prevState.isImport
+                  }))
+                }}
+                
+                >Import </button>
+            </MDBCardHeader>
+            <MDBCardBody>
+              {this.state.isImport?
+              <div>
+
+              <MDBProgress value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</MDBProgress>
+              <input type="file" name="file" className = 'btn'onChange={this.onChangeHandler}/>
+              <button className = "btn btn-secondary"onClick= {this.uploadFile}>UpLoad File</button>
+              </div>
+              :
+              <FormFields
+              formData={this.state.formData}
+              change={newState => this.updateForm(newState)}
+              submitForm={event => this.submitForm(event)}
+              
+            />
+              }
+            
+            </MDBCardBody>
+          </MDBCard>
+          
+          
       </div>
     );
   }

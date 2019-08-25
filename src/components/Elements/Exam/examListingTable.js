@@ -5,13 +5,14 @@ import {
   faEdit,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import utils from '../../../utils/utils.js';
 
 export class ExamListingTable extends Component {
   state = {
     tableData: [],
     filtered: [],
     isFiltered: false,
-    isLoaded: false, 
+    isLoaded: false,
     categories:{}
   };
   headings = [
@@ -86,24 +87,13 @@ UNSAFE_componentWillReceiveProps=(props)=>{
           tableData.forEach(element => {
             delete element.examTitle
           });
-          let categories = {};
-          let groupBy = this.headings.filter(header => header.grouping);
-          for (let header of groupBy) {
-            let groupByKeyWord = header.field;
-            categories[groupByKeyWord] = [];
-            for (let item of tableData) {
-              //console.log("efse", item)
-              if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
-                categories[groupByKeyWord].push(item[groupByKeyWord]);
-              }
-            }
-          }
+          let categories = utils.createCategories(tableData,this.headings)
           this.setState({
             tableData:tableData,
             categories: categories
           });
         }
-      
+
 }
 
   componentDidMount=()=>{

@@ -5,7 +5,7 @@ import {
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import Table from "../../Widgets/Tables/tables.js";
-
+import utils from '../../../utils/utils.js';
 
 class ExamTable extends React.Component {
   
@@ -88,22 +88,9 @@ class ExamTable extends React.Component {
             });
             detailsArr.push({ id: index, title: key, exams: value });
           });
-          console.log(groupsArr);
-          console.log("This is ",json);
 
-          let tableData = groupsArr;
-          let categories = {};
-          let groupBy = this.headings.filter(header => header.grouping);
-          for (let header of groupBy) {
-            let groupByKeyWord = header.field;
-            categories[groupByKeyWord] = [];
-            for (let item of tableData) {
-              //console.log("efse", item)
-              if (!categories[groupByKeyWord].includes(item[groupByKeyWord])) {
-                categories[groupByKeyWord].push(item[groupByKeyWord]);
-              }
-            }
-          }
+
+          let categories = utils.createCategories(groupsArr,this.headings);
           this.setState({
             isLoaded: true,
             tableData: groupsArr,

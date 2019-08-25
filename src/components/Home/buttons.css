@@ -23,7 +23,7 @@
   margin-top: 30px;
   width: 100%;
   height: 45px;
-  background: #1cafec;
+  background: rgb(23,100,131);
   color: white;
   margin-left: 5px;
   font-size: 20px;
@@ -72,8 +72,8 @@ g.recharts-cartesian-axis-ticks {
   cursor: pointer;  
   color:blue;
 }
-/* .card-header
+.card-header
 {
-  /* background:#e7e7e7; */
-  /* color:#74d4fd; */
-
+  background:rgb(23,100,131);
+   color:#fff;
+}

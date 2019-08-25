@@ -37,20 +37,26 @@ const SideNavItems = () => {
             link: '/subjects',
             children: [{texts:'Hello'}]
         },
-        {
-            className: 'option',
-            icon: 'sign-out',
-            text: 'Assignment',
-            link: '/assignments',
-            children: [{texts:'Hellox'}]
-        },
+        // {
+        //     className: 'option',
+        //     icon: 'sign-out',
+        //     text: 'Assignment',
+        //     link: '/assignments',
+        //     children: [{texts:'Hellox'}]
+        // },
         {
             className: 'option',
             text: 'Package History',
             link:'/packageHistory'
+        },
+        {
+            className: 'option',
+            text: 'Programs',
+            link:'/programs'
+        },
 
 
-        }
+
     ]
 
     const showItems = () => {
