@@ -355,18 +355,18 @@ class AddNewPackage extends Component {
     let programData = []
     let subjectData= []
     let examData = []
-    await fetch("http://localhost:4000/API/query/getProgramList")
+    await fetch(process.env.REACT_APP_BASE_URL+"API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
         programData =json
       });
           
-    await fetch("http://localhost:4000/API/query/getSubjectList")
+    await fetch(process.env.REACT_APP_BASE_URL+"API/query/getSubjectList")
       .then(res => res.json())
       .then(json => {
         subjectData=json
       });
-    await fetch("http://localhost:4000/API/query/getExams")
+    await fetch(process.env.REACT_APP_BASE_URL+"API/query/getExams")
       .then(res => res.json())
       .then(json => {
         examData = json
@@ -375,7 +375,7 @@ class AddNewPackage extends Component {
 
     const packageID = this.props.match.params.packageID;
     if (packageID !== undefined) {
-      fetch("http://localhost:4000/API/query/getPackage/" + packageID)
+      fetch(process.env.REACT_APP_BASE_URL+"API/query/getPackage/" + packageID)
         .then(res => res.json())
         .then(async json => {
           let { formData } = this.state;
@@ -436,7 +436,7 @@ class AddNewPackage extends Component {
   submitForm = event => {
     // let buttonID = event.target.id;
     // let redirectLink = ''
-
+    event.persist();
     let dataToSubmit = {};
     console.log(dataToSubmit);
 
@@ -464,12 +464,12 @@ class AddNewPackage extends Component {
 
     console.log(dataToSubmit);
 
-    let url = "http://localhost:4000/API/query/addPackage";
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addPackage`;
     let methodType = "POST";
     //URL for update route
     const packageID = this.props.match.params.packageID;
     if (packageID !== undefined) {
-      url = `http://localhost:4000/API/query/editPackage/${packageID}`;
+      url = `${process.env.REACT_APP_BASE_URL}API/query/editPackage/${packageID}`;
       methodType = "PUT";
     }
     fetch(url, {

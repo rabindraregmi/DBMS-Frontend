@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBBtn } from "mdbreact";
 import TableOptions from './tablesOptions.js'
+import { element } from "prop-types";
 
 
-class PendingPackageTable extends React.Component {
+class MainTable extends React.Component {
   //MDBtable needs data in JSON format.Data methods is used for that.
   //Headings is looped and stored in columns
   //tableData is looped and stored in rows
@@ -116,6 +117,20 @@ stateHandler = (states)=>{
   this.props.setState(states)
 }
 
+quickLinks = ()=>{
+  if(this.props.quickLinks)
+  {
+    return this.props.quickLinks.map((element,index)=>{
+      return (
+        <Link to= {element.link}>
+        <button className= "btn btn-secondary">
+          {element.text}
+        </button>
+        </Link>
+      )
+    })
+  }
+}
 render(){
   
   return (
@@ -142,10 +157,11 @@ render(){
         bordered
         sortable
         />
+        {this.quickLinks()}
         </div>
         </div>
         
   );
 }
 };
-export default PendingPackageTable;
+export default MainTable;

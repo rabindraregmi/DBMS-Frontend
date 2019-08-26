@@ -177,7 +177,7 @@ class AddNewSubject extends Component {
 
   componentDidMount = async() => {
     let programData = []
-    await fetch("http://localhost:4000/API/query/getProgramList")
+    await fetch(process.env.REACT_APP_BASE_URL+"API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
         programData = json
@@ -186,16 +186,15 @@ class AddNewSubject extends Component {
     //Edit route
     const subjectID = this.props.match.params.subjectID;
     if (subjectID !== undefined) {
-      fetch("http://localhost:4000/API/query/getSubject/" + subjectID)
+      fetch(process.env.REACT_APP_BASE_URL+"API/query/getOneSubject/" + subjectID)
         .then(res => res.json())
         .then(async json => {
           let { formData } = this.state;
-
+          console.log(json)
           formData.level.value = json[0].academicDegree;
-          formData.programID.value = json[0].programName;
+          formData.programID.value = json[0].programID;
           formData.year.value = json[0].year;
-          formData.date.value = json[0].date;
-          formData.examType.value = json[0].examType;
+          formData.courseCode.value = json[0].courseCode;
           formData.part.value = json[0].part;
           formData.subjectName.value = json[0].subjectName;
 
@@ -211,6 +210,7 @@ class AddNewSubject extends Component {
           );
         });
     }
+
     else 
     {
       this.setState({
@@ -227,6 +227,7 @@ class AddNewSubject extends Component {
   };
 
   submitForm = event => {
+    event.persist();
     let dataToSubmit = {};
     let {formData} = this.state;
     console.log(formData);
@@ -252,13 +253,13 @@ class AddNewSubject extends Component {
       }
 
     console.log(dataToSubmit);
-    let url = "http://localhost:4000/API/query/addSubject";
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addSubject`;
     let methodType = "POST";
 
     //URL for update route
     const subjectID = this.props.match.params.subjectID;
-    if (subjectID !== undefined) {
-      url = `http://localhost:4000/API/query/editSubject/${subjectID}`;
+    if (subjectID!== undefined) {
+      url = `${process.env.REACT_APP_BASE_URL}API/query/editSubject/${subjectID}`;
       methodType = "PUT";
     }
     fetch(url, {
@@ -273,7 +274,7 @@ class AddNewSubject extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (subjectID !== undefined) {
+            if (subjectID !== undefined ||event.target.id==="save") {
               this.props.history.goBack();
               return;
             }

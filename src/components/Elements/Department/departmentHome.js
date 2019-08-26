@@ -15,6 +15,12 @@ class DepartmentHome extends React.Component {
         
         
     ]
+    quickLinks = [
+        {
+            text: "Add New Department",
+            link: "/add-new-department"
+        }
+    ]
     actions = [
         {
             text: "Edit",
@@ -35,15 +41,17 @@ class DepartmentHome extends React.Component {
         searchBy:'departmentName'
     }
     componentDidMount =()=> {
-        fetch ('http://localhost:4000/API/query/getDepartmentList')
+        console.log(process.env.REACT_APP_BASE_URL)
+        
+        fetch (process.env.REACT_APP_BASE_URL+'API/query/getDepartmentList')
         .then (res=>res.json())
-        .then (json=>{
-          this.setState({
-            isLoaded:true,
-            tableData:json,
-          })
-          
+        .then(json=>{
+            this.setState({
+                tableData:json,
+                isLoaded:true
+            })
         })
+        
     }
 
     statehandler=(states)=>{
@@ -63,6 +71,7 @@ class DepartmentHome extends React.Component {
             state = {this.state}
             setState = {(states)=>this.statehandler(states)}
             actions = {this.actions}
+            quickLinks = {this.quickLinks}
         />
             </div>
         )

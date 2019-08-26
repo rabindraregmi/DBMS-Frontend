@@ -209,7 +209,7 @@ class AssignPackage extends Component {
     Date.prototype.addDays = function(d) {
       return new Date(this.valueOf() + 864e5 * d);
     };
-    fetch(`http://localhost:4000/API/query/getOnePerson/${params.personID}`)
+    fetch(`${process.env.REACT_APP_BASE_URL}API/query/getOnePerson/${params.personID}`)
       .then(res => res.json())
       .then(json => {
         
@@ -238,7 +238,7 @@ class AssignPackage extends Component {
       });
 
     //Fetch data from API and store data in options
-    fetch("http://localhost:4000/API/query/getNotAssignedPackages")
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/getNotAssignedPackages")
       .then(res => res.json())
       .then(json => {
         for (let pkg of json) {
@@ -341,7 +341,7 @@ class AssignPackage extends Component {
       }
     }
     console.log(dataToSubmit);
-    fetch("http://localhost:4000/API/query/addAssignment", {
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/addAssignment", {
       method: "POST",
       headers: {
         Accept: "application/json",

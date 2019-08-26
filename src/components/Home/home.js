@@ -66,7 +66,7 @@ class Home extends React.Component {
    }
 
    componentDidMount=()=>{
-    fetch("http://localhost:4000/API/query/getDepartmentWiseGraph")
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/getDepartmentWiseGraph")
     .then(res=>res.json())
     .then(json=>{
       this.setState({  

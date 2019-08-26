@@ -64,11 +64,6 @@ export class ExamListingTable extends Component {
       icon: faTrash,
       link: "/"
     },
-    {
-      text: "View Details",
-      icon: faInfoCircle,
-      link: "/exam-details/"
-    }
   ];
 UNSAFE_componentWillReceiveProps=(props)=>{
     if (props.hasOwnProperty("postedData")) {

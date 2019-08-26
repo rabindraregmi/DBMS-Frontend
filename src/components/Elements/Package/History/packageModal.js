@@ -92,7 +92,7 @@ render() {
                             </tbody>
                         </table>            
                     
-                            }
+                         }
                     </div>
         </MDBModalBody>
         <MDBModalFooter>

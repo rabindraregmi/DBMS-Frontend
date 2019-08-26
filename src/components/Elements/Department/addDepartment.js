@@ -1,49 +1,14 @@
 import React, { Component } from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-import ProgramTable from "./programTable.js";
+import DepartmentTable from "./departmentHome.js";
 
-class AddNewProgram extends Component {
+class AddNewDepartment extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       formData: {
-        level: {
-          element: "select",
-          value: "",
-          required: true,
-          labelText: "Level",
-          config: {
-            name: "Level",
-            options: [
-              { val: "Bachelors", text: "Bachelors" },
-              { val: "Masters", text: "Masters" }
-            ]
-          },
-          validation: {
-            required: false
-          },
-          valid: true,
-          touched: false,
-          validationText: ""
-        },
-        departmentID: {
-            element: "select",
-            value: "",
-            required: true,
-            labelText: "Department",
-            config: {
-              name: "Level",
-              options: []
-            },
-            validation: {
-              required: false
-            },
-            valid: true,
-            touched: false,
-            validationText: ""
-          },
-          programName: {
+          departmentName: {
             element: "input",
             value: "",
             required: true,
@@ -51,7 +16,7 @@ class AddNewProgram extends Component {
             config: {
               name: "programName_input",
               type: "text",
-              placeholder: "Example: BCT BEX etc"
+              placeholder: "Example: Department of Electronics Engineering"
             },
             validation: {
               required: false
@@ -70,34 +35,16 @@ class AddNewProgram extends Component {
     };
   }
   componentDidMount = () => {
-    fetch(process.env.REACT_APP_BASE_URL+"API/query/getDepartmentList")
-      .then(res => res.json())
-      .then(json => {
-        console.log("Department List",json)
-        let {formData} = this.state; 
-        for (let department of json)
-        {
-            let temp= {}
-            temp["val"] = department.id;
-            temp["text"]= department.departmentName;
-            formData.departmentID.config.options.push(temp)
-        }
-        this.setState({
-            formData:formData
-        })
-      });
 
     //Edit route
-    const programID = this.props.match.params.programID;
-    if (programID !== undefined) {
-      fetch(process.env.REACT_APP_BASE_URL+"API/query/getProgram/" + programID)
+    
+    const departmentID = this.props.match.params.departmentID;
+    if (departmentID !== undefined) {
+      fetch(`${process.env.REACT_APP_BASE_URL}API/query/getOneDepartment/` + departmentID)
         .then(res => res.json())
         .then(json => {
           let { formData } = this.state;
-          console.log(json[0])
-          formData.level.value = json[0].academicDegree;
-          formData.departmentID.value = json[0].departmentName;
-          formData.programName.value = json[0].programName;
+          formData.departmentName.value = json[0].departmentName;
           this.setState({formData: formData});
         });
     }
@@ -108,7 +55,7 @@ class AddNewProgram extends Component {
   };
 
   submitForm = event => {
-    event.persist();
+      event.persist();
     let dataToSubmit = {};
     for (let key in this.state.formData) {
         dataToSubmit[key] = this.state.formData[key].value;
@@ -131,13 +78,13 @@ class AddNewProgram extends Component {
       }
     console.log(dataToSubmit);
 
-    let url = `${process.env.REACT_APP_BASE_URL}API/query/addProgram`;
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addDepartment`;
     let methodType = "POST";
 
     //URL for update route
-    const programID = this.props.match.params.programID;
-    if (programID !== undefined) {
-      url = `${process.env.REACT_APP_BASE_URL}API/query/editProgram/${programID}`;
+    const departmentID = this.props.match.params.departmentID;
+    if (departmentID !== undefined) {
+      url = `${process.env.REACT_APP_BASE_URL}API/query/editDepartment/${departmentID}`;
       methodType = "PUT";
     }
     fetch(url, {
@@ -152,7 +99,7 @@ class AddNewProgram extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (programID !== undefined ||event.target.id==="save") {
+            if (departmentID!== undefined  ||event.target.id==="save") {
               this.props.history.goBack();
               return;
             }
@@ -209,7 +156,7 @@ class AddNewProgram extends Component {
         <div className="p">
           <div className="left-floated-form">{this.loadForm()}</div>
           <div>
-            <ProgramTable postedData={postedData} postedTable={true} />
+            <DepartmentTable postedData={postedData} postedTable={true} />
           </div>
         </div>
       );
@@ -223,4 +170,4 @@ class AddNewProgram extends Component {
   }
 }
 
-export default AddNewProgram;
+export default AddNewDepartment;

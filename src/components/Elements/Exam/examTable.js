@@ -7,9 +7,13 @@ import {
 import Table from "../../Widgets/Tables/tables.js";
 import utils from '../../../utils/utils.js';
 
+
+
 class ExamTable extends React.Component {
   
-
+   quickLinks  = [
+    {text:"Add New Exam",link:"/add-new-exam"}
+  ]
   headings = [
     {
       label: "Exam Title",
@@ -64,7 +68,7 @@ class ExamTable extends React.Component {
   };
 
   componentWillMount = () => {
-      fetch("http://localhost:4000/API/query/getExams")
+      fetch(process.env.REACT_APP_BASE_URL+"API/query/getExams")
         .then(res => res.json())
         .then(json => {
           //Group by data and year to separate exams
@@ -130,6 +134,7 @@ class ExamTable extends React.Component {
           actions={this.actions}
           detailParams ={this.state.detailedGroupedData}
           categories = {this.state.categories}
+          quickLinks = {this.quickLinks}
         />
       </div>
     );

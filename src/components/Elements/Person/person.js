@@ -215,7 +215,8 @@ class Person extends React.Component {
     redirect: false,
     selectedFile:null,
     loaded:0,
-    isImport:false
+    isImport:false,
+    isInserting:"no",
   };
   updateForm = newState => {
     this.setState({
@@ -230,7 +231,7 @@ class Person extends React.Component {
     if (this.props.match) {
       const personID = this.props.match.params.personID;
       if (personID !== undefined) {
-        fetch("http://localhost:4000/API/query/getOnePerson/" + personID)
+        fetch(process.env.REACT_APP_BASE_URL+"API/query/getOnePerson/" + personID)
           .then(res => res.json())
           .then(json => {
             let { formData } = this.state;
@@ -258,6 +259,7 @@ class Person extends React.Component {
 
   submitForm = event => {
     event.preventDefault();
+    event.persist();
     let dataToSubmit = {};
     for (let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value;
@@ -280,13 +282,13 @@ class Person extends React.Component {
       }
     }
     console.log(dataToSubmit);
-    let url = "http://localhost:4000/API/query/addPerson";
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addPerson`;
     let methodType = "POST";
     //Update route , change params
     if (this.props.match) {
       const personID = this.props.match.params.personID;
       if (personID !== undefined) {
-        url = "http://localhost:4000/API/query/editPerson/" + personID;
+        url = `${process.env.REACT_APP_BASE_URL}API/query/editPerson/` + personID;
         methodType = "PUT";
       }
     }
@@ -301,7 +303,10 @@ class Person extends React.Component {
     })
       .then(res => {
         // console.log(res);
+        const personID = this.props.match.params.personID;
         if (res.status === 200) {
+          if(personID!==undefined ||event.target.id==="save")
+            this.props.history.goBack()
           this.setState({ error: false });
           this.props.onSubmission();
         } else this.setState({ error: true, errorText: res.statusText });
@@ -326,29 +331,37 @@ class Person extends React.Component {
    const data = new FormData()
    data.append('file',this.state.selectedFile)
   
-   await axios.post("http://localhost:4000/API/query/upload", data, {
+   const res = await axios.post("/API/query/upload", data, {
        onUploadProgress: ProgressEvent => {
          this.setState({
            loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
        })
    },
-}).then(res=>{
-  console.log(res)
 })
-  this.setState({
-    loaded:0
+
+  await this.setState({
+    isInserting:"onProgress"
   })
-    axios.post ("http://localhost:4000/API/query/postExcel",{
-      onUploadProgress: ProgressEvent => {
-        this.setState({
-          loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
-      })
-  },
+  
+    let response = await fetch(process.env.REACT_APP_BASE_URL+"API/query/postExcel",{
+      method:'post',
+      headers:{
+        Accept: "application/json",
+        },
     })
+  if (response && response.status==200)
+   {
+
+     await this.setState({
+       isInserting:'done'
+      })
+    }
+
+    
   
   
   
-   //  fetch("http://localhost:4000/API/query/upload", {
+   //  fetch(process.env.REACT_APP_BASE_URL+"API/query/upload", {
   //    method: "POST",
   //   //  headers: {
   //   //   Accept: "application/json",
@@ -358,6 +371,15 @@ class Person extends React.Component {
   //   console.log(res)
   // })
 
+  }
+  checkInserting = ()=>{
+    let isInserting = this.state.isInserting;
+    if (isInserting=="no")
+      return<h1>Not</h1>
+    else if (isInserting=="onProgress")
+      return<h1>Data is Inserting</h1>
+    else 
+      return <h1>{this.props.history.goBack()}</h1>
   }
   render() {
     return (
@@ -379,7 +401,7 @@ class Person extends React.Component {
             <MDBCardBody>
               {this.state.isImport?
               <div>
-
+                {this.checkInserting()}
               <MDBProgress value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</MDBProgress>
               <input type="file" name="file" className = 'btn'onChange={this.onChangeHandler}/>
               <button className = "btn btn-secondary"onClick= {this.uploadFile}>UpLoad File</button>
