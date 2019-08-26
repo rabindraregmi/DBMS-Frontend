@@ -128,7 +128,7 @@ class PackageTable extends React.Component {
     if (this.props.initialData) {
       this.deleteUnnecessaryTableData(this.props);
     } else {
-      fetch("http://localhost:4000/API/query/getAllPackages")
+      fetch(process.env.REACT_APP_BASE_URL+"API/query/getAllPackages")
         .then(res => res.json())
         .then(json => {
           let categories =utils.createCategories(json,this.headings);

@@ -29,7 +29,7 @@ export class ExamDetails extends Component {
     const examType = this.groupDetails.exams[0].examType;
     console.log(yyDate);
     fetch(
-      "http://localhost:4000/API/query/getPendingExamPackages/" +
+      `${process.env.REACT_APP_BASE_URL}API/query/getPendingExamPackages/` +
         yyDate +
         "/" +
         part +
@@ -44,7 +44,7 @@ export class ExamDetails extends Component {
       });
 
     fetch(
-      "http://localhost:4000/API/query/getNotAssignedExamPackages/" +
+      `${process.env.REACT_APP_BASE_URL}API/query/getNotAssignedExamPackages/` +
         yyDate +
         "/" +
         part +

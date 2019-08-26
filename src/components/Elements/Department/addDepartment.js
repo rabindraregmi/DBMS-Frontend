@@ -37,9 +37,10 @@ class AddNewDepartment extends Component {
   componentDidMount = () => {
 
     //Edit route
+    
     const departmentID = this.props.match.params.departmentID;
     if (departmentID !== undefined) {
-      fetch("http://localhost:4000/API/query/getOneDepartment/" + departmentID)
+      fetch(`${process.env.REACT_APP_BASE_URL}API/query/getOneDepartment/` + departmentID)
         .then(res => res.json())
         .then(json => {
           let { formData } = this.state;
@@ -54,6 +55,7 @@ class AddNewDepartment extends Component {
   };
 
   submitForm = event => {
+      event.persist();
     let dataToSubmit = {};
     for (let key in this.state.formData) {
         dataToSubmit[key] = this.state.formData[key].value;
@@ -76,13 +78,13 @@ class AddNewDepartment extends Component {
       }
     console.log(dataToSubmit);
 
-    let url = "http://localhost:4000/API/query/addDepartment";
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addDepartment`;
     let methodType = "POST";
 
     //URL for update route
     const departmentID = this.props.match.params.departmentID;
     if (departmentID !== undefined) {
-      url = `http://localhost:4000/API/query/editDepartment/${departmentID}`;
+      url = `${process.env.REACT_APP_BASE_URL}API/query/editDepartment/${departmentID}`;
       methodType = "PUT";
     }
     fetch(url, {
@@ -97,7 +99,7 @@ class AddNewDepartment extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (departmentID!== undefined) {
+            if (departmentID!== undefined  ||event.target.id==="save") {
               this.props.history.goBack();
               return;
             }

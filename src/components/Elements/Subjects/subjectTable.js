@@ -80,7 +80,7 @@ class SubjectTable extends Component {
         else
         {
 
-            fetch ('http://localhost:4000/API/query/getSubjectList')
+            fetch (`${process.env.REACT_APP_BASE_URL}API/query/getSubjectList`)
             .then (res=>res.json())
             .then (json=>{
                 

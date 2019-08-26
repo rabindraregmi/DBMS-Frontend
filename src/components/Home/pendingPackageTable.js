@@ -113,7 +113,7 @@ class PendingPackageTable extends React.Component {
     return [year, month, day].join("/");
   }
   getPendingPackageFromAPI = () => {
-    fetch("http://localhost:4000/API/query/getPendingPackages")
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/getPendingPackages")
       .then(res => res.json())
       .then(json => {
         //Calculate if package is overdue

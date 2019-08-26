@@ -54,6 +54,8 @@ class Routes extends Component {
             <Route path="/edit-exam/:examID" exact component={AddNewExam} />
             <Route path="/exam-details/:examID" exact component={ExamDetails} />
             <Route path='/edit-person/:personID' exact render={(props) => (<Person onSubmission={props.history.goBack} {...props}/>)}/>
+            <Route path="/add-new-person" exact component = {Person}/>
+            
             {/* Subject Route */}
             <Route path="/subjects" exact component={Subject} />
             <Route path="/add-new-subject" exact component= {AddNewSubject}/>

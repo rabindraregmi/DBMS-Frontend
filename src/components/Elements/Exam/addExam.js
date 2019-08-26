@@ -255,13 +255,13 @@ class AddNewExam extends Component {
   componentDidMount = async() => {
     let programData = []
     let subjectData= []
-    await fetch("http://localhost:4000/API/query/getProgramList")
+    await fetch(process.env.REACT_APP_BASE_URL+"API/query/getProgramList")
       .then(res => res.json())
       .then(json => {
         programData =json
       });
 
-    await fetch("http://localhost:4000/API/query/getSubjectList")
+    await fetch(process.env.REACT_APP_BASE_URL+"API/query/getSubjectList")
       .then(res => res.json())
       .then(json => {
         subjectData = json
@@ -270,7 +270,7 @@ class AddNewExam extends Component {
     //Edit route
     const examID = this.props.match.params.examID;
     if (examID !== undefined) {
-      await fetch("http://localhost:4000/API/query/getExams/" + examID)
+      await fetch(process.env.REACT_APP_BASE_URL+"API/query/getExams/" + examID)
         .then(res => res.json())
         .then(json => {
           let { formData } = this.state;
@@ -339,6 +339,7 @@ class AddNewExam extends Component {
   };
 
   submitForm = event => {
+    event.persist();
     let dataToSubmit = {};
     let formData = this.state.formData;
     console.log(formData);
@@ -385,13 +386,13 @@ class AddNewExam extends Component {
     }
 
     console.log(dataToSubmit);
-    let url = "http://localhost:4000/API/query/addExam";
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addExam`;
     let methodType = "POST";
 
     //URL for update route
     const examID = this.props.match.params.examID;
     if (examID !== undefined) {
-      url = `http://localhost:4000/API/query/editExam/${examID}`;
+      url = `${process.env.REACT_APP_BASE_URL}API/query/editExam/${examID}`;
       methodType = "PUT";
     }
     fetch(url, {
@@ -406,7 +407,7 @@ class AddNewExam extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (examID !== undefined) {
+            if (examID !== undefined ||event.target.id==="save"){
               this.props.history.goBack();
               return;
             }
@@ -451,6 +452,7 @@ class AddNewExam extends Component {
           formData={this.state.formData}
           change={(newState, id) => this.updateForm(newState, id)}
           submitForm={event => this.submitForm(event)}
+          
         />
       </div>
     );

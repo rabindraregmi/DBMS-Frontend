@@ -70,7 +70,7 @@ class AddNewProgram extends Component {
     };
   }
   componentDidMount = () => {
-    fetch("http://localhost:4000/API/query/getDepartmentList")
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/getDepartmentList")
       .then(res => res.json())
       .then(json => {
         console.log("Department List",json)
@@ -90,7 +90,7 @@ class AddNewProgram extends Component {
     //Edit route
     const programID = this.props.match.params.programID;
     if (programID !== undefined) {
-      fetch("http://localhost:4000/API/query/getProgram/" + programID)
+      fetch(process.env.REACT_APP_BASE_URL+"API/query/getProgram/" + programID)
         .then(res => res.json())
         .then(json => {
           let { formData } = this.state;
@@ -108,6 +108,7 @@ class AddNewProgram extends Component {
   };
 
   submitForm = event => {
+    event.persist();
     let dataToSubmit = {};
     for (let key in this.state.formData) {
         dataToSubmit[key] = this.state.formData[key].value;
@@ -130,13 +131,13 @@ class AddNewProgram extends Component {
       }
     console.log(dataToSubmit);
 
-    let url = "http://localhost:4000/API/query/addProgram";
+    let url = `${process.env.REACT_APP_BASE_URL}API/query/addProgram`;
     let methodType = "POST";
 
     //URL for update route
     const programID = this.props.match.params.programID;
     if (programID !== undefined) {
-      url = `http://localhost:4000/API/query/editProgram/${programID}`;
+      url = `${process.env.REACT_APP_BASE_URL}API/query/editProgram/${programID}`;
       methodType = "PUT";
     }
     fetch(url, {
@@ -151,7 +152,7 @@ class AddNewProgram extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (programID !== undefined) {
+            if (programID !== undefined ||event.target.id==="save") {
               this.props.history.goBack();
               return;
             }

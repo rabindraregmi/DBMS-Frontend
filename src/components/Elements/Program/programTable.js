@@ -79,7 +79,7 @@ class ProgramTable extends Component {
         }
         else
         {
-        fetch ('http://localhost:4000/API/query/getProgramList')
+        fetch (`${process.env.REACT_APP_BASE_URL}API/query/getProgramList`)
         .then (res=>res.json())
         .then (json=>{
 

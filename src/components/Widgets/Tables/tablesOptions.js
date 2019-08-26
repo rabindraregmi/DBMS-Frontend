@@ -241,14 +241,17 @@ class   TableOptions extends Component{
 
         let filteredData = []
         for(let tableData of this.props.state.tableData)
-        {
+        {   
+
             let flag = true; // TableData should match with every filter option so in loop it is ANDED with every option
             //if one of the condition failed, that particular tableDATA is not pushed into filtered DATA
             for (let element of selectedDOM)
             {
 
                 for (let key of Object.keys(element))
-                {
+                {   
+                    if(tableData[key].props)
+                        tableData[key] =tableData[key].props.children 
                     if(element[key]==='0')
                     {
                         flag = flag && true // 0 means show all so condition is always true thats why anded with true

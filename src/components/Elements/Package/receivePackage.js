@@ -224,7 +224,7 @@ class ReceivePackage extends Component {
     let { params } = this.props.match; //this.props.match.params gives the parameter sent along with link eg revivePackeg/ <<assignmentID>>
 
     fetch(
-      `http://localhost:4000/API/query/getOneAssignment/${params.assignmentID}`
+      `${process.env.REACT_APP_BASE_URL}API/query/getOneAssignment/${params.assignmentID}`
     )
       .then(res => res.json())
       .then(json => {
@@ -274,7 +274,7 @@ class ReceivePackage extends Component {
     }
     console.log(dataToSubmit);
 
-    fetch("http://localhost:4000/API/query/receivePackage", {
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/receivePackage", {
       method: "PUT",
       headers: {
         Accept: "application/json",
