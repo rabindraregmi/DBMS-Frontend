@@ -1,7 +1,7 @@
 import React from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-import {MDBCard, MDBCardHeader, MDBCardBody,MDBProgress} from 'mdbreact'
-import axios from 'axios';
+import { MDBCard, MDBCardHeader, MDBCardBody, MDBProgress } from "mdbreact";
+import axios from "axios";
 class Person extends React.Component {
   state = {
     formData: {
@@ -213,10 +213,10 @@ class Person extends React.Component {
     error: false,
     errorText: "",
     redirect: false,
-    selectedFile:null,
-    loaded:0,
-    isImport:false,
-    isInserting:"no",
+    selectedFile: null,
+    loaded: 0,
+    isImport: false,
+    isInserting: "no"
   };
   updateForm = newState => {
     this.setState({
@@ -231,7 +231,9 @@ class Person extends React.Component {
     if (this.props.match) {
       const personID = this.props.match.params.personID;
       if (personID !== undefined) {
-        fetch(process.env.REACT_APP_BASE_URL+"API/query/getOnePerson/" + personID)
+        fetch(
+          process.env.REACT_APP_BASE_URL + "API/query/getOnePerson/" + personID
+        )
           .then(res => res.json())
           .then(json => {
             let { formData } = this.state;
@@ -267,7 +269,7 @@ class Person extends React.Component {
       if (
         dataToSubmit[key] === null ||
         dataToSubmit[key].match(/^ *$/) !== null ||
-        dataToSubmit[key] ===0
+        dataToSubmit[key] === 0
       ) {
         console.log("Empty ");
         state.formData[key].validationText =
@@ -288,7 +290,8 @@ class Person extends React.Component {
     if (this.props.match) {
       const personID = this.props.match.params.personID;
       if (personID !== undefined) {
-        url = `${process.env.REACT_APP_BASE_URL}API/query/editPerson/` + personID;
+        url =
+          `${process.env.REACT_APP_BASE_URL}API/query/editPerson/` + personID;
         methodType = "PUT";
       }
     }
@@ -305,8 +308,8 @@ class Person extends React.Component {
         // console.log(res);
         const personID = this.props.match.params.personID;
         if (res.status === 200) {
-          if(personID!==undefined ||event.target.id==="save")
-            this.props.history.goBack()
+          if (personID !== undefined || event.target.id === "save")
+            this.props.history.goBack();
           this.setState({ error: false });
           this.props.onSubmission();
         } else this.setState({ error: true, errorText: res.statusText });
@@ -322,103 +325,121 @@ class Person extends React.Component {
       return <p>{errorText}</p>;
     }
   };
-  onChangeHandler =event=>{
+  onChangeHandler = event => {
     this.setState({
-      selectedFile:event.target.files[0]
-    })
-  }
-  uploadFile = async()=>{
-   const data = new FormData()
-   data.append('file',this.state.selectedFile)
-  
-   const res = await axios.post("/API/query/upload", data, {
-       onUploadProgress: ProgressEvent => {
-         this.setState({
-           loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
-       })
-   },
-})
+      selectedFile: event.target.files[0]
+    });
+  };
+  uploadFile = async () => {
+    const data = new FormData();
+    data.append("file", this.state.selectedFile);
+    if (this.state.selectedFile === null) {
+        await this.setState({
+          isInserting: "empty",
+          loaded: 0
+        });
+        return;
+      }
+    const res = await axios.post(
+      process.env.REACT_APP_BASE_URL + "API/query/upload",
+      data,
+      {
+        onUploadProgress: ProgressEvent => {
+          this.setState({
+            loaded: (ProgressEvent.loaded / ProgressEvent.total) * 100
+          });
+        }
+      }
+    );
 
-  await this.setState({
-    isInserting:"onProgress"
-  })
-  
-    let response = await fetch(process.env.REACT_APP_BASE_URL+"API/query/postExcel",{
-      method:'post',
-      headers:{
-        Accept: "application/json",
-        },
-    })
-  if (response && response.status==200)
-   {
+    await this.setState({
+      isInserting: "onProgress"
+    });
 
-     await this.setState({
-       isInserting:'done'
-      })
+    let response = await fetch(
+      process.env.REACT_APP_BASE_URL + "API/query/postExcel",
+      {
+        method: "post",
+        headers: {
+          Accept: "application/json"
+        }
+      }
+    );
+    if (response.status == 500) {
+      await this.setState({
+        isInserting: "error",
+        loaded: 0
+      });
+    }
+    if (response && response.status == 200) {
+      await this.setState({
+        isInserting: "done"
+      });
     }
 
-    
-  
-  
-  
-   //  fetch(process.env.REACT_APP_BASE_URL+"API/query/upload", {
-  //    method: "POST",
-  //   //  headers: {
-  //   //   Accept: "application/json",
-  //   // },
-  //   body: data
-  // }).then(res=>{
-  //   console.log(res)
-  // })
-
-  }
-  checkInserting = ()=>{
+    //  fetch(process.env.REACT_APP_BASE_URL+"API/query/upload", {
+    //    method: "POST",
+    //   //  headers: {
+    //   //   Accept: "application/json",
+    //   // },
+    //   body: data
+    // }).then(res=>{
+    //   console.log(res)
+    // })
+  };
+  checkInserting = () => {
     let isInserting = this.state.isInserting;
-    if (isInserting=="no")
-      return<h1>Not</h1>
-    else if (isInserting=="onProgress")
-      return<h1>Data is Inserting</h1>
-    else 
-      return <h1>{this.props.history.goBack()}</h1>
-  }
+    if (isInserting == "no") return <h3></h3>;
+    else if (isInserting == "onProgress") return <h3>Insertion in progress</h3>;
+    else if (isInserting == "error") return <h3>Error inserting data</h3>;
+    else if (isInserting == "empty") return <h3>Select a file to insert</h3>;
+    else return <h3>{this.props.history.goBack()}</h3>;
+  };
   render() {
     return (
       <div clasName="container">
-        
-          {this.errorCheck()}
-          <MDBCard>
-            <MDBCardHeader>
-                Add New Person
-                <button className = "btn btn-xl btn-secondary" style= {{float:'right'}}
-                onClick= {()=>{
-                  this.setState(prevState=>({
-                    isImport:!prevState.isImport
-                  }))
-                }}
-                
-                >Import </button>
-            </MDBCardHeader>
-            <MDBCardBody>
-              {this.state.isImport?
+        {this.errorCheck()}
+        <MDBCard>
+          <MDBCardHeader>
+            Add New Person
+            <button
+              className="btn btn-xl btn-secondary"
+              style={{ float: "right" }}
+              onClick={() => {
+                this.setState(prevState => ({
+                  isImport: !prevState.isImport
+                }));
+              }}
+            >
+              Import{" "}
+            </button>
+          </MDBCardHeader>
+          <MDBCardBody>
+            {this.state.isImport ? (
               <div>
                 {this.checkInserting()}
-              <MDBProgress value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</MDBProgress>
-              <input type="file" name="file" className = 'btn'onChange={this.onChangeHandler}/>
-              <button className = "btn btn-secondary"onClick= {this.uploadFile}>UpLoad File</button>
+                <MDBProgress value={this.state.loaded}>
+                  {Math.round(this.state.loaded, 2)}%
+                </MDBProgress>
+                <input
+                  type="file"
+                  name="file"
+                  className="btn"
+                  onChange={this.onChangeHandler}
+                />
+                <button className="btn btn-secondary" onClick={this.uploadFile}>
+                  UpLoad File
+                </button>
               </div>
-              :
+            ) : (
               <FormFields
-              formData={this.state.formData}
-              change={newState => this.updateForm(newState)}
-              submitForm={event => this.submitForm(event)}
-              
-            />
-              }
-            
-            </MDBCardBody>
-          </MDBCard>
-          
-          
+                formData={this.state.formData}
+                change={newState => this.updateForm(newState)}
+                submitForm={event => this.submitForm(event)}
+              />
+            )}
+          </MDBCardBody>
+        </MDBCard>
       </div>
     );
   }
