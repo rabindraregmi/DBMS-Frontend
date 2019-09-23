@@ -1,8 +1,81 @@
 import React from "react";
 import FormFields from "../../Widgets/Form/forms.js";
-import { MDBCard, MDBCardHeader, MDBCardBody, MDBProgress } from "mdbreact";
+import { MDBCard, MDBCardHeader, MDBCardBody, MDBProgress,MDBDataTable} from "mdbreact";
 import axios from "axios";
+import Table from '../../Widgets/Tables/tables.js'
 class Person extends React.Component {
+  data = {
+  columns : [
+    // name,contact,courseCode,programme,year_part,subject,campus,teachingExperience,experienceinthisSubj,academicQualification,jobType,email
+    {
+      label: "Name",
+      field: "name",
+      sort: "asc",
+      width: "100",
+    },
+    {
+      label: "Contact",
+      field: "contact",
+      sort: "asc",
+      width: 100
+    },
+    {
+      label: "Course Code",
+      sort: "asc",
+      field: "courseCode",
+      grouping:true
+    },
+    {
+      label: "Programme",
+      sort: "asc",
+      field: "programme",
+      grouping:true
+    },
+    {
+      label: "Year/Part",
+      sort: "asc",
+      field: "year_part",
+      grouping:true
+    },
+    {
+      label: "Subject",
+      sort: "asc",
+      field: "subject"
+    },
+    {
+      label: "Campus",
+      sort: "asc",
+      field: "campus"
+    },
+    {
+      label: "Teaching Experience",
+      sort: "asc",
+      field: "teachingExperience"
+    },
+    {
+      label: "Experince in this Subject",
+      sort: "asc",
+      field: "experienceinthisSub"
+    },
+    {
+      label: "Academic Qualification",
+      sort: "asc",
+      field: "academicQualification"
+    },
+    {
+      label: "Job Type",
+      sort: "asc",
+      field: "jobType"
+    },
+    {
+      label: "Email",
+      sort: "asc",
+      field: "email"
+    }
+  ],
+  rows:[]
+}
+  
   state = {
     formData: {
       name: {
@@ -430,6 +503,20 @@ class Person extends React.Component {
                 <button className="btn btn-secondary" onClick={this.uploadFile}>
                   UpLoad File
                 </button>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <h4 style= {{color:'red'}}>Table in excel file should be in this format:</h4>
+                <MDBDataTable
+                  striped
+                  bordered
+                  hover
+                  data={this.data}
+                  paging={false}
+                  searching={false}
+                  />
+                
               </div>
             ) : (
               <FormFields
