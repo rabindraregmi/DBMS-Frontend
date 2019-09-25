@@ -1,7 +1,7 @@
 import React from "react";
 import Table from "../Widgets/Tables/tables.js";
 import { faReceipt } from "@fortawesome/free-solid-svg-icons";
-import utils from '../../utils/utils.js';
+import utils from "../../utils/utils.js";
 let adbs = require("ad-bs-converter");
 
 //import { confirmAlert } from 'react-confirm-alert'; // Import
@@ -10,8 +10,6 @@ let adbs = require("ad-bs-converter");
 class PendingPackageTable extends React.Component {
   sortingOnlyList = ["Status"];
   headings = [
-  
-    
     {
       label: "Package Code",
       text: "Package ID",
@@ -23,20 +21,20 @@ class PendingPackageTable extends React.Component {
       text: "Year",
       colspan: "2",
       field: "year",
-      grouping:true,
+      grouping: true
     },
     {
       label: "Part",
       text: "Part",
       colspan: "2",
       field: "part",
-      grouping:true,
+      grouping: true
     },
     {
       label: "Program Name",
       colspan: "2",
       field: "programName",
-      grouping:true,
+      grouping: true
     },
     {
       label: "Assigned Date",
@@ -94,14 +92,24 @@ class PendingPackageTable extends React.Component {
     return new Date(
       englishDate.year,
       englishDate.month - 1,
-      englishDate.day + 1
+      englishDate.day
     );
   }
 
   findDateDifference(myDate) {
     const now = new Date();
+    now.setHours(0,0,0);
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(
+      myDate.getFullYear(),
+      myDate.getMonth(),
+      myDate.getDate()
+    );
+    const utc2 = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
     //console.log(now, myDate);
-    return Math.round((myDate - now) / (1000 * 60 * 60 * 24));
+    console.log(now);
+    console.log(myDate);
+    return Math.round((utc1 - utc2) / (1000 * 60 * 60 * 24));
   }
   formatDate(date) {
     let d = new Date(date);
@@ -113,7 +121,7 @@ class PendingPackageTable extends React.Component {
     return [year, month, day].join("/");
   }
   getPendingPackageFromAPI = () => {
-    fetch(process.env.REACT_APP_BASE_URL+"API/query/getPendingPackages")
+    fetch(process.env.REACT_APP_BASE_URL + "API/query/getPendingPackages")
       .then(res => res.json())
       .then(json => {
         //Calculate if package is overdue
@@ -126,7 +134,7 @@ class PendingPackageTable extends React.Component {
         });
         console.log("Element after Overdue", json);
         let categories = {};
-        categories = utils.createCategories(json,this.headings)
+        categories = utils.createCategories(json, this.headings);
         categories["package"] = ["Overdue"];
 
         this.setState({
@@ -149,7 +157,7 @@ class PendingPackageTable extends React.Component {
         element["package"] = diff < 0 ? "Overdue" : "Pending";
       });
       let categories = {};
-      categories = utils.createCategories(json,this.headings)
+      categories = utils.createCategories(json, this.headings);
       categories["package"] = ["Overdue"];
       this.setState({
         isLoaded: true,
@@ -169,23 +177,21 @@ class PendingPackageTable extends React.Component {
     this.setState(states);
   };
   render() {
-  
-      return (
-        <div className="pendingPackageTable">
-          <Table
-            headings={this.headings}
-            sortingOnlyList={this.sortingOnlyList}
-            tableData={
-              this.state.isFiltered ? this.state.filtered : this.state.tableData
-            }
-            state={this.state}
-            setState={states => this.statehandler(states)}
-            actions={this.actions}
-            categories={this.state.categories}
-          />
-        </div>
-      );
-    }
-  
+    return (
+      <div className="pendingPackageTable">
+        <Table
+          headings={this.headings}
+          sortingOnlyList={this.sortingOnlyList}
+          tableData={
+            this.state.isFiltered ? this.state.filtered : this.state.tableData
+          }
+          state={this.state}
+          setState={states => this.statehandler(states)}
+          actions={this.actions}
+          categories={this.state.categories}
+        />
+      </div>
+    );
+  }
 }
 export default PendingPackageTable;
