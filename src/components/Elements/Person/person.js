@@ -438,13 +438,13 @@ class Person extends React.Component {
         }
       }
     );
-    if (response.status == 500) {
+    if (response.status === 500) {
       await this.setState({
         isInserting: "error",
         loaded: 0
       });
     }
-    if (response && response.status == 200) {
+    if (response && response.status ===200) {
       await this.setState({
         isInserting: "done"
       });
@@ -462,10 +462,10 @@ class Person extends React.Component {
   };
   checkInserting = () => {
     let isInserting = this.state.isInserting;
-    if (isInserting == "no") return <h3></h3>;
-    else if (isInserting == "onProgress") return <h3>Insertion in progress</h3>;
-    else if (isInserting == "error") return <h3>Error inserting data</h3>;
-    else if (isInserting == "empty") return <h3>Select a file to insert</h3>;
+    if (isInserting === "no") return null;
+    else if (isInserting === "onProgress") return <h3>Insertion in progress</h3>;
+    else if (isInserting === "error") return <h3>Error inserting data</h3>;
+    else if (isInserting === "empty") return <h3>Select a file to insert</h3>;
     else return <h3>{this.props.history.goBack()}</h3>;
   };
   render() {

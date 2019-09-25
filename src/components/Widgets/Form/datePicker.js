@@ -28,7 +28,8 @@ export class NepaliDatePicker extends Component {
       closeOnDateSelect: true
     });
     this.handleChange = this.handleChange.bind(this);
-    this.$el.on("dateChange", this.handleChange);
+    this.$el.on("dateSelect", this.handleChange);
+    
   }
   handleChange(e) {
     //    console.log(calendarFunctions.getNepaliNumber(125));

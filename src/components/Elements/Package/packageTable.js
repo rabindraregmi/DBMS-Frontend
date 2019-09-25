@@ -25,13 +25,7 @@ class PackageTable extends React.Component {
       sort: "asc",
       field: "codeEnd"
     },
-    {
-      label: "Exam",
-      text: "Exam",
-      sort: "asc",
-      field: "examName",
-     
-    },
+    
     {
       label: "Year",
       sort: "asc",
@@ -49,6 +43,13 @@ class PackageTable extends React.Component {
       sort: "asc",
       field: "subjectName",
       grouping:true
+    },
+    {
+      label: "Exam",
+      text: "Exam",
+      sort: "asc",
+      field: "examName",
+     
     },
     {
       label: "Status",
@@ -89,44 +90,34 @@ class PackageTable extends React.Component {
     isFiltered: false,
     categories: {}
   };
-  deleteUnnecessaryTableData = props => {
-    let receivedProps = props;
-    if (receivedProps.hasOwnProperty("postedData")) {
-      receivedProps.postedData.forEach(element => {
-        delete element.level;
-        delete element.part;
-        delete element.year;
-        delete element.programID;
-      });
-      this.setState({
-        isLoaded: true,
-        tableData: receivedProps.postedData
-      });
-    }
-  };
 
-  UNSAFE_componentWillReceiveProps = props => {
-    this.deleteUnnecessaryTableData(props);
-    
-    if (props.initialData) {
-      console.log(this.headings);
-      this.headings = this.headings.filter(el => {
-        return el.label !== "Status";
-      });
-      let json = props.initialData;
+  loadPropsTableData = props =>{
+      if(props.postedData)
+      {
+        props.postedData.forEach(element=>{
+          delete element.level
+          delete element.programID
+        })
+      }
+      let json = props.initialData?props.initialData:props.postedData;
       let categories = utils.createCategories(json,this.headings);
       this.setState({
         isLoaded: true,
         tableData: json,
         categories: categories
       });
+  }
+
+  UNSAFE_componentWillReceiveProps = props => {  
+    if (this.props.initialData || this.props.postedData) {
+      this.loadPropsTableData(props)
     }
   };
 
   componentDidMount() {
     console.log(this.props.initialData);
-    if (this.props.initialData) {
-      this.deleteUnnecessaryTableData(this.props);
+    if (this.props.initialData || this.props.postedData) {
+      this.loadPropsTableData(this.props)
     } else {
       fetch(process.env.REACT_APP_BASE_URL+"API/query/getAllPackages")
         .then(res => res.json())

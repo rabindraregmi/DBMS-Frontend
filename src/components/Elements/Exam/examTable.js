@@ -16,9 +16,9 @@ class ExamTable extends React.Component {
   ]
   headings = [
     {
-      label: "Exam Title",
+      label: "Exam Year",
       sort: "asc",
-      field: "title",
+      field: "examYear",
       grouping:true
     },
     {
@@ -67,43 +67,49 @@ class ExamTable extends React.Component {
     }, {});
   };
 
-  componentWillMount = () => {
-      fetch(process.env.REACT_APP_BASE_URL+"API/query/getExams")
-        .then(res => res.json())
-        .then(json => {
-          //Group by data and year to separate exams
-          json.forEach(element => {
-            const examYear = element.date.split("/")[0];
-            const part = element.part === "I" ? "Odd" : "Even";
-            const type = element.examType;
-            element.examTitle = examYear + " - " + part + "(" + type + ")";
-          });
-          
-          const groups = this.groupBy(json, "examTitle");
-          let groupsArr = [];
-          let detailsArr = [];
-          console.log(groups.length);
-          Object.entries(groups).forEach(([key, value], index) => {
-            groupsArr.push({
-              id: index,
-              title: key,
-              type: value[0].examType,
-              semester: value[0].part
-            });
-            detailsArr.push({ id: index, title: key, exams: value });
-          });
-
-
-          let categories = utils.createCategories(groupsArr,this.headings);
-          this.setState({
-            isLoaded: true,
-            tableData: groupsArr,
-            groupedData: groupsArr,
-            detailedGroupedData: detailsArr,
-            categories: categories
-          });
+  fetchExamFromAPI = ()=>{
+    fetch(process.env.REACT_APP_BASE_URL+"API/query/getExams")
+    .then(res => res.json())
+    .then(json => {
+      //Group by data and year to separate exams
+      json.forEach(element => {
+        let examYear = element.date.split("/")[0];
+        const examMonth = element.date.split("/")[1];
+        const part = element.part === "I" ? "Odd" : "Even";
+        const type = element.examType;
+        if(type==="Regular"&&(examMonth==='1'))
+          examYear = examYear-1
+        element.examTitle = examYear + " - " + part + "(" + type + ")";
+        element.examYear= examYear
+      });
+      
+      const groups = this.groupBy(json, "examTitle");
+      let groupsArr = [];
+      let detailsArr = [];
+      // console.log(groups.length);
+      Object.entries(groups).forEach(([key, value], index) => {
+        groupsArr.push({
+          id: index,
+          examYear: value[0].examYear,
+          type: value[0].examType,
+          semester: value[0].part
         });
-    
+        detailsArr.push({ id: index, title: key, exams: value });
+      });
+
+
+      let categories = utils.createCategories(groupsArr,this.headings);
+      this.setState({
+        isLoaded: true,
+        tableData: groupsArr,
+        groupedData: groupsArr,
+        detailedGroupedData: detailsArr,
+        categories: categories
+      });
+    });
+  }
+  componentWillMount = () => {
+    this.fetchExamFromAPI();
   };
 
   statehandler = states => {

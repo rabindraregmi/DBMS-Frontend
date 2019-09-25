@@ -5,13 +5,12 @@ import utils from '../../../utils/utils.js'
 class SubjectTable extends Component {
     headings = 
     [
-        
         {
-            label: "Program",
-            sort:"asc",
-            field:"programName",
-            grouping:true,
+            label: 'Subject Name',
+            sort: 'asc',
+            field:'subjectName',
         },
+        
         {
             label: "Year",
             sort:"asc",
@@ -30,10 +29,12 @@ class SubjectTable extends Component {
             field:"courseCode",
         },
         {
-            label: 'Subject Name',
-            sort: 'asc',
-            field:'subjectName',
+            label: "Program",
+            sort:"asc",
+            field:"programName",
+            grouping:true,
         },
+       
         
        
         

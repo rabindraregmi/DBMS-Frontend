@@ -342,11 +342,9 @@ class AddNewExam extends Component {
     event.persist();
     let dataToSubmit = {};
     let formData = this.state.formData;
-    console.log(formData);
     dataToSubmit["subjectID"] = formData["subjectID"].value.toString();
     dataToSubmit["examType"] = formData["examType"].value;
     dataToSubmit["date"] = this.formatNepaliDateToEng(formData["date"].value);
-    console.log(dataToSubmit);
 
     const state = this.state;
     for (let key in this.state.formData) {
@@ -384,8 +382,6 @@ class AddNewExam extends Component {
         }
       }
     }
-
-    console.log(dataToSubmit);
     let url = `${process.env.REACT_APP_BASE_URL}API/query/addExam`;
     let methodType = "POST";
 
@@ -407,7 +403,7 @@ class AddNewExam extends Component {
         res.json().then(body => {
           let { postedData } = this.state;
           if (res.status === 200) {
-            if (examID !== undefined ||event.target.id==="save"){
+            if (examID !== undefined){
               this.props.history.goBack();
               return;
             }
@@ -444,15 +440,15 @@ class AddNewExam extends Component {
   };
 
   loadForm = () => {
+    let redirectLink = '/exams'
     return (
       <div>
-        
         {this.errorCheck()}
         <FormFields
           formData={this.state.formData}
           change={(newState, id) => this.updateForm(newState, id)}
           submitForm={event => this.submitForm(event)}
-          
+          redirectLink = {redirectLink}
         />
       </div>
     );

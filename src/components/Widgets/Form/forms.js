@@ -126,32 +126,6 @@ const formFields = props => {
           </div>
         );
         break;
-      case "date-picker":
-        formTemplate = (
-          <div className="form-group row">
-            {showLabel(values.required, values.labelText)}
-            <div className="col-sm-6">
-              {props.formData[data.id].value === "" ? (
-                <DatePicker
-                  onChange={date => {
-                    dateChangeHandler(date, data.id);
-                  }}
-                />
-              ) : (
-                <DatePicker
-                  date={props.formData[data.id].value}
-                  onChange={date => {
-                    dateChangeHandler(date, data.id);
-                  }}
-                />
-              )}
-              {!values.valid ? (
-                <p style={{ color: "red" }}>{values.validationText}</p>
-              ) : null}
-            </div>
-          </div>
-        );
-        break;
       case "input":
         formTemplate = (
           <div className="form-group row">
@@ -318,12 +292,11 @@ const formFields = props => {
       </button>
 
        <button
-        className="btn btn-secondary"
-        type="reset"
-        id="saveandcontinue"
-        onClick={event => props.submitForm(event)}
+          className="btn btn-secondary"
+          type="reset"
+          id="goBack"
         >
-        Save and Continue
+          <Link to= {props.redirectLink}>Go Back</Link>
       </button> 
     </form>
   );
