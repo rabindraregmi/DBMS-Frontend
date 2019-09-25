@@ -18,12 +18,60 @@ export class ExamDetails extends Component {
 
   groupDetails = {};
 
+  //Group by a particular key in an array
+  groupBy = (xs, key) => {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
+
+  groupExams = () => {
+    fetch(process.env.REACT_APP_BASE_URL + "API/query/getExams")
+      .then(res => res.json())
+      .then(json => {
+        //Group by data and year to separate exams
+        json.forEach(element => {
+          const examYear = element.date.split("/")[0];
+          const part = element.part === "I" ? "Odd" : "Even";
+          const type = element.examType;
+          element.examTitle = examYear + " - " + part + "(" + type + ")";
+        });
+
+        const groups = this.groupBy(json, "examTitle");
+        let groupsArr = [];
+        let detailsArr = [];
+        console.log(groups.length);
+        Object.entries(groups).forEach(([key, value], index) => {
+          groupsArr.push({
+            id: index,
+            title: key,
+            type: value[0].examType,
+            semester: value[0].part
+          });
+          detailsArr.push({ id: index, title: key, exams: value });
+        });
+        const groupID = this.props.match.params.examID;
+        this.groupDetails = detailsArr[parseInt(groupID)];
+        // this.fetchPackages();
+        console.log(this.groupDetails);
+          this.fetchPackages();
+          this.forceUpdate();
+      });
+  };
+
+
   componentDidMount() {
     console.log("This is props", this.props);
     const groupID = this.props.match.params.examID;
     this.groupDetails = this.props.location.state[parseInt(groupID)];
     // console.log(this.groupDetails);
     // console.log()
+    this.groupExams();
+    this.fetchPackages();
+  }
+
+  fetchPackages = () => {
     const part = this.groupDetails.exams[0].part;
     const yyDate = this.groupDetails.exams[0].date.split("/")[0];
     const examType = this.groupDetails.exams[0].examType;
@@ -57,7 +105,7 @@ export class ExamDetails extends Component {
           unassigned: json
         });
       });
-  }
+  };
 
   expandClickHandler = event => {
     try {
@@ -76,6 +124,8 @@ export class ExamDetails extends Component {
   };
 
   render() {
+    console.log("Rendering");
+    console.log(this.groupDetails);
     return (
       <div>
         <MDBCard>
