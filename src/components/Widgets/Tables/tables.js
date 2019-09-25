@@ -1,25 +1,24 @@
 import React from "react";
 import "./tables.css";
-import { MDBDataTable, MDBCardBody, MDBCard, MDBCardHeader} from "mdbreact";
+import { MDBDataTable} from "mdbreact";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { MDBPopover, MDBPopoverBody, MDBPopoverHeader, MDBBtn } from "mdbreact";
 import TableOptions from './tablesOptions.js'
-import { element } from "prop-types";
 
 
 class MainTable extends React.Component {
-  //MDBtable needs data in JSON format.Data methods is used for that.
-  //Headings is looped and stored in columns
-  //tableData is looped and stored in rows
+  
+  //props in defaultProps is used, if that particular props is not passed to this component from other component
   static defaultProps = {
     headings:[],
     categories:{},
     tableData:[],
     postedTable:false,
-
   }
-
+  //MDBtable needs data in JSON format.Data method is used for that.
+  //Headings is looped and stored in columns
+  //tableData is looped and stored in rows
   data = () => {
     //headings is passed in this.props
     let headings = this.props.headings;
@@ -46,7 +45,7 @@ class MainTable extends React.Component {
       let tempData = {};
       tempData["sn"] = index + 1;
       for (let key in datas) {
-        if (key !== "id" && key!== 'package' &&key!=='subjectID') {
+        if (key !== "id" && key!== 'package') {
           let link = `/packageHistory/${datas[key]}`;
           key==='packageCode'?
             tempData[key] = <Link to={link}>{datas[key]}</Link>
@@ -68,12 +67,12 @@ class MainTable extends React.Component {
             </button>
           );
         } else {
-          templates = (
-            <Link key = {index} to={{ pathname:`${action.link}${datas["id"]}`, state: this.props.detailParams}} >
-              <FontAwesomeIcon icon={action.icon} />
-            </Link>
-          );
-        }
+            templates = (
+              <Link key = {index} to={{ pathname:`${action.link}${datas["id"]}`, state: this.props.detailParams}} >
+                <FontAwesomeIcon icon={action.icon} />
+              </Link>
+            );
+          }
         return templates;
       });
 
@@ -113,55 +112,44 @@ class MainTable extends React.Component {
     return data;
   };
 
-stateHandler = (states)=>{
-  this.props.setState(states)
-}
-
-quickLinks = ()=>{
-  if(this.props.quickLinks)
-  {
-    return this.props.quickLinks.map((element,index)=>{
-      return (
-        <Link to= {element.link}>
-        <button className= "btn btn-secondary">
-          {element.text}
-        </button>
-        </Link>
-      )
-    })
+  stateHandler = (states)=>{
+    this.props.setState(states)
   }
-}
-render(){
-  
-  return (
-    
 
-   <div>
-
-      {this.props.postedTable?null:<TableOptions
-      state = {this.props.state}
-      setState={(states=>this.stateHandler(states))}
-      headings = {this.props.headings}
-      categories = {this.props.categories}
-      />}
-     
-
-    
- 
-
-      <div className = "mainTable">
-
-        <MDBDataTable
-        //searching={false}
-        data={this.data()}
-        bordered
-        sortable
-        />
-        {this.quickLinks()}
+  quickLinks = ()=>{
+    if(this.props.quickLinks)
+    {
+      return this.props.quickLinks.map((element,index)=>{
+        return (
+          <Link to= {element.link}>
+            <button className= "btn btn-secondary">
+              {element.text}
+            </button>
+          </Link>
+        )
+      })
+    }
+  }
+  render(){
+    return (
+      <div>
+        {this.props.postedTable?null:<TableOptions
+        state = {this.props.state}
+        setState={(states=>this.stateHandler(states))}
+        headings = {this.props.headings}
+        categories = {this.props.categories}
+        />}
+        <div className = "mainTable">
+          <MDBDataTable
+            //searching={false}
+            data={this.data()}
+            bordered
+            sortable
+            />
+            {this.quickLinks()}
         </div>
-        </div>
-        
-  );
-}
+      </div>
+    );
+  }
 };
 export default MainTable;

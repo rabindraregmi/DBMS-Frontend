@@ -62,7 +62,6 @@ export class ExamDetails extends Component {
 
 
   componentDidMount() {
-    console.log("This is props", this.props);
     const groupID = this.props.match.params.examID;
     this.groupDetails = this.props.location.state[parseInt(groupID)];
     // console.log(this.groupDetails);
@@ -170,7 +169,7 @@ export class ExamDetails extends Component {
             id="unassignedPackageStatus"
             onClick={event => this.expandClickHandler(event)}
           >
-            <b>Unassigned Package Status</b>
+            <b>All Package Status</b>
             <span id="unassignedPackageStatusIcon">
               <i class="chevronIcon fas fa-chevron-down" />
             </span>

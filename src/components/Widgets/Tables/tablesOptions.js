@@ -1,5 +1,4 @@
 import React, {Component,Fragment} from 'react'
-import Select from 'react-dropdown-select';
 
 class   TableOptions extends Component{
             state = {
@@ -15,7 +14,7 @@ class   TableOptions extends Component{
                 this.setState({
                     searchBy: searchByKeyword
                 })
-            }
+            } 
           
             
 
@@ -40,7 +39,7 @@ class   TableOptions extends Component{
         searchFieldChangeHandler = event => {
             let keyword = event.target.value;
             let searchByKeyword = this.state.searchBy;
-            
+            console.log("xx",this.props.state.tableData[0])
             if (searchByKeyword!==0 && searchByKeyword!=='0')
             {
                 
@@ -54,9 +53,6 @@ class   TableOptions extends Component{
             });
         }
         };
-
-
-
 //This method for showing options in Filter By:
         searchBySelection = () => {
                 return this.props.headings.map((header, i) => {
@@ -83,7 +79,7 @@ class   TableOptions extends Component{
               </div>
             )}
 
-    searchBar = ()=>{
+        searchBar = ()=>{
             return (
 
                     <div className="form-group col-md-1 col-lg-2">
@@ -250,6 +246,7 @@ class   TableOptions extends Component{
 
                 for (let key of Object.keys(element))
                 {   
+                    //I've added Link to some table so this was to extract children of <Link> element
                     if(tableData[key].props)
                         tableData[key] =tableData[key].props.children 
                     if(element[key]==='0')
@@ -265,13 +262,11 @@ class   TableOptions extends Component{
             }
             if (flag) filteredData.push(tableData);
         }
-
-
-            console.log(filteredData)
-            this.props.setState({
-                filtered: filteredData,
-                isFiltered:true
-            });
+        console.log(filteredData)
+        this.props.setState({
+            filtered: filteredData,
+            isFiltered:true
+        });
 
     }
     handleClearFilterClick = ()=>{
@@ -304,20 +299,17 @@ class   TableOptions extends Component{
            <Fragment>
             <button className = "btn btn-sm btn-default" onClick = {(event)=>{this.advancedButtonClickHandler(event)}}> &#8810;Advanced Search</button>
             <div className="advanceSearchOptions" id="advancedSearchOptions" hidden>
-
                 <div className = "row">
-
-                {this.searchByBar()}
-                {this.searchBar()}
+                    {this.searchByBar()}
+                    {this.searchBar()}
                 </div>
                 <div className = "row">
-                {this.filterOptionsBar()}
-                <div>
-
-                <button onClick = {()=>this.handleFilterClick()}className = "btn btn-md btn-secondary" style = {{marginTop: '30px'}}>Filter</button>
-                <button onClick = {()=>this.handleClearFilterClick()}className = "btn btn-md btn-danger" style = {{marginTop: '30px'}}>Clear Filter</button>
+                    {this.filterOptionsBar()}
+                    <div>
+                        <button onClick = {()=>this.handleFilterClick()}className = "btn btn-md btn-secondary" style = {{marginTop: '30px'}}>Filter</button>
+                        <button onClick = {()=>this.handleClearFilterClick()}className = "btn btn-md btn-danger" style = {{marginTop: '30px'}}>Clear Filter</button>
+                    </div>
                 </div>
-           </div>
             </div>
           </Fragment>
          )
@@ -328,14 +320,12 @@ class   TableOptions extends Component{
            )
        }
 
-      }
+    }
 
     render(){
         return (
             <div className = "container-fluid">
                     {this.tableOptions()}
-
-
             </div>
         )
     }

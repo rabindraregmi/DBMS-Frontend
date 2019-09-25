@@ -10,18 +10,7 @@ const breadCrumbItems = [
     link:"/add-new-package"
   }
 ]
-const quickLinks = [
-  {
-    text:"Add New Program",
-    link:"/add-new-program",
-    button: 'primary',
-  },
-  {
-    text:"Add New Exam",
-    link:"/add-new-Exam",
-    button: 'secondary'
-  },
-]
+
 //import { Redirect } from "react-router-dom";
 class AddNewPackage extends Component {
   state = {
@@ -312,12 +301,13 @@ class AddNewPackage extends Component {
       }
     });
   };
+
   loadExamOptions = async () => {
     let { examData } = this.state;
     let { subjectID } = this.state.formData;
 
     let subjectValue = subjectID.value;
-    console.log("Subject Value", examData);
+    console.log("Exam Value", examData);
     let filteredExamData = examData.filter(item => {
       return item["subjectID"] === parseInt(subjectValue);
     });
@@ -349,7 +339,7 @@ class AddNewPackage extends Component {
   };
 
   componentDidMount = async () => {
-    let { examID } = this.state.formData;
+    // let { examID } = this.state.formData;
 
     //let examOptions = examID.config.options;
     let programData = []
@@ -427,8 +417,10 @@ class AddNewPackage extends Component {
     if (id === "level") {
       this.loadProgramOptions();
     } else if (id === "programID" || id === "year" || id === "part") {
+     
       this.loadSubjectOptions();
     } else if (id === "subjectID") {
+     
       this.loadExamOptions();
     }
   };
@@ -436,6 +428,7 @@ class AddNewPackage extends Component {
   submitForm = event => {
     // let buttonID = event.target.id;
     // let redirectLink = ''
+    console.log(event)
     event.persist();
     let dataToSubmit = {};
     console.log(dataToSubmit);
@@ -500,7 +493,7 @@ class AddNewPackage extends Component {
             this.setState({
               errorOnSubmission: true,
               errorText: "Error in submission",
-              posted: true
+              posted: false
             });
           }
         });
@@ -518,6 +511,7 @@ class AddNewPackage extends Component {
   };
 
   loadForm = () => {
+    let redirectLink = "/packages"
     return (
       <div>
         {this.errorCheck()}
@@ -525,6 +519,7 @@ class AddNewPackage extends Component {
           formData={this.state.formData}
           change={(newState, id) => this.updateForm(newState, id)}
           submitForm={event => this.submitForm(event)}
+          redirectLink = {redirectLink}
         />
       </div>
     );

@@ -107,7 +107,7 @@ UNSAFE_componentWillReceiveProps=(props)=>{
     this.setState(states)
   }
 
-  render() {
+  render(){
     return (
       <Table
         headings={this.headings}
