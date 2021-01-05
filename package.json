@@ -7,7 +7,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "ad-bs-converter": "^0.5.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "jquery": "^3.4.1",
     "mdbreact": "^4.18.0",
     "nepali-date-picker": "^2.0.1",
